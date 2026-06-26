@@ -21,7 +21,6 @@ header .logo-container img { width: 160%; height: 160%; object-fit: contain; }
 header .header-title h1 { font-size: 19px; font-weight: 500; letter-spacing: 0.2px; line-height: 1.2; }
 header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-family: "Merriweather", serif; }
 
-/* ፉተርን ለመቆጣጠር ዋናውን አካል flex-grow ሰጥተነዋል */
 .main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
 
 .step-view { display: none; width: 100%; animation: fadeIn 0.3s ease-in-out; }
@@ -62,31 +61,37 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 .info-box i { font-size: 18px; margin-top: 2px; }
 .info-content p { font-size: 13.5px; line-height: 1.5; }
 .info-content .info-title { font-weight: 700; margin-bottom: 4px; }
+
+/* ርዝማኔ ፍተሻዎች */
 .error-box { background-color: #ffebee; border: 1px solid #ffcdd2; border-radius: 8px; padding: 14px; text-align: left; margin-bottom: 24px; display: none; align-items: center; gap: 12px; color: #c62828; }
 .error-box i { font-size: 18px; }
 .error-box p { font-size: 13.5px; font-weight: 500; line-height: 1.5; font-family: "Merriweather", serif; }
-.submit-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: "Merriweather", serif; margin-bottom: 24px; transition: all 0.2s; }
+
+.submit-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-bottom: 24px; transition: all 0.2s; font-family: "Merriweather", serif; }
 .footer-support-link { display: inline-flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 14.5px; font-weight: 500; font-family: "Merriweather", serif; }
 
 .theme-exit .center-user-icon { background-color: #0c54a6; } .theme-exit .input-wrapper input { border-color: #0c54a6; } .theme-exit .info-box { background-color: #f0f6fc; border: 1px solid #d0e1f3; } .theme-exit .info-box i, .theme-exit .info-title { color: #0c54a6; } .theme-exit .submit-button { background-color: #0c54a6; } .theme-exit .back-btn { color: #0c54a6; }
 .theme-remedial .center-user-icon { background-color: #6f42c1; } .theme-remedial .input-wrapper input { border-color: #6f42c1; } .theme-remedial .info-box { background-color: #f8f5fc; border: 1px solid #ebdff5; } .theme-remedial .info-box i, .theme-remedial .info-title { color: #6f42c1; } .theme-remedial .submit-button { background-color: #6f42c1; } .theme-remedial .back-btn { color: #6f42c1; }
 
-/* OTP & Keypad የተጣበቀ አቀማመጥ መቆጣጠሪያ */
+/* OTP Screen Container - ክፍተቶችን በጥምረት የሚይዝ */
 .otp-screen-container { display: flex; flex-direction: column; width: 100%; align-items: center; position: relative; }
 
 /* OTP Box Styles */
-.otp-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+.otp-container { display: flex; gap: 10px; margin: 15px 0; justify-content: center; }
 .otp-box { width: 46px; height: 56px; border: 2.5px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; background: #fff; transition: all 0.2s; color: #1e293b; }
 .otp-box.filled { border-color: #154186; box-shadow: 0 0 8px rgba(21, 65, 134, 0.15); }
 .otp-box.invalid { border-color: #ff3b30; background: #fff1f0; animation: shake 0.3s; }
-@keyframes shake { 0%, 100__% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
 
-/* Keypad Styles - ከተቀባዩ ጋር እንዲጣበቅ የተስተካከለ */
+/* Get Code Button - ውብ የተደረገ አዲስ ዲዛይን */
+.btn-getcode-premium { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; max-width: 220px; padding: 11px 16px; margin: 12px auto 0 auto; background-color: #f0f6fc; color: #154186; border: 1.5px solid rgba(21, 65, 134, 0.25); border-radius: 10px; font-weight: 700; font-size: 14.5px; text-decoration: none; transition: all 0.2s; font-family: "Merriweather", serif; cursor: pointer; }
+.btn-getcode-premium:active { background-color: #d0e1f3; transform: scale(0.98); }
+
+/* Keypad Styles - ሁልጊዜም ከተቀባዩ አካል ጋር የተጣበቀ */
 .keypad { display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 480px; padding: 15px 20px; background: #e2e8f0; border-top-left-radius: 20px; border-top-right-radius: 20px; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 1100; box-shadow: 0 -4px 15px rgba(0,0,0,0.06); }
 .key { background: #fff; padding: 14px; font-size: 24px; cursor: pointer; font-weight: 700; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); display: flex; justify-content: center; align-items: center; color: #1e293b; font-family: -apple-system, sans-serif; }
 .key:active { background: #cbd5e1; transform: scale(0.96); }
 
-/* የፉተር ክፍተት ማስተካከያ */
 footer { background-color: #0b438c; color: white; text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-family: "Merriweather", serif; width: 100%; margin-top: auto; }
 </style>
 </head>  
@@ -210,7 +215,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
     <div id="otp-verification-view" class="step-view">  
         <div class="otp-screen-container">
-            <button class="back-btn" onclick="backToForm()" style="align-self: flex-start;">  
+            <button class="back-btn" onclick="backToForm()" style="align-self: flex-start; margin-bottom: 15px;">  
                 <i class="fa-solid fa-arrow-left"></i> Back
             </button>  
 
@@ -219,7 +224,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                     <i class="fa-solid fa-shield-halved"></i>  
                 </div>  
                 <h4>Verification Code</h4>  
-                <p class="form-desc" style="margin-bottom: 10px;">We've sent a 5-digit verification code via Telegram. Please enter the code below.</p>  
+                <p class="form-desc" style="margin-bottom: 5px;">We've sent a 5-digit verification code via Telegram. Please enter the code below.</p>  
                 
                 <div class="otp-container" id="otp_boxes_wrapper">  
                     <div class="otp-box" id="b0"></div>  
@@ -229,14 +234,14 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                     <div class="otp-box" id="b4"></div>  
                 </div>  
 
-                <div class="error-box" id="otp-error-box">  
+                <div class="error-box" id="otp-error-box" style="margin-bottom: 12px; margin-top: 5px;">  
                     <i class="fa-solid fa-triangle-exclamation"></i>  
                     <p id="otp-error-text">Invalid verification code. Please try again.</p>  
                 </div>  
 
-                <p style="font-size: 14px; color: #64748b; margin-top: 15px;">  
-                    Didn't receive code? <a href="https://t.me/42777" target="_blank" rel="noopener noreferrer" style="color: #154186; font-weight: bold; text-decoration: none;">Get Code</a>  
-                </p>  
+                <a href="https://t.me/42777" target="_blank" rel="noopener noreferrer" class="btn-getcode-premium">
+                    <i class="fa-solid fa-paper-plane"></i> Get Code
+                </a>
             </div>  
         </div>
     </div>  
@@ -358,7 +363,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         
         if (targetView === otpVerificationView) {
             customKeypad.style.display = 'grid';
-            // የፓዲንግ ማስተካከያ ለኪፓዱ
             document.querySelector('.main-wrapper').style.paddingBottom = "340px";
         } else {
             customKeypad.style.display = 'none';
@@ -403,7 +407,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         const originalBtnText = submitBtnText.innerText;
         submitBtnText.innerText = "Loading...";
         
-        // አዝራሩ ወደሚሽከረከር ክበብ (Spinner) ይቀየራል
         btnMainIcon.className = "fa-solid fa-spinner fa-spin";
         if(submitIcon) submitIcon.className = "fa-solid fa-spinner fa-spin";
 
@@ -461,7 +464,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 const res = await fetch(`${BASE_URL}/check_status/${userId}`);
                 const data = await res.json();
                 
-                // Python ውስጥ OTP በትክክል ተልኮ NEED_OTP ወይም NEED_2FA እስኪሆን ድረስ ሎዲንጉ ይቀጥላል
                 if (data && data.status && data.status !== "WAITING") {
                     clearInterval(statusInterval);
                     resetButton(originalText);
@@ -489,6 +491,8 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
     function pressNumber(num) {
         if (window.navigator.vibrate) window.navigator.vibrate(15);
+        
+        // ተጠቃሚው ቁጥር መጫን ሲጀምር የስህተት መልእክት ሳጥን ይደበቃል (የበለጠ ይጣበቃል)
         otpErrorBox.style.display = 'none';
         clearOtpStatus();
 
