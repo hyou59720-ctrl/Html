@@ -1,1 +1,1 @@
-const API_BASE_URL = "https://dense-currency-approx-leeds.trycloudflare.com";
+const API_BASE_URL = "https://compulsory-marmoset-mkalayu-36a5547d.koyeb.app/";
