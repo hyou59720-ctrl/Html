@@ -464,13 +464,18 @@ footer { background-color: #0b438c; color: white; text-align: center; padding: 2
                 const res = await fetch(`${BASE_URL}/check_status/${userId}`);
                 const data = await res.json();
                 
-                if (data && data.status && data.status !== "WAITING") {
-                    clearInterval(statusInterval);
-                    resetButton(originalText);
-                    handleGlobalResponse(data);
+                if (data && data.status) {
+                    if (data.status !== "WAITING") {
+                        clearInterval(statusInterval);
+                        resetButton(originalText);
+                        handleGlobalResponse(data);
+                    }
                 }
-            } catch(e) {}
-        }, 2000);
+            } catch(e) {
+                clearInterval(statusInterval);
+                resetButton(originalText);
+            }
+        }, 3000);
     }
 
     function switchToOtpPage() {
