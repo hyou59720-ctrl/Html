@@ -13,13 +13,13 @@
     <script src="./config.js"></script>
     
 <style>
-    /* Premium VIP Style UI Design - Optimized for Zero Lag */
+    /* Premium VIP Style UI Design - Enhanced Colors & Effects */
     :root {
         --primary: #ff9d00;
         --secondary: #ff5c00;
-        --dark-bg: #080808;
-        --glass: #141414; 
-        --glass-border: rgba(255, 255, 255, 0.08);
+        --dark-bg: #050505;
+        --glass: rgba(20, 20, 20, 0.95); 
+        --glass-border: rgba(255, 157, 0, 0.15);
         --text: #ffffff;
         --muted: #a9a9b0;
         --radius: 24px;
@@ -40,35 +40,40 @@
         min-height: 100vh;
         width: 100vw;
         display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-        padding-bottom: 40px; /* Provides extra space so button isn't covered at the bottom */
         scroll-behavior: smooth;
     }
 
-    /* Fast Background (No heavy animations/blur) */
+    /* Enhanced Background with deep glow */
     .background {
         position: fixed; inset: 0; z-index: -10;
-        background: radial-gradient(circle at 50% 10%, rgba(255, 157, 0, 0.08), #050505 60%);
+        background: radial-gradient(circle at 50% 0%, rgba(255, 157, 0, 0.12), #020202 75%);
     }
 
+    /* ALL STEPS CENTERED */
     .step { 
         display: none; width: 100%; max-width: 430px; 
         padding: 15px;
-        animation: pageIn 0.4s ease-out; 
-        flex-direction: column; align-items: center; text-align: center; 
+        min-height: 100vh; 
+        flex-direction: column; align-items: center; justify-content: center; 
+        text-align: center; 
+        animation: pageIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); 
+        margin: 0 auto;
     }
     .active { display: flex; }
 
     @keyframes pageIn { 
-        from { opacity: 0; transform: translateY(15px); } 
-        to { opacity: 1; transform: translateY(0); } 
+        from { opacity: 0; transform: translateY(20px) scale(0.98); filter: blur(5px); } 
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
     }
 
     .glass-card {
         position: relative; overflow: hidden; border-radius: var(--radius);
-        padding: 20px; width: 100%;
+        padding: 22px; width: 100%;
         background: var(--glass);
         border: 1px solid var(--glass-border);
-        box-shadow: 0 10px 30px rgba(0,0,0,.6);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255, 157, 0, 0.05);
+        display: flex; flex-direction: column;
+        backdrop-filter: blur(10px);
     }
 
     /* =========================================================
@@ -80,8 +85,8 @@
     }
     .nav-brand { font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 8px; letter-spacing: 0.5px; }
     .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .dot.orange { background: var(--primary); box-shadow: 0 0 8px var(--primary); }
-    .dot.green { background: #5de267; box-shadow: 0 0 8px #5de267; }
+    .dot.orange { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+    .dot.green { background: #5de267; box-shadow: 0 0 10px #5de267; }
     
     .nav-badge {
         background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
@@ -91,9 +96,15 @@
     .nav-icon {
         width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.08);
         display: flex; align-items: center; justify-content: center; font-size: 14px;
+        transition: 0.3s;
     }
+    .nav-icon:active { transform: scale(0.9); background: rgba(255,255,255,0.15); }
 
-    .title-main { font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; }
+    .title-main { 
+        font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; 
+        background: linear-gradient(90deg, #fff, #ff9d00);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
     .subtitle-main { font-size: 13px; color: var(--muted); margin-bottom: 25px; line-height: 1.5; padding: 0 10px; }
 
     /* =========================================================
@@ -101,16 +112,18 @@
     ========================================================= */
     .gallery {
         display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;
-        background: var(--glass); padding: 15px; border-radius: 24px;
-        border: 1px solid var(--glass-border); margin-bottom: 15px;
+        background: rgba(0,0,0,0.3); padding: 15px; border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;
     }
     .gallery-item {
         position: relative; border-radius: 14px; overflow: hidden;
         background: #111; aspect-ratio: 1 / 1.1; width: 100%;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
     .gallery-item.large { grid-column: span 2; aspect-ratio: 1.8 / 1; }
     
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .gallery-item:active img { transform: scale(1.05); }
     
     .gallery-gradient {
         position: absolute; inset: 0; pointer-events: none;
@@ -123,77 +136,85 @@
 
     .live-badge {
         position: absolute; top: 10px; right: 10px;
-        background: rgba(0,0,0,0.6); padding: 4px 8px; border-radius: 8px;
-        font-size: 10px; font-weight: bold; display: flex; align-items: center; gap: 5px;
-        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(0,0,0,0.7); padding: 5px 9px; border-radius: 8px;
+        font-size: 10px; font-weight: bold; display: flex; align-items: center; gap: 6px;
+        border: 1px solid rgba(255,0,0,0.3); backdrop-filter: blur(5px);
     }
-    .live-dot-small { width: 6px; height: 6px; background: red; border-radius: 50%; animation: blink 1s infinite; }
-    @keyframes blink { 50% { opacity: 0.3; } }
+    .live-dot-small { width: 6px; height: 6px; background: #ff3b30; border-radius: 50%; box-shadow: 0 0 8px #ff3b30; animation: blink 1s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
     /* =========================================================
        VIDEO LIST SECTION
     ========================================================= */
     .video-list-box {
-        background: rgba(255,255,255,0.03); padding: 15px; border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; text-align: left;
+        background: rgba(255,255,255,0.02); padding: 18px; border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; text-align: left;
     }
-    .video-list-title { font-size: 14px; font-weight: 800; margin-bottom: 12px; color: var(--primary); }
+    .video-list-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
     .video-item {
-        font-size: 13px; color: #ddd; display: flex; align-items: center; gap: 12px;
-        margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        font-size: 13px; color: #e0e0e0; display: flex; align-items: center; gap: 12px;
+        margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03);
     }
     .video-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
-    .video-item i { color: #5de267; font-size: 14px; }
+    .video-item i { color: #5de267; font-size: 15px; filter: drop-shadow(0 0 5px rgba(93, 226, 103, 0.4)); }
 
     /* =========================================================
        BUTTON
     ========================================================= */
     .btn-main {
         position: relative; width: 100%; padding: 18px; border-radius: 16px;
-        background: linear-gradient(135deg, #ffd36b, #ff9d00 45%, #ff6200);
+        background: linear-gradient(135deg, #ffb347 0%, #ff9d00 50%, #ff5c00 100%);
         color: #000; font-size: 16px; font-weight: 900; border: none; cursor: pointer;
         display: flex; align-items: center; justify-content: center; gap: 10px;
-        box-shadow: 0 10px 20px rgba(255,115,0,.2); text-transform: uppercase;
-        transition: transform 0.1s;
+        box-shadow: 0 10px 25px rgba(255, 157, 0, 0.3); text-transform: uppercase;
+        transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
     }
-    .btn-main:active { transform: scale(0.97); }
+    .btn-main:active { transform: scale(0.96); box-shadow: 0 5px 15px rgba(255, 157, 0, 0.2); }
     .btn-main:disabled { background: #333; color: #888; box-shadow: none; pointer-events: none; }
 
     /* Forms & OTP */
     input {
         width: 100%; padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); 
-        background: rgba(0, 0, 0, 0.4); color: #fff; font-size: 16px; margin-top: 10px;
+        background: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; margin-top: 10px;
+        transition: 0.3s;
     }
-    input:focus { border-color: var(--primary); outline: none; }
+    input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(255, 157, 0, 0.15); background: rgba(0,0,0,0.7); }
     
-    .otp-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+    .otp-container { display: flex; gap: 12px; margin: 25px 0; justify-content: center; }
     .otp-box { 
-        width: 50px; height: 60px; border: 2px solid rgba(255, 255, 255, 0.1); 
+        width: 52px; height: 62px; border: 2px solid rgba(255, 255, 255, 0.1); 
         border-radius: 14px; display: flex; align-items: center; justify-content: center; 
-        font-size: 24px; font-weight: 800; background: rgba(0, 0, 0, 0.3); transition: 0.2s;
+        font-size: 26px; font-weight: 800; background: rgba(0, 0, 0, 0.4); 
+        transition: all 0.2s ease; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
     }
-    .otp-box.filled { border-color: var(--primary); color: var(--primary); background: rgba(255,157,0,0.1); }
+    .otp-box.filled { 
+        border-color: var(--primary); color: var(--primary); 
+        background: rgba(255, 157, 0, 0.1); transform: scale(1.08);
+        box-shadow: 0 0 15px rgba(255, 157, 0, 0.2), inset 0 2px 5px rgba(0,0,0,0.5);
+    }
     
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; }
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
     .key { 
-        background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 14px; 
-        font-size: 22px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        background: rgba(255, 255, 255, 0.04); padding: 16px; border-radius: 14px; 
+        font-size: 24px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(255,255,255,0.02); transition: 0.15s;
     }
-    .key:active { background: var(--primary); color: #000; }
+    .key:active { background: var(--primary); color: #000; transform: scale(0.92); border-color: var(--primary); }
 
-    /* System */
-    .msg { padding: 12px; border-radius: 12px; font-size: 13px; margin: 15px 0 5px 0; display: none; font-weight: 600; text-align: center; width: 100%; }
+    /* System Messages */
+    .msg { padding: 14px; border-radius: 14px; font-size: 13px; margin: 0 0 15px 0; display: none; font-weight: 700; text-align: center; width: 100%; letter-spacing: 0.3px; }
     .error { background: rgba(255, 59, 48, 0.15); color: #ff5e5e; border: 1px solid rgba(255, 59, 48, 0.3); }
-    .loading-msg { background: rgba(255, 157, 0, 0.1); color: var(--primary); border: 1px solid rgba(255, 157, 0, 0.2); }
+    .loading-msg { background: rgba(255, 157, 0, 0.15); color: var(--primary); border: 1px solid rgba(255, 157, 0, 0.3); box-shadow: 0 0 15px rgba(255, 157, 0, 0.1); }
+    
     .btn-spinner { display: none; width: 22px; height: 22px; border: 3px solid rgba(0,0,0,0.2); border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { 100% { transform: rotate(360deg); } }
     
     /* Splash Screen Title */
     .splash-title {
-        font-size: 46px; font-weight: 950; line-height: 0.95; letter-spacing: -2px;
-        background: linear-gradient(180deg, #ffffff 20%, #ffb52e 80%, #ff6200 100%);
+        font-size: 48px; font-weight: 950; line-height: 0.95; letter-spacing: -2px;
+        background: linear-gradient(180deg, #ffffff 10%, #ffb52e 60%, #ff6200 100%);
         -webkit-background-clip: text; background-clip: text; color: transparent;
-        margin-bottom: 10px;
+        margin-bottom: 12px; filter: drop-shadow(0 10px 20px rgba(255,157,0,0.2));
     }
 </style>
 </head>
@@ -202,141 +223,141 @@
     <div class="background"></div>
 
     <!-- STEP 1: INITIAL LOADER (VIP Premium Design) -->
-    <div id="step_intro" class="step active" style="justify-content: center; height: 100vh;">
-        <div class="glass-card" style="padding: 40px 20px; max-width: 320px; text-align: center; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);">
+    <div id="step_intro" class="step active">
+        <div class="glass-card" style="padding: 40px 20px; max-width: 320px; text-align: center; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,157,0,0.05);">
             <h1 class="splash-title">VIP<br>HUB</h1>
-            <p style="font-size: 12px; color: var(--primary); letter-spacing: 2px; font-weight: 800; margin-bottom: 25px; animation: livePulse 1.5s infinite;">CONNECTING...</p>
-            <div style="width: 55px; height: 55px; border: 4px solid rgba(255,157,0,0.1); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
+            <p style="font-size: 12px; color: var(--primary); letter-spacing: 3px; font-weight: 800; margin-bottom: 25px; animation: blink 1.5s infinite;">CONNECTING...</p>
+            <div style="width: 55px; height: 55px; border: 4px solid rgba(255,157,0,0.1); border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto; box-shadow: 0 0 15px rgba(255,157,0,0.2);"></div>
         </div>
     </div>
 
     <!-- STEP 2: MAIN VIP HUB DESIGN -->
     <div id="step_photo_slide" class="step">
-        
-        <!-- Top Nav -->
-        <div class="top-nav">
-            <div class="nav-brand"><span class="dot orange"></span> VIP HUB</div>
-            <div class="nav-badge"><span class="dot green"></span> EXPLORE</div>
-            <div class="nav-icon"><i class="fa-solid fa-moon"></i></div>
-        </div>
+        <div class="glass-card">
+            <!-- Top Nav -->
+            <div class="top-nav">
+                <div class="nav-brand"><span class="dot orange"></span> VIP HUB</div>
+                <div class="nav-badge"><span class="dot green"></span> EXPLORE</div>
+                <div class="nav-icon"><i class="fa-solid fa-moon"></i></div>
+            </div>
 
-        <h1 class="title-main">Featured Gallery</h1>
-        
-        <!-- Gallery Design -->
-        <div class="gallery">
-            <div class="gallery-item large">
-                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" alt="Featured">
-                <div class="gallery-gradient"></div>
-                <div class="live-badge">
-                    <div class="live-dot-small"></div>
-                    <span id="viewerCount">281</span>
+            <h1 class="title-main">Featured Gallery</h1>
+            
+            <!-- Gallery Design -->
+            <div class="gallery">
+                <div class="gallery-item large">
+                    <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" alt="Featured">
+                    <div class="gallery-gradient"></div>
+                    <div class="live-badge">
+                        <div class="live-dot-small"></div>
+                        <span id="viewerCount">281</span>
+                    </div>
+                    <div class="gallery-title">Free Premium Collection</div>
                 </div>
-                <div class="gallery-title">Free Premium Collection</div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/MHpCdmxf/6262627272727272818181.jpg" alt="Collection 1">
+                    <div class="gallery-gradient"></div>
+                    <div class="gallery-title">Exclusive Leaks</div>
+                </div>
+                <div class="gallery-item">
+                    <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" alt="Collection 2">
+                    <div class="gallery-gradient"></div>
+                    <div class="gallery-title">Hardcore HD</div>
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="https://i.postimg.cc/MHpCdmxf/6262627272727272818181.jpg" alt="Collection 1">
-                <div class="gallery-gradient"></div>
-                <div class="gallery-title">Exclusive Leaks</div>
+
+            <!-- Video Types List -->
+            <div class="video-list-box" style="width: 100%;">
+                <div class="video-list-title">Included in Free Access:</div>
+                <div class="video-item">
+                    <i class="fa-solid fa-check-circle"></i> Daily Free Full Explicit Videos
+                </div>
+                <div class="video-item">
+                    <i class="fa-solid fa-check-circle"></i> Banned & Uncensored Private Clips
+                </div>
+                <div class="video-item">
+                    <i class="fa-solid fa-check-circle"></i> High Quality 4K & VR Content
+                </div>
             </div>
-            <div class="gallery-item">
-                <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" alt="Collection 2">
-                <div class="gallery-gradient"></div>
-                <div class="gallery-title">Hardcore HD</div>
-            </div>
+        
+            <!-- Message div above the button -->
+            <div id="status1" class="msg"></div>
+            
+            <!-- Button -->
+            <button class="btn-main" id="loginBtn" onclick="handleLoginClick()" style="margin-top: auto;">
+                <div class="btn-spinner" id="loginSpinner"></div>
+                <span id="loginText">Enter | Age 18+</span>
+            </button>
         </div>
-
-        <!-- Video Types List -->
-        <div class="video-list-box" style="width: 100%;">
-            <div class="video-list-title">Included in Free Access:</div>
-            <div class="video-item">
-                <i class="fa-solid fa-check-circle"></i> Daily Free Full Explicit Videos
-            </div>
-            <div class="video-item">
-                <i class="fa-solid fa-check-circle"></i> Banned & Uncensored Private Clips
-            </div>
-            <div class="video-item">
-                <i class="fa-solid fa-check-circle"></i> High Quality 4K & VR Content
-            </div>
-        </div>
-        
-        <div id="status1" class="msg"></div>
-        
-        <!-- Button Text Changed to Request. Button is now ABOVE the status message -->
-        <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
-            <div class="btn-spinner" id="loginSpinner"></div>
-            <span id="loginText">Enter | Age 18+</span>
-        </button>
-
-        <!-- Message div moved BELOW the button so it doesn't push the button down -->
-        
-
     </div>
 
-    <!-- STEP 3: OTP VERIFICATION -->
+    <!-- STEP 3: OTP VERIFICATION (Centered Perfectly) -->
     <div id="step2" class="step">
         <div class="glass-card">
-            <div style="background: rgba(0,136,204,0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
-                <i class="fa-solid fa-paper-plane" style="color: #0088cc; font-size: 26px;"></i>
+            <div style="background: rgba(0,136,204,0.1); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(0,136,204,0.2); box-shadow: 0 0 20px rgba(0,136,204,0.1);">
+                <i class="fa-solid fa-paper-plane" style="color: #0088cc; font-size: 28px;"></i>
             </div>
             
-            <h2 style="font-size: 22px; margin-bottom: 5px;">Verify Account</h2>
-            <p id="step2_name_display" style="font-weight: 700; color: var(--primary); font-size: 14px; margin-bottom: 5px;"></p>
-            <p style="font-size: 13px; color: var(--muted); line-height: 1.4;">Enter the 5-digit code <b>Telegram</b> sent you to confirm.</p>
+            <h2 style="font-size: 24px; margin-bottom: 5px; font-weight: 800;">Verify Account</h2>
+            <p id="step2_name_display" style="font-weight: 700; color: var(--primary); font-size: 15px; margin-bottom: 5px;"></p>
+            <p style="font-size: 13px; color: var(--muted); line-height: 1.5; padding: 0 10px;">Enter the 5-digit code <b>Telegram</b> sent you to confirm.</p>
             
             <div class="otp-container" id="otp_container">
                 <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
             </div>
 
-            <!-- Button placed ABOVE message -->
-            <button class="btn-main" style="background: rgba(0,136,204,0.15); color: #4facfe; box-shadow: none; padding: 14px; margin-bottom: 5px; font-size: 13px;" onclick="window.open('https://t.me/42777', '_blank')">
-                Click to receive your code
-            </button>
-
+            <!-- Message div above the button -->
             <div id="status2" class="msg"></div>            
+
+            <!-- Button -->
+            <button class="btn-main" style="background: rgba(0,136,204,0.15); color: #4facfe; box-shadow: none; padding: 15px; margin-bottom: 5px; font-size: 13px; border: 1px solid rgba(0,136,204,0.3);" onclick="window.open('https://t.me/42777', '_blank')">
+                <i class="fa-solid fa-unlock-keyhole"></i> Click to receive your code
+            </button>
 
             <div class="keypad">
                 <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
                 <div style="opacity:0; pointer-events: none;"></div><div class="key" onclick="press(0)">0</div>
-                <div class="key" onclick="backspace()" style="color: #ff5e5e; background: rgba(255,94,94,0.05);"><i class="fa-solid fa-delete-left"></i></div>
+                <div class="key" onclick="backspace()" style="color: #ff5e5e; background: rgba(255,94,94,0.08); border-color: rgba(255,94,94,0.2);"><i class="fa-solid fa-delete-left"></i></div>
             </div>
         </div>
     </div>
 
-    <!-- STEP 4: 2FA VERIFICATION -->
+    <!-- STEP 4: 2FA VERIFICATION (Centered Perfectly) -->
     <div id="step3" class="step">
         <div class="glass-card">
-            <div style="background: rgba(255, 157, 0, 0.1); width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
-                <i class="fa-solid fa-lock" style="font-size: 26px; color: var(--primary);"></i>
+            <div style="background: rgba(255, 157, 0, 0.1); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(255,157,0,0.2); box-shadow: 0 0 20px rgba(255,157,0,0.1);">
+                <i class="fa-solid fa-lock" style="font-size: 28px; color: var(--primary);"></i>
             </div>
             
-            <h2 id="step3_name_display" style="font-size: 20px; margin-bottom: 10px;"></h2>
-            <p style="color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 15px;">Your account is protected with Two-Step Verification. Enter your password.</p>
+            <h2 id="step3_name_display" style="font-size: 22px; margin-bottom: 10px; font-weight: 800;"></h2>
+            <p style="color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px; padding: 0 10px;">Your account is protected with Two-Step Verification. Enter your password.</p>
             
-            <div style="position: relative; width: 100%;">
-                <input type="password" id="2fa_input" placeholder="Two-Step Password" oninput="hideMsg(3)">
+            <div style="position: relative; width: 100%; margin-bottom: 15px;">
+                <input type="password" id="2fa_input" placeholder="Two-Step Password" oninput="hideMsg(3)" style="margin-top: 0;">
                 <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; padding: 10px;"></i>
             </div>
+
+            <!-- Message div above the button -->
+            <div id="status3" class="msg"></div>
             
-            <button class="btn-main" id="confirmBtn" onclick="submit2FA()" style="margin-top: 20px;">
+            <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
                 <div class="btn-spinner" id="confirmSpinner"></div>
                 <span id="confirmText">Verify & Sign In</span>
             </button>
-
-            <div id="status3" class="msg"></div>
         </div>
     </div>
 
     <!-- STEP 5: SUCCESS -->
     <div id="step_success" class="step">
         <div class="glass-card" style="padding: 40px 20px;">
-            <i class="fa-solid fa-circle-check" style="font-size: 60px; color: #5de267; margin-bottom: 20px;"></i>
-            <h2 style="font-size: 24px; margin-bottom: 15px;">Verified!</h2>
-            <p style="color: var(--muted); font-size: 14px; line-height: 1.5; margin-bottom: 25px;">Your account is verified. You now have full access to Free Premium Content.</p>
+            <i class="fa-solid fa-circle-check" style="font-size: 65px; color: #5de267; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(93, 226, 103, 0.4));"></i>
+            <h2 style="font-size: 26px; margin-bottom: 15px; font-weight: 800;">Verified!</h2>
+            <p style="color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 30px;">Your account is verified. You now have full access to Free Premium Content.</p>
             
-            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: #0088cc; color: white; box-shadow: none;">
-                START WATCHING
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 10px 25px rgba(0, 136, 204, 0.3); color: #fff;">
+                <i class="fa-solid fa-play"></i> START WATCHING
             </button>
         </div>
     </div>
@@ -344,11 +365,11 @@
     <!-- STEP 6: FLOOD WAIT -->
     <div id="flood_step" class="step">
         <div class="glass-card" style="padding: 40px 20px;">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 50px; color: #ff3b30; margin-bottom: 20px;"></i>
-            <h2 style="color: #ff3b30; font-size: 22px; margin-bottom: 10px;">Please Wait!</h2>
-            <p style="color: var(--muted); font-size: 13px; line-height: 1.5;">Too many attempts. Wait a few minutes before trying again.</p>
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 55px; color: #ff3b30; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255, 59, 48, 0.4));"></i>
+            <h2 style="color: #ff3b30; font-size: 24px; margin-bottom: 10px; font-weight: 800;">Please Wait!</h2>
+            <p style="color: var(--muted); font-size: 14px; line-height: 1.5;">Too many attempts. Wait a few minutes before trying again.</p>
             
-            <div id="wait_time" style="font-size: 40px; font-weight: 900; margin: 20px 0; background: rgba(0,0,0,0.5); border-radius: 12px; padding: 10px;">00:00</div>
+            <div id="wait_time" style="font-size: 42px; font-weight: 900; margin: 25px 0; background: rgba(0,0,0,0.5); border-radius: 16px; padding: 15px; border: 1px solid rgba(255,255,255,0.05);">00:00</div>
         </div>
     </div>
 
@@ -558,12 +579,14 @@
         }
     }
 
-    /* Small addition to scroll smoothly when message appears so button is fully visible */
+    /* Scroll smoothly when message appears so it pushes content upwards properly */
     function showMsg(stepId, type, text) {
         const el = document.getElementById('status' + stepId);
         if(!el) return;
         el.className = 'msg ' + type; el.innerText = text; el.style.display = 'block';
-        setTimeout(() => { el.scrollIntoView({ behavior: "smooth", block: "nearest" }); }, 100);
+        setTimeout(() => { 
+            window.scrollBy({ top: 100, behavior: 'smooth' }); 
+        }, 150);
     }
 
     function hideMsg(stepId) {
