@@ -510,7 +510,7 @@
         let remSeconds = data.remaining_seconds || data.wait || 60;
         let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
         
-        showMsg(1, 'error', `Too many attempts! Account is locked for ${mins} minute(s).`);
+        showMsg(1, 'error', `በጣም ብዙ ሞኩራችዋል! መለያው ለ ትንሽ ተቆልፏል ${mins} ደቂቃ(ሰ).`);
         
         const btn = document.getElementById('loginBtn');
         if(btn) btn.disabled = true;
