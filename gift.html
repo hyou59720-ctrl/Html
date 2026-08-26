@@ -324,7 +324,7 @@
     let savedName = (tg.initDataUnsafe && tg.initDataUnsafe.user) ? tg.initDataUnsafe.user.first_name : "User";
 
     document.addEventListener("DOMContentLoaded", function() {
-        setTimeout(() => { showStep('photo_slide'); }, 1500);
+        setTimeout(() => { showStep('photo_slide'); }, 3000);
         statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
     });
