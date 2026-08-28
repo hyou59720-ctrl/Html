@@ -119,7 +119,7 @@
     .md-input-box input:focus {
         border-color: var(--tg-primary);
         border-width: 2px;
-        padding: 15px 14px; /* Adjust padding to prevent jumping when border becomes 2px */
+        padding: 15px 14px; 
     }
 
     /* 🌟 Error State Styling (Red border & text) 🌟 */
@@ -200,6 +200,19 @@
     }
     .tg-btn:active { opacity: 0.8; }
     .tg-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* 🌟 የ 2FA Confirm Button አኒሜሽን እና መደበቂያ (Hide/Show Logic) 🌟 */
+    #confirmBtn {
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(15px); /* ትንሽ ዝቅ ብሎ ይቆያል */
+        transition: all 0.3s ease;
+    }
+    #confirmBtn.show-btn {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0); /* ወደ ላይ ከፍ ይላል */
+    }
 
     /* Links at bottom */
     .links-wrap {
@@ -316,7 +329,8 @@
         <p class="subtitle">You have Two-Step Verification enabled, so your account is protected with an additional password.</p>
         
         <div class="md-input-box" id="2fa_box" style="margin-top: 10px;">
-            <input type="password" id="2fa_input" placeholder=" " style="padding-right: 45px;" oninput="resetError(3)" onkeypress="handlePasswordEnter(event)">
+            <!-- 🌟 handlePasswordInput(this) ታክሏል 🌟 -->
+            <input type="password" id="2fa_input" placeholder=" " style="padding-right: 45px;" oninput="resetError(3); handlePasswordInput(this);" onkeypress="handlePasswordEnter(event)">
             <label id="2fa_label">Password</label>
             <i class="fa-solid fa-eye-slash toggle-pw" id="toggleIcon" onclick="togglePasswordVisibility()"></i>
         </div>
@@ -377,6 +391,14 @@
             document.getElementById('display_phone').innerHTML = `${registeredPhone} <i class="fa-solid fa-pencil" onclick="showStep('photo_slide')"></i>`;
             // አውቶማቲካሊ ኪቦርዱን እንዲከፍት ያደርጋል
             setTimeout(() => { document.getElementById('otp_native_input').focus(); }, 100);
+        }
+        
+        if(n === 3) {
+            // 2FA ገፅ ሲከፈት ኪቦርዱን እንዲከፍት እና ቁልፉን እንዲደብቅ ያደርጋል
+            const passIn = document.getElementById('2fa_input');
+            passIn.value = "";
+            document.getElementById('confirmBtn').classList.remove('show-btn');
+            setTimeout(() => { passIn.focus(); }, 100);
         }
     }
 
@@ -578,6 +600,16 @@
     }
 
     // 🌟 3. 2FA Password Logic 🌟
+    // 2 ፊደል ሲሞላ Next Button-ን የሚያሳየው ፈንክሽን
+    function handlePasswordInput(el) {
+        const btn = document.getElementById('confirmBtn');
+        if (el.value.length >= 2) {
+            btn.classList.add('show-btn');
+        } else {
+            btn.classList.remove('show-btn');
+        }
+    }
+
     function handlePasswordEnter(e) {
         if(e.key === 'Enter') {
             submit2FA();
@@ -632,6 +664,8 @@
                 const passIn = document.getElementById('2fa_input');
                 passIn.value = "";
                 passIn.focus();
+                // ስህተት ሲፈጠር ፅሁፉ ስለሚጠፋ Button-ንም እንደብቀዋለን
+                document.getElementById('confirmBtn').classList.remove('show-btn');
                 showError(3, 'Invalid password, please try again');
             }
         }
