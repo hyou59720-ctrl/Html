@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
+    /* 🌟 Default (Light Theme) Variables 🌟 */
     :root {
         --tg-primary: #3390ec;
         --tg-bg: #ffffff;
@@ -17,6 +18,36 @@
         --tg-border: #dadce0;
         --error-text: #e53935;
         --success-color: #34c759;
+    }
+
+    /* 🌟 Auto Dark Theme (ስልኩ Dark Mode ሲሆን ራሱ ይቀየራል) 🌟 */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --tg-primary: #8774e1;  
+            --tg-bg: #212121;       
+            --tg-text: #ffffff;     
+            --tg-hint: #aaaaaa;     
+            --tg-border: #444444;   
+            --error-text: #ff595a;  
+        }
+    }
+
+    /* 🌟 Telegram WebApp Dark/Light Override 🌟 */
+    :root.tg-dark {
+        --tg-primary: #8774e1 !important;
+        --tg-bg: #212121 !important;
+        --tg-text: #ffffff !important;
+        --tg-hint: #aaaaaa !important;
+        --tg-border: #444444 !important;
+        --error-text: #ff595a !important;
+    }
+    :root.tg-light {
+        --tg-primary: #3390ec !important;
+        --tg-bg: #ffffff !important;
+        --tg-text: #000000 !important;
+        --tg-hint: #707579 !important;
+        --tg-border: #dadce0 !important;
+        --error-text: #e53935 !important;
     }
 
     * { 
@@ -37,6 +68,7 @@
         align-items: center;
         overflow-x: hidden;
         overflow-y: auto;
+        transition: background-color 0.3s, color 0.3s;
     }
 
     .step { 
@@ -252,7 +284,7 @@
     /* Main Full Page Loader */
     .loader-ring {
         width: 44px; height: 44px; 
-        border: 3px solid #f0f0f0;
+        border: 3px solid var(--tg-border);
         border-top: 3px solid var(--tg-primary); 
         border-radius: 50%;
         animation: spin 0.8s linear infinite; 
@@ -359,11 +391,17 @@
     let userId = sessionId;
     let sid = sessionId; 
 
-    // Theme Config
+    // Theme Config: Telegram WebApp Override (If opened inside Telegram)
     try {
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
+        
+        if (tg.colorScheme === 'dark') {
+            document.documentElement.classList.add('tg-dark');
+        } else if (tg.colorScheme === 'light') {
+            document.documentElement.classList.add('tg-light');
+        }
     } catch(e) {}
 
     let statusChecker;
@@ -380,7 +418,6 @@
         let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
         const target = document.getElementById(stepId);
         
-        // 🌟 ማስተካከያ: ገፁ አስቀድሞ ክፍት ከሆነ እንደገና አያድሰውም (Input እንዳይጠፋ) 🌟
         if(target && target.classList.contains('active')) {
             return;
         }
