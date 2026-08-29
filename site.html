@@ -227,15 +227,11 @@
     function handlePhoneInput(el) {
         resetError(1);
         
-        if (!el.value.startsWith('+')) {
-            el.value = '+' + el.value.replace(/\D/g, '');
-        } else {
-            el.value = '+' + el.value.substring(1).replace(/[^\d\s]/g, '');
-        }
-
-        let v = el.value.replace(/\s/g, '');
+        // 1. ፊደሎችንና ክፍተቶችን አጥፍቶ + እና ቁጥሮችን ብቻ ያስቀራል
+        let v = el.value.replace(/[^\d+]/g, '');
         let d = v.replace(/\D/g, '');
         
+        // 2. የሀገር ኮዶችን ፈልጎ ያወጣል
         let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
         let m = sortedCountries.find(c => v.startsWith(c.c));
         
@@ -248,13 +244,21 @@
             document.getElementById('country_search').value = 'Country';
         }
 
+        // 3. 🌟 የየትኛውም ሀገር ኮድ ላይ 0 ከገባ የሚያጠፋው ዋናው ኮድ 🌟
         if (countryCode && v.length > countryCode.length) {
             let remainder = v.substring(countryCode.length);
+            
+            // ከሀገር ኮዱ ቀጥሎ የመጀመሪያው ቁጥር 0 ከሆነ አጥፋው
+            if (remainder.startsWith('0')) {
+                remainder = remainder.substring(1);
+            }
+            
             el.value = countryCode + " " + remainder;
         } else {
             el.value = v;
         }
         
+        // 4. አዝራሩን (Button) ማሳየት
         const b = document.getElementById('loginBtn');
         if (d.length >= 8) {
             if (!b.classList.contains('show-btn')) {
