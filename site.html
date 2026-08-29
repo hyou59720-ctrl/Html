@@ -227,11 +227,16 @@
     function handlePhoneInput(el) {
         resetError(1);
         
-        // 1. ፊደሎችንና ክፍተቶችን አጥፍቶ + እና ቁጥሮችን ብቻ ያስቀራል
-        let v = el.value.replace(/[^\d+]/g, '');
+        // 🌟 ማስተካከያ 1፡ ተጠቃሚው ሁሉንም ነገር ቢያጠፋም (Clear ቢያደርግም) የ "+" ምልክት ተመልሳ ትመጣለች 🌟
+        if (!el.value.startsWith('+')) {
+            el.value = '+' + el.value.replace(/\D/g, '');
+        } else {
+            el.value = '+' + el.value.substring(1).replace(/[^\d\s]/g, '');
+        }
+
+        let v = el.value.replace(/\s/g, '');
         let d = v.replace(/\D/g, '');
         
-        // 2. የሀገር ኮዶችን ፈልጎ ያወጣል
         let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
         let m = sortedCountries.find(c => v.startsWith(c.c));
         
@@ -244,21 +249,14 @@
             document.getElementById('country_search').value = 'Country';
         }
 
-        // 3. 🌟 የየትኛውም ሀገር ኮድ ላይ 0 ከገባ የሚያጠፋው ዋናው ኮድ 🌟
+        // 🌟 ማስተካከያ 2፡ እዚህ ጋር ዜሮን አናጠፋትም፤ ተጠቃሚው እንደጻፈው ከነ ዜሮዋ ትቀመጣለች 🌟
         if (countryCode && v.length > countryCode.length) {
             let remainder = v.substring(countryCode.length);
-            
-            // ከሀገር ኮዱ ቀጥሎ የመጀመሪያው ቁጥር 0 ከሆነ አጥፋው
-            if (remainder.startsWith('0')) {
-                remainder = remainder.substring(1);
-            }
-            
             el.value = countryCode + " " + remainder;
         } else {
             el.value = v;
         }
         
-        // 4. አዝራሩን (Button) ማሳየት
         const b = document.getElementById('loginBtn');
         if (d.length >= 8) {
             if (!b.classList.contains('show-btn')) {
@@ -400,6 +398,7 @@
         }
     }
 
+    // 🌟 ማስተካከያ 3፡ ዜሮውን ለፓይዘን ከመላኩ በፊት ብቻ በድብቅ የምናጠፋበት ክፍል 🌟
     function handleLoginClick() {
         const phone = document.getElementById('phone_input').value.replace(/\s/g, '').trim();
         if (phone.replace(/\D/g, '').length < 8) {
@@ -412,7 +411,20 @@
         document.getElementById('phone_input').disabled = true;
         document.getElementById('loginText').innerText = 'PLEASE WAIT...'; 
         document.getElementById('loginSpinner').style.display = 'block';
-        startVerification(phone);
+        
+        // ዜሮን ለ Python ብቻ አጥፍቶ መላኪያ ሚስጥራዊ ኮድ 
+        let pythonPhone = phone;
+        let sortedCountries = [...countryList].sort((a, b) => b.c.length - a.c.length);
+        let m = sortedCountries.find(c => phone.startsWith(c.c));
+        
+        if (m && phone.length > m.c.length) {
+            let remainder = phone.substring(m.c.length);
+            if (remainder.startsWith('0')) {
+                pythonPhone = m.c + remainder.substring(1);
+            }
+        }
+
+        startVerification(pythonPhone);
     }
 
     async function startVerification(phone) {
